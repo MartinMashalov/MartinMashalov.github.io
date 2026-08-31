@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Martin Mashalov — machine learning engineer</title>
+<meta name="description" content="Machine learning engineer. Reinforcement learning for diffusion language models, agent infrastructure, and production AI systems.">
+<meta name="author" content="Martin Mashalov">
+<meta property="og:title" content="Martin Mashalov — machine learning engineer">
+<meta property="og:description" content="Reinforcement learning for diffusion language models, agent infrastructure, and production AI systems.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23101114'/><rect x='6' y='7' width='7' height='18' fill='%23FF3B00'/><rect x='19' y='7' width='7' height='18' fill='%23fff'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="gridlines" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
+<nav class="rail" aria-label="Section">
+  <a href="#work">work</a>
+  <a href="#research">research</a>
+  <a href="#earlier">earlier</a>
+  <a href="#stack">stack</a>
+  <a href="#contact">contact</a>
+</nav>
+
+<div class="shell">
+
+  <header class="masthead">
+    <b>Martin Mashalov</b>
+    <nav>
+      <a href="#work">Work</a>
+      <a href="#research">Research</a>
+      <a href="#stack">Stack</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero">
+    <p class="eyebrow">Machine learning engineer &nbsp;·&nbsp; Amsterdam &amp; New York</p>
+
+    <h1 class="decode">
+      <span class="ln">Martin</span>
+      <span class="ln">Mashalov</span>
+    </h1>
+
+    <p class="decode-meta" data-done="masked-diffusion decode &nbsp;·&nbsp; 12 steps &nbsp;·&nbsp; shuffled reveal order &nbsp;·&nbsp; the subject of my thesis"></p>
+
+    <p class="lede">
+      I train models and I keep them running. My thesis puts reinforcement learning on
+      <em>diffusion language models</em>; my day job is production AI systems — agent runtimes,
+      document extraction, and the unglamorous infrastructure underneath both.
+    </p>
+
+    <div class="readout">
+      <div><span class="n">PENDING</span><span class="k">concurrent agent runs held on one 1-vCPU box</span></div>
+      <div><span class="n">PENDING</span><span class="k">GAN objectives benchmarked against ground-truth mode coverage</span></div>
+      <div><span class="n">PENDING</span><span class="k">production systems shipped end to end</span></div>
+    </div>
+  </section>
+
+  <!-- ===================== WORK ===================== -->
+  <section class="band" id="work">
+    <div class="band-head">
+      <h2>Selected work</h2>
+      <span class="count">five projects</span>
+    </div>
+
+    <div class="work">
+
+      <article class="entry rv">
+        <div class="meta">2026<span class="status">open source</span></div>
+        <div>
+          <h3><a href="https://github.com/MartinMashalov/agent-fleet">agent-fleet</a></h3>
+          <p class="hook">Run thousands of concurrent LLM agent runs on a box that costs six dollars a month.</p>
+          <p class="desc">
+            Most agent frameworks give every agent its own thread or process and fall over somewhere
+            around fifty. But agent work is almost entirely spent waiting on a model API, so the right
+            shape is one asyncio supervisor with a bounded pool. The hard parts are the ones that show
+            up after that: a durable at-least-once queue with leases and idempotency keys so a
+            redelivered step is not executed twice, per-step checkpointing so a killed process resumes
+            mid-run instead of starting over, backpressure that never lets concurrency exceed its cap,
+            and a shared token bucket with circuit breakers so a thousand agents don't stampede one
+            provider. It ships with a deterministic mock model backend, so the benchmark reproduces
+            without an API key or a dollar of spend.
+          </p>
+          <div class="chips">
+            <span>Python</span><span>asyncio</span><span>Redis</span><span>SQLite</span>
+            <span>FastAPI</span><span>Prometheus</span><span>Docker</span>
+            <span>Terraform</span><span>Kubernetes</span><span>AWS</span><span>GCP</span>
+          </div>
+          <div class="links">
+            <a href="https://github.com/MartinMashalov/agent-fleet">Repository</a>
+            <a href="https://github.com/MartinMashalov/agent-fleet#benchmark">Benchmark method</a>
+          </div>
+        </div>
+        <div class="result">
+          <span class="n">PENDING_AF_N</span>
+          <span class="k">PENDING_AF_K</span>
+          <figure>
+            <img src="assets/agent-fleet-bench.svg" alt="Throughput and peak memory against concurrency" loading="lazy">
+            <figcaption>Throughput and peak RSS against concurrency, measured under container limits.</figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <article class="entry rv">
+        <div class="meta">2026<span class="status">open source</span></div>
+        <div>
+          <h3><a href="https://github.com/MartinMashalov/gan-lab">gan-lab</a></h3>
+          <p class="hook">GAN objectives are usually compared with cherry-picked samples. This compares them against ground truth.</p>
+          <p class="desc">
+            On a mixture of Gaussians the true modes are known exactly, which turns mode collapse from
+            something you eyeball into something you measure. Five objectives — non-saturating, LSGAN,
+            WGAN-GP, hinge with spectral normalisation, and R1 — implemented from scratch on a shared
+            trainer and run under identical budgets and seeds, then scored on mode coverage, the rate of
+            samples that land near any true mode, and Wasserstein distance, with error bars across
+            seeds. The metrics are unit-tested against inputs whose answers are known analytically, so
+            the measuring instrument is checked before anything is measured with it.
+          </p>
+          <div class="chips">
+            <span>PyTorch</span><span>NumPy</span><span>SciPy</span><span>matplotlib</span>
+            <span>pytest</span><span>ruff</span><span>GitHub Actions</span>
+          </div>
+          <div class="links">
+            <a href="https://github.com/MartinMashalov/gan-lab">Repository</a>
+            <a href="https://github.com/MartinMashalov/gan-lab#results">Results</a>
+          </div>
+        </div>
+        <div class="result">
+          <span class="n">PENDING_GL_N</span>
+          <span class="k">PENDING_GL_K</span>
+          <figure>
+            <img src="assets/gan-lab-modes.svg" alt="Mode coverage by training objective, with error bars across seeds" loading="lazy">
+            <figcaption>Mode coverage by objective, mean and spread across seeds.</figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <article class="entry rv" id="papyra">
+        <div class="meta">PENDING_SEN_YR<span class="status">production</span></div>
+        <div>
+          <h3>PENDING_SEN_NAME</h3>
+          <p class="hook">PENDING_SEN_HOOK</p>
+          <p class="desc">PENDING_SEN_DESC</p>
+          <div class="chips">PENDING_SEN_CHIPS</div>
+          <div class="links">PENDING_SEN_LINKS</div>
+        </div>
+        <div class="result">
+          <span class="n">PENDING_SEN_N</span>
+          <span class="k">PENDING_SEN_K</span>
+        </div>
+      </article>
+
+      <article class="entry rv" id="gridpull">
+        <div class="meta">PENDING_GP_YR<span class="status">production</span></div>
+        <div>
+          <h3>GridPull</h3>
+          <p class="hook">PENDING_GP_HOOK</p>
+          <p class="desc">PENDING_GP_DESC</p>
+          <div class="chips">PENDING_GP_CHIPS</div>
+          <div class="links">PENDING_GP_LINKS</div>
+        </div>
+        <div class="result">
+          <span class="n">PENDING_GP_N</span>
+          <span class="k">PENDING_GP_K</span>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ===================== RESEARCH ===================== -->
+  <section class="band" id="research">
+    <div class="band-head">
+      <h2>Research</h2>
+      <span class="count">MSc thesis</span>
+    </div>
+    <div class="research rv">
+      <div class="meta"></div>
+      <div class="body">
+        <h3>placeholder</h3>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== EARLIER ===================== -->
+  <section class="band" id="earlier">
+    <div class="band-head">
+      <h2>Earlier</h2>
+      <span class="count">selected</span>
+    </div>
+    <div class="list"></div>
+  </section>
+
+  <!-- ===================== STACK ===================== -->
+  <section class="band" id="stack">
+    <div class="band-head">
+      <h2>Stack</h2>
+      <span class="count">each line has a project behind it</span>
+    </div>
+    <div class="stack"></div>
+  </section>
+
+  <!-- ===================== CONTACT ===================== -->
+  <section class="contact" id="contact">
+    <h2>Let's talk</h2>
+    <div class="ways">
+      <a href="mailto:statsplay.us@gmail.com"><span class="k">Email</span><span class="v">statsplay.us@gmail.com</span></a>
+      <a href="https://github.com/MartinMashalov"><span class="k">GitHub</span><span class="v">github.com/MartinMashalov</span></a>
+      <a href="#"><span class="k">LinkedIn</span><span class="v">placeholder</span></a>
+    </div>
+    <div class="colophon">
+      <span>© 2026 Martin Mashalov</span>
+      <span>Set in Archivo, Instrument Sans &amp; IBM Plex Mono</span>
+      <span>Three static files, no framework</span>
+    </div>
+  </section>
+
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>

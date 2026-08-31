@@ -1,0 +1,700 @@
+/* ============================================================
+   Martin Mashalov — personal site
+   Direction: Dutch modernist construction grid (Crouwel / Total
+   Design lineage, a nod to the Amsterdam MSc) + a masked-diffusion
+   decode as the one signature moment.
+   No build step. No framework. Ships as three static files.
+   ============================================================ */
+
+:root {
+  /* --- ink & paper ------------------------------------------------ */
+  --paper:      #FFFFFF;
+  --wash:       #F1F2F4;   /* masked / unresolved state             */
+  --wash-2:     #E8EAED;
+  --ink:        #101114;
+  --ink-soft:   #6A6F78;
+  --grid:       #E6E8EC;   /* the drawn construction grid           */
+  --rule:       #D8DBE1;
+  --accent:     #FF3B00;   /* signal colour: fills, rules, blocks   */
+  --accent-text:#CF3000;   /* same signal, darkened for small text  */
+  --accent-ink: #FFFFFF;
+
+  /* --- type ------------------------------------------------------- */
+  --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --body:    "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono:    "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* --- metrics ---------------------------------------------------- */
+  --maxw: 1240px;
+  --gut: 28px;
+  --rail: 104px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:    #0B0C0E;
+    --wash:     #17191D;
+    --wash-2:   #202329;
+    --ink:      #F2F3F5;
+    --ink-soft: #949AA4;
+    --grid:     #23262C;
+    --rule:     #2A2E35;
+    --accent:   #FF4D19;
+    --accent-text:#FF6A3D;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.6;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+a { color: inherit; }
+
+::selection { background: var(--accent); color: var(--accent-ink); }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ============================================================
+   The construction grid — drawn, not implied.
+   ============================================================ */
+.gridlines {
+  position: fixed;
+  inset: 0 auto 0 50%;
+  transform: translateX(-50%);
+  width: min(100% - 2*var(--gut), var(--maxw));
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  pointer-events: none;
+  z-index: 0;
+}
+.gridlines i { border-left: 1px solid var(--grid); }
+.gridlines i:last-child { border-right: 1px solid var(--grid); }
+
+@media (max-width: 860px) {
+  .gridlines { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* ============================================================
+   Shell
+   ============================================================ */
+.shell {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 2*var(--gut), var(--maxw));
+  margin-inline: auto;
+}
+
+/* --- the left rail: section index + real scroll position --------- */
+.rail {
+  position: fixed;
+  top: 0; bottom: 0;
+  left: max(var(--gut), calc(50vw - var(--maxw)/2 - 72px));
+  width: 56px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  z-index: 5;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.rail a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1;
+  padding: 3px 0;
+  transition: color .18s ease;
+}
+.rail a::before {
+  content: "";
+  width: 14px; height: 1px;
+  background: var(--rule);
+  transition: width .18s ease, background .18s ease;
+}
+.rail a:hover { color: var(--ink); }
+.rail a[aria-current="true"] { color: var(--accent-text); }
+.rail a[aria-current="true"]::before { width: 26px; background: var(--accent); }
+
+@media (max-width: 1180px) { .rail { display: none; } }
+
+/* ============================================================
+   Masthead
+   ============================================================ */
+.masthead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 0 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.masthead b { color: var(--ink); font-weight: 500; }
+.masthead nav { display: flex; gap: 18px; }
+.masthead nav a { text-decoration: none; }
+.masthead nav a:hover { color: var(--accent-text); }
+@media (max-width: 620px) { .masthead nav { display: none; } }
+
+/* ============================================================
+   Hero — the masked-diffusion decode
+   ============================================================ */
+.hero { padding: clamp(56px, 12vh, 132px) 0 clamp(40px, 7vh, 82px); }
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 0 0 26px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.eyebrow::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+h1.decode {
+  font-family: var(--display);
+  font-weight: 800;
+  font-stretch: 112%;
+  font-size: clamp(46px, 10.5vw, 148px);
+  line-height: 0.88;
+  letter-spacing: -0.035em;
+  margin: 0;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+h1.decode .ln { display: block; }
+
+/* each glyph is a cell that resolves out of the mask */
+.gl {
+  display: inline-block;
+  position: relative;
+  transition: color .16s linear;
+}
+.gl[data-state="masked"] {
+  color: var(--wash-2);
+}
+.gl[data-state="revealed"] { color: var(--ink); }
+.gl.sp { width: 0.26em; }
+
+.decode-meta {
+  margin: 26px 0 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 16px;
+}
+.decode-meta .dot {
+  width: 6px; height: 6px;
+  background: var(--accent);
+  display: inline-block;
+}
+
+.lede {
+  margin: 34px 0 0;
+  max-width: 62ch;
+  font-size: clamp(18px, 2.1vw, 22px);
+  line-height: 1.5;
+  color: var(--ink);
+}
+.lede em { font-style: normal; color: var(--accent-text); }
+
+/* hero readout strip */
+.readout {
+  margin-top: clamp(38px, 6vh, 64px);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.readout div {
+  padding: 20px 22px 20px 0;
+  border-left: 1px solid var(--rule);
+  padding-left: 22px;
+}
+.readout div:first-child { border-left: 0; padding-left: 0; }
+.readout .n {
+  font-family: var(--display);
+  font-weight: 700;
+  font-stretch: 108%;
+  font-size: clamp(26px, 3.4vw, 40px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  display: block;
+  overflow-wrap: anywhere;
+}
+.readout .k {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  display: block;
+  margin-top: 10px;
+  line-height: 1.45;
+}
+@media (max-width: 720px) {
+  .readout { grid-template-columns: 1fr; }
+  .readout div { border-left: 0; padding-left: 0; border-top: 1px solid var(--rule); }
+  .readout div:first-child { border-top: 0; }
+}
+
+/* ============================================================
+   Sections
+   ============================================================ */
+.band { padding: clamp(56px, 9vh, 104px) 0 0; }
+
+.band-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 12px;
+  margin-bottom: 0;
+}
+.band-head h2 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-stretch: 108%;
+  font-size: clamp(20px, 2.4vw, 27px);
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.band-head .count {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+  margin-left: auto;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   Work entries — each project is a measured record, not a card.
+   ============================================================ */
+.work { border-bottom: 1px solid var(--rule); }
+
+.entry {
+  display: grid;
+  grid-template-columns: var(--rail) minmax(0, 1fr) minmax(0, 340px);
+  gap: 0 32px;
+  padding: 38px 0;
+  border-top: 1px solid var(--rule);
+  position: relative;
+}
+.work > .entry:first-child { border-top: 0; }
+
+.entry .meta {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  padding-top: 7px;
+}
+.entry .meta .status { color: var(--accent-text); display: block; }
+
+.entry h3 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-stretch: 106%;
+  font-size: clamp(24px, 3.1vw, 36px);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  margin: 0 0 4px;
+}
+.entry h3 a { text-decoration: none; }
+.entry h3 a:hover { color: var(--accent-text); }
+
+.entry .hook {
+  font-size: 17px;
+  color: var(--ink);
+  margin: 10px 0 0;
+  max-width: 56ch;
+}
+.entry .hook strong { font-weight: 600; }
+
+.entry p.desc {
+  margin: 14px 0 0;
+  color: var(--ink-soft);
+  font-size: 15.5px;
+  line-height: 1.62;
+  max-width: 62ch;
+}
+
+.chips {
+  margin: 18px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.chips span {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  color: var(--ink-soft);
+  border: 1px solid var(--rule);
+  padding: 3px 8px;
+  white-space: nowrap;
+}
+
+.links {
+  margin: 18px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.links a {
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 2px;
+  transition: background .15s ease, color .15s ease;
+}
+.links a:hover { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.links span.soon { color: var(--ink-soft); border-bottom: 1px dotted var(--rule); padding-bottom: 2px; }
+
+/* the pulled-out measured result */
+.result {
+  border-left: 1px solid var(--rule);
+  padding: 6px 0 6px 22px;
+  align-self: start;
+}
+.result .n {
+  font-family: var(--display);
+  font-weight: 700;
+  font-stretch: 104%;
+  font-size: clamp(30px, 3.8vw, 46px);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  display: block;
+  overflow-wrap: anywhere;
+}
+.result .n small { font-size: 0.44em; font-weight: 600; letter-spacing: 0; }
+.result .k {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  display: block;
+  margin-top: 12px;
+  line-height: 1.5;
+}
+.result figure { margin: 18px 0 0; }
+.result img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--rule);
+  background: var(--wash);
+}
+.result figcaption {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: var(--ink-soft);
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+@media (max-width: 1020px) {
+  .entry { grid-template-columns: 84px minmax(0, 1fr); }
+  .result {
+    grid-column: 1 / -1;
+    border-left: 0;
+    border-top: 1px solid var(--rule);
+    padding: 20px 0 0;
+    margin-top: 24px;
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+  }
+  .result .k { margin-top: 6px; }
+  .result figure { margin: 0; flex: 1; min-width: 0; }
+}
+@media (max-width: 620px) {
+  .entry { grid-template-columns: 1fr; gap: 12px; }
+  .entry .meta { padding-top: 0; }
+  .result { display: block; }
+  .result figure { margin-top: 18px; }
+}
+
+/* ============================================================
+   Research block
+   ============================================================ */
+.research {
+  display: grid;
+  grid-template-columns: var(--rail) minmax(0, 1fr);
+  gap: 0 32px;
+  padding: 38px 0 4px;
+}
+.research .body { max-width: 68ch; }
+.research h3 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-stretch: 106%;
+  font-size: clamp(23px, 2.9vw, 33px);
+  line-height: 1.06;
+  letter-spacing: -0.022em;
+  margin: 0;
+}
+.research .sub {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 12px 0 0;
+}
+.research p { margin: 16px 0 0; color: var(--ink-soft); font-size: 15.5px; line-height: 1.62; }
+.research p.plain { color: var(--ink); font-size: 17px; }
+
+.findings {
+  margin: 26px 0 0;
+  border-top: 1px solid var(--rule);
+}
+.findings div {
+  display: grid;
+  grid-template-columns: 132px 1fr;
+  gap: 20px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: baseline;
+}
+.findings b {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+  font-weight: 500;
+}
+.findings span { font-size: 15.5px; color: var(--ink); line-height: 1.55; }
+@media (max-width: 700px) {
+  .research { grid-template-columns: 1fr; }
+  .findings div { grid-template-columns: 1fr; gap: 4px; }
+}
+
+/* ============================================================
+   Compact list (earlier work)
+   ============================================================ */
+.list { border-top: 1px solid var(--rule); margin-top: 0; }
+.row {
+  display: grid;
+  grid-template-columns: var(--rail) minmax(0, 250px) minmax(0, 1fr);
+  gap: 0 32px;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--rule);
+  align-items: baseline;
+}
+.row .yr {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+.row .nm {
+  font-family: var(--display);
+  font-weight: 600;
+  font-stretch: 104%;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+}
+.row .ds { color: var(--ink-soft); font-size: 15px; line-height: 1.5; }
+.row .ds code {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--ink);
+  background: var(--wash);
+  padding: 1px 5px;
+}
+@media (max-width: 820px) {
+  .row { grid-template-columns: 74px 1fr; }
+  .row .ds { grid-column: 2; }
+}
+
+/* ============================================================
+   Stack — every claim tied to the thing that proves it
+   ============================================================ */
+.stack { border-top: 1px solid var(--rule); }
+.stack .grp {
+  display: grid;
+  grid-template-columns: var(--rail) minmax(0, 1fr);
+  gap: 0 32px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.stack h4 {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin: 2px 0 0;
+  font-weight: 500;
+}
+.stack ul { margin: 0; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 4px 0; }
+.stack li {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--ink);
+  padding-right: 14px;
+  margin-right: 14px;
+  border-right: 1px solid var(--rule);
+  line-height: 1.5;
+}
+.stack li:last-child { border-right: 0; }
+@media (max-width: 700px) { .stack .grp { grid-template-columns: 1fr; gap: 10px; } }
+
+/* ============================================================
+   Contact / colophon
+   ============================================================ */
+.contact { padding: clamp(64px, 11vh, 128px) 0 0; }
+.contact h2 {
+  font-family: var(--display);
+  font-weight: 800;
+  font-stretch: 112%;
+  font-size: clamp(38px, 8vw, 104px);
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.contact .ways {
+  margin-top: 34px;
+  border-top: 1px solid var(--ink);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+.contact .ways a {
+  padding: 22px 20px 22px 0;
+  border-left: 1px solid var(--rule);
+  padding-left: 20px;
+  text-decoration: none;
+  display: block;
+  transition: background .15s ease;
+}
+.contact .ways a:first-child { border-left: 0; padding-left: 0; }
+.contact .ways a:hover { background: var(--wash); }
+.contact .ways .k {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  display: block;
+}
+.contact .ways .v {
+  font-family: var(--display);
+  font-weight: 600;
+  font-stretch: 104%;
+  font-size: clamp(15px, 1.8vw, 19px);
+  letter-spacing: -0.012em;
+  display: block;
+  margin-top: 9px;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 760px) {
+  .contact .ways { grid-template-columns: 1fr; }
+  .contact .ways a { border-left: 0; padding-left: 0; border-top: 1px solid var(--rule); }
+  .contact .ways a:first-child { border-top: 0; }
+}
+
+.colophon {
+  margin-top: clamp(56px, 9vh, 96px);
+  padding: 18px 0 32px;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+/* ============================================================
+   Reveal on scroll — one quiet gesture, nothing more.
+   ============================================================ */
+html.js .rv { opacity: 0; transform: translateY(10px); }
+html.js .rv.in { opacity: 1; transform: none; transition: opacity .5s ease, transform .5s cubic-bezier(.22,.61,.36,1); }
+
+@media (prefers-reduced-motion: reduce) {
+  html.js .rv, html.js .rv.in { opacity: 1; transform: none; transition: none; }
+  .gl { transition: none; }
+}
+
+@media print {
+  .gridlines, .rail { display: none; }
+  body { font-size: 11pt; }
+}
+
+/* ============================================================
+   Masked-diffusion decode, refined.
+   A [MASK] token is drawn as a filled cell exactly the width of
+   the glyph beneath it, so nothing reflows as the line resolves.
+   ============================================================ */
+.gl { color: var(--ink); }
+.gl[data-state="masked"] { color: transparent; }
+.gl[data-state="masked"]::after {
+  content: "";
+  position: absolute;
+  left: 0.035em; right: 0.035em;
+  top: 0.13em; bottom: 0.14em;
+  background: var(--wash-2);
+}
+.gl[data-state="firing"] { color: var(--accent-ink); }
+.gl[data-state="firing"]::after {
+  content: "";
+  position: absolute;
+  left: 0.035em; right: 0.035em;
+  top: 0.13em; bottom: 0.14em;
+  background: var(--accent);
+  z-index: -1;
+}
+.gl.sp::after { display: none; }
