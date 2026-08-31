@@ -31,7 +31,7 @@
   "name": "Martin Mashalov",
   "url": "https://martinmashalov.com/",
   "jobTitle": "Machine Learning Engineer",
-  "email": "mailto:statsplay.us@gmail.com",
+  "email": "mailto:martin.mashalov@gmail.com",
   "sameAs": ["https://github.com/MartinMashalov"],
   "knowsAbout": [
     "Machine learning",
@@ -52,6 +52,7 @@
 <nav class="rail" aria-label="Section">
   <a href="#work">work</a>
   <a href="#research">research</a>
+  <a href="#experience">experience</a>
   <a href="#earlier">earlier</a>
   <a href="#stack">stack</a>
   <a href="#contact">contact</a>
@@ -64,6 +65,7 @@
     <nav>
       <a href="#work">Work</a>
       <a href="#research">Research</a>
+      <a href="#experience">Experience</a>
       <a href="#stack">Stack</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -71,7 +73,7 @@
 
   <!-- ===================== HERO ===================== -->
   <section class="hero">
-    <p class="eyebrow">Machine learning engineer</p>
+    <p class="eyebrow">Machine learning engineer &nbsp;·&nbsp; Amsterdam &amp; New York</p>
 
     <h1 class="decode">
       <span class="ln">Martin</span>
@@ -174,29 +176,33 @@
       <article class="entry rv" id="sen">
         <div class="meta">2026<span class="status">production</span></div>
         <div>
-          <h3>Sen</h3>
-          <p class="hook">A quiet operator for the browser: watch a person do the work once, then do it for them — and repair itself when the page changes.</p>
+          <h3>Sen &nbsp;<span class="alias">papyra.org</span></h3>
+          <p class="hook">An insurance agency describes a process in plain English. The system compiles it into a graph and then actually runs it — pausing for a human before anything leaves the building.</p>
           <p class="desc">
-            Sen records how a human moves through a web application, compiles the recording into a
-            section graph, and replays that graph as an automation. The interesting problem is not the
-            recording, it's the decay: selectors rot the moment someone ships a redesign. So a broken
-            xpath is handed to a language model for repair, and when the page has genuinely changed
-            rather than merely moved, a vision-language model looks at it and re-grounds the step.
-            Underneath: a FastAPI service, credential encryption at rest, OAuth and JWT, an async
-            SQLAlchemy store, and a React dashboard where a run is a graph you can watch execute.
-            I also wrote its canvas edge-routing engine, which routes connections around nodes rather
-            than through them.
+            A plain-English description becomes a visual node graph — triggers, tool steps, loops,
+            parallel branches, decisions, approval gates — and a durable engine executes that graph per
+            account, reaching into Gmail and Outlook, Drive, Box, SharePoint and Dropbox, and the
+            agency management system. The hard part is not the LLM; it is that a workflow which sends
+            real client email must never send twice and must never silently skip a step. So every state
+            transition goes through one chokepoint that enforces four invariants, each of which cites
+            the production run that motivated it; cross-process safety uses transaction-scoped Postgres
+            advisory locks with a compare-and-set relock, because PgBouncer's transaction pooling makes
+            session-scoped locks a trap; and email fan-out claims its recipient group before sending,
+            so redelivery cannot duplicate. I also wrote the canvas edge router — a visibility graph
+            with Dijkstra over inflated card corners, drawn as Catmull-Rom splines — which took
+            connection overlaps from eight to zero.
           </p>
           <div class="chips">
-            <span>Python</span><span>FastAPI</span><span>SQLAlchemy</span><span>Playwright</span>
-            <span>Vision-language models</span><span>React</span><span>TypeScript</span>
-            <span>Vite</span><span>Tailwind</span><span>OAuth</span><span>Fernet</span>
+            <span>Python</span><span>FastAPI</span><span>SQLAlchemy 2.0 async</span><span>PostgreSQL</span>
+            <span>PgBouncer</span><span>advisory locks</span><span>litellm</span><span>DSPy</span>
+            <span>React 18</span><span>TypeScript</span><span>React Flow</span><span>Playwright</span>
+            <span>Tauri</span><span>Chrome MV3</span><span>Stripe</span><span>nginx</span><span>systemd</span>
           </div>
           <div class="links"><span class="soon">Private — happy to walk through it</span></div>
         </div>
         <div class="result">
-          <span class="n">3,664</span>
-          <span class="k">commits, February to August 2026 — backend, browser runtime and dashboard, built solo</span>
+          <span class="n">9,900</span>
+          <span class="k">Python test functions and 248 browser specs, guarding 338 endpoints and a 64-tool agent registry. Roughly one line of test per line of application code.</span>
         </div>
       </article>
 
@@ -204,16 +210,20 @@
         <div class="meta">2026<span class="status">production</span></div>
         <div>
           <h3>GridPull</h3>
-          <p class="hook">A commercial-lines insurance SaaS, from raw filings to the call list a producer works on Monday morning.</p>
+          <p class="hook">Commercial insurance prospects built from public government filings — each one carrying a renewal date copied verbatim from a named source document.</p>
           <p class="desc">
-            Full stack, end to end: a FastAPI and Postgres backend behind PgBouncer, a React and
-            TypeScript front end, and a 150-worker asyncio pool that streams job progress to the browser
-            over server-sent events. Its first product was a document extraction engine, and that is the
-            part I'd point at — a two-pass PDF reader that scores its own output on field-fill,
-            numeric-parse and date-parse rates, so accuracy is a measured number rather than a
-            reassurance. Running against six families of real documents — invoices, SEC annual reports,
-            10-K filings, insurance EOBs, purchase orders — it fills 92% of expected fields with a 0%
-            error rate.
+            An insurance producer needs to call a business roughly ninety days before its policy
+            renews, and that date is buried in public filings. GridPull extracts it and cites where it
+            came from. Full stack and end to end: FastAPI and Postgres behind PgBouncer, a React and
+            TypeScript front end, a 150-worker asyncio pool streaming job progress over server-sent
+            events, and two separate database engines — a pooled one with prepared statements disabled,
+            and a NullPool engine that bypasses PgBouncer entirely because schema changes need session
+            semantics that transaction pooling cannot give you. The cross-sell engine is deliberately
+            deterministic with no model in the loop, because a coverage-gap recommendation has to be
+            explainable. The document extractor scores its own output on field-fill, numeric-parse and
+            date-parse rates, so accuracy is measured rather than asserted: across six families of real
+            documents — invoices, annual reports, 10-K filings, insurance EOBs, purchase orders — its
+            test suite reports 92% field fill at a 0% error rate.
           </p>
           <div class="chips">
             <span>Python</span><span>FastAPI</span><span>asyncio</span><span>SQLAlchemy</span>
@@ -234,24 +244,26 @@
           <h3>AgentAlpha</h3>
           <p class="hook">Agents driving legacy enterprise software that has no API, through the browser, in production.</p>
           <p class="desc">
-            Some of the systems a business depends on were built before anyone thought to expose an
-            endpoint. AgentAlpha drives them the way a person does — Playwright sessions against
-            management platforms, form filling, document generation — wrapped in the machinery that
-            makes that survivable: a continuous-drain worker loop with a dedicated pool per workload,
-            Redis-backed task state that degrades honestly when a key expires, progress reporting that
-            refuses to say "complete" while a step is still failing, and multi-provider LLM fallback
-            across three vendors so one outage doesn't stop the queue. Deployed with Docker Compose
-            behind nginx.
+            Some of the systems a business runs on were built before anyone thought to expose an
+            endpoint. AgentAlpha drives them the way a person does: an execution manager works from a
+            sitemap description of the target application and operates it through Playwright in the
+            browser and PyWinAuto on the Windows desktop, with subagents that read the screen to find
+            elements and a login manager that keeps sessions alive. Around that sits the machinery that
+            makes it survivable in production — a continuous-drain worker loop with a dedicated pool per
+            workload, Celery for background jobs, Redis task state that degrades honestly when a key
+            expires, progress reporting that refuses to say "complete" while a step is still failing,
+            per-run LLM cost accounting, and fallback across three model vendors so one outage doesn't
+            stop the queue.
           </p>
           <div class="chips">
-            <span>Python</span><span>Playwright</span><span>Redis</span><span>Docker</span>
-            <span>nginx</span><span>Multi-provider LLM fallback</span><span>Worker pools</span>
+            <span>Python</span><span>Playwright</span><span>PyWinAuto</span><span>Celery</span>
+            <span>Redis</span><span>Docker</span><span>nginx</span><span>Multi-provider LLM fallback</span><span>Cost accounting</span>
           </div>
           <div class="links"><span class="soon">Private — happy to walk through it</span></div>
         </div>
         <div class="result">
-          <span class="n">731</span>
-          <span class="k">commits over eleven months, running against live enterprise systems</span>
+          <span class="n">128k</span>
+          <span class="k">lines driving live enterprise systems — one of three engineers on it</span>
         </div>
       </article>
 
@@ -267,33 +279,50 @@
     <div class="research rv">
       <div class="meta"></div>
       <div class="body">
-        <h3>Reinforcement learning on diffusion language models</h3>
-        <p class="sub">MSc thesis, 2026 &nbsp;·&nbsp; trained on SURF Snellius (H100) and rented H200s</p>
+        <h3>Dense rewards and unmasking policies in diffusion language models</h3>
+        <p class="sub">MSc Econometrics, track Data Science &nbsp;·&nbsp; University of Amsterdam, July 2026 &nbsp;·&nbsp; trained on Snellius (SURF) H100s</p>
 
         <p class="plain">
-          Almost every language model you use writes left to right, one token at a time. Diffusion
-          language models don't. They start from a fully masked sequence and denoise all of it in
-          parallel over a fixed number of steps, which makes them far faster in principle — and which
-          breaks most of the reinforcement-learning machinery built for autoregressive models, because
-          there is no clean per-token likelihood to hang a policy gradient on.
+          Diffusion language models write text by repeatedly un-masking a sequence rather than left to
+          right. That gives them a choice an autoregressive model never faces: <em>which position to
+          reveal next</em>. So when you post-train one with reinforcement learning, there are two
+          things you could be changing — the model's weights, or its decoding order. My thesis asks
+          which, and finds that the answer is neither on its own.
         </p>
         <p>
-          My thesis asks whether GRPO — the reinforcement-learning algorithm behind the recent
-          reasoning models — can be made to work on this family, using LoRA adapters and a composite
-          reward, measured on GSM8K, HumanEval and MBPP.
-        </p>
-        <p>
-          The answer that survived the experiments was not the one I set out to find, and the
-          interesting part of the thesis is the diagnosis rather than the method.
+          A full factorial: four models (LLaDA-8B, Dream-7B, and two DiffuCoder-7B checkpoints) ×
+          two methods (LoRA diffu-GRPO on the weights, and a learned unmasking-order policy over frozen
+          weights) × two reward designs (binary pass/fail, and a partial-credit reward built from
+          test-pass fraction, AST similarity and syntax validity). Measured on HumanEval, MATH-500,
+          MBPP and GSM8K.
         </p>
 
         <div class="findings">
-          <div><b>The result</b><span>Every technique I tried made an already RL-tuned DiffuCoder <em>worse</em>, not better — consistently, across seeds and benchmarks.</span></div>
-          <div><b>The cause</b><span>Signal collapse. After coupled-GRPO post-training the model is saturated, so nearly every sampled group scores identically, the advantage term goes to zero, and the policy gradient has nothing left to push against.</span></div>
-          <div><b>The proof</b><span>Re-running on an Instruct checkpoint that had never been RL-saturated produced a training signal roughly 2.4× healthier, and the same techniques then behaved as intended — which rules out the methods themselves as the explanation.</span></div>
-          <div><b>Reported honestly</b><span>Every figure carries Wilson confidence intervals. A difference that does not clear them is not claimed as a difference.</span></div>
+          <div><b>The headline</b><span>Fitting the ordering policy and the weights <em>together</em> beats either alone. Dream's HumanEval pass@1 goes 38.4 → 46.7 with an order policy, → 43.3 if you carry a stale policy across, and → <strong>61.8 ±0.7</strong> when the policy is re-fitted on the merged model. On LLaDA it wins 6 of 6 paired seeds, +2.86pp pooled, p&nbsp;&lt;&nbsp;0.01, and halves seed variance.</span></div>
+          <div><b>An honest null</b><span>Partial-credit rewards make the training signal 2–7× denser and do <em>not</em>, by themselves, raise accuracy. Denser supervision turns out not to mean better supervision.</span></div>
+          <div><b>Where density pays</b><span>At the ordering stage instead: +8.5pp on HumanEval for Dream over a binary reward, and where the binary reward collapsed on one seed, partial credit stayed stable across all three.</span></div>
+          <div><b>Too trained to train</b><span>An already RL-tuned checkpoint resists every method. Its within-group reward spread is 0.07–0.16 against 0.20–0.41 for the others, leaving 11–15% effective GRPO groups and almost no advantage signal. The identical recipe on its supervised-only sibling gave 2.4× the reward spread and 2.6× the effective groups — which implicates the earlier RL stage, not the architecture.</span></div>
+          <div><b>Reported honestly</b><span>Wilson intervals on every figure, generated from one matrix file that is the single source of truth. Single-seed cells are labelled exploratory rather than quoted as results. I also found and fixed a scorer bug in the baseline that counted any parseable code as a pass.</span></div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ===================== EXPERIENCE ===================== -->
+  <section class="band" id="experience">
+    <div class="band-head">
+      <h2>Experience</h2>
+      <span class="count">and where I studied</span>
+    </div>
+    <div class="list">
+      <div class="row rv"><span class="yr">2026 &ndash;</span><span class="nm">Founder &amp; Software Engineer</span><span class="ds">GridPull &mdash; Amsterdam. Building and selling the product end to end.</span></div>
+      <div class="row rv"><span class="yr">2025 &ndash;</span><span class="nm">Technical Co-Founder</span><span class="ds">Papyra AI, partnered with Vertafore. Workflow automation for insurance agencies; I own the engine and the platform.</span></div>
+      <div class="row rv"><span class="yr">2025</span><span class="nm">AI Research Assistant</span><span class="ds">VU Amsterdam, Faculty of Computer Science. Language models for multi-agent control.</span></div>
+      <div class="row rv"><span class="yr">2025</span><span class="nm">Software Engineer</span><span class="ds">Marubeni American Corporation &mdash; freelance. Internal tooling and disaster-recovery work.</span></div>
+      <div class="row rv"><span class="yr">2024 &ndash; 25</span><span class="nm">Quantitative Modelling Intern</span><span class="ds">ABN AMRO Bank. Data and quantitative model development.</span></div>
+      <div class="row rv"><span class="yr">2021 &ndash; 23</span><span class="nm">Software Engineer</span><span class="ds">Peek Real Estate. Built and ran the geocoding service listed below.</span></div>
+      <div class="row rv"><span class="yr">2026</span><span class="nm">MSc Econometrics</span><span class="ds">University of Amsterdam &mdash; track: Data Science. Thesis above.</span></div>
+      <div class="row rv"><span class="yr">2025</span><span class="nm">BSc Econometrics &amp; Data Science</span><span class="ds">University of Amsterdam. Thesis on Taylor-rule central-bank rates inside an agent-based macro model, on Eurozone data: up to <strong>36.6%</strong> lower RMSE than an AR(1) baseline and <strong>30.5%</strong> than VAR(1).</span></div>
     </div>
   </section>
 
@@ -350,7 +379,7 @@
   <section class="contact" id="contact">
     <h2>Let's talk</h2>
     <div class="ways">
-      <a href="mailto:statsplay.us@gmail.com"><span class="k">Email</span><span class="v">statsplay.us@gmail.com</span></a>
+      <a href="mailto:martin.mashalov@gmail.com"><span class="k">Email</span><span class="v">martin.mashalov@gmail.com</span></a>
       <a href="https://github.com/MartinMashalov"><span class="k">GitHub</span><span class="v">github.com/MartinMashalov</span></a>
       <div><span class="k">Open to</span><span class="v">ML&nbsp;engineering, AI&nbsp;infrastructure &amp; agent&nbsp;systems roles</span></div>
     </div>
