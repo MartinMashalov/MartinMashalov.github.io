@@ -91,7 +91,7 @@
     <div class="readout">
       <div><span class="n">PENDING</span><span class="k">concurrent agent runs held on one 1-vCPU box</span></div>
       <div><span class="n">PENDING</span><span class="k">GAN objectives benchmarked against ground-truth mode coverage</span></div>
-      <div><span class="n">PENDING</span><span class="k">production systems shipped end to end</span></div>
+      <div><span class="n">+23.4<small>pp</small></span><span class="k">HumanEval pass@1 gained by co-adapting a diffusion model’s weights and its decoding order &mdash; 38.4 to 61.8, MSc thesis</span></div>
     </div>
   </section>
 
@@ -144,19 +144,24 @@
         <div class="meta">2026<span class="status">open source</span></div>
         <div>
           <h3><a href="https://github.com/MartinMashalov/gan-lab">gan-lab</a></h3>
-          <p class="hook">GAN objectives are usually compared with cherry-picked samples. This compares them against ground truth.</p>
+          <p class="hook">GAN objectives are usually compared with cherry-picked samples. This one scores them against ground truth — twice, on two kinds of data.</p>
           <p class="desc">
-            On a mixture of Gaussians the true modes are known exactly, which turns mode collapse from
-            something you eyeball into something you measure. Five objectives — non-saturating, LSGAN,
-            WGAN-GP, hinge with spectral normalisation, and R1 — implemented from scratch on a shared
-            trainer and run under identical budgets and seeds, then scored on mode coverage, the rate of
-            samples that land near any true mode, and Wasserstein distance, with error bars across
-            seeds. The metrics are unit-tested against inputs whose answers are known analytically, so
-            the measuring instrument is checked before anything is measured with it.
+            Two testbeds, chosen because both have ground truth and neither needs a human to decide
+            whether a sample "looks right." First a mixture of Gaussians, where the true modes are known
+            exactly — that arm exists to validate the instrument, since a metric should be checked on
+            data whose answer you already know. Then seventeen years of real intraday equity bars, where
+            the <em>stylized facts</em> of financial returns are known and universal: fat tails, slowly
+            decaying autocorrelation in absolute returns, near-zero autocorrelation in raw returns, the
+            leverage effect, and kurtosis that falls under aggregation. Each becomes a number, estimated
+            with a Hill tail index, ACF decay exponents and earth-mover distance. Crucially, every fact
+            is first measured block-to-block on held-out <em>real</em> data, so a generator's deviation is
+            judged against how much that statistic naturally moves — not against a point estimate.
+            Five objectives — non-saturating, LSGAN, WGAN-GP, hinge with spectral normalisation and R1 —
+            share one trainer, one budget and one set of seeds, over dilated causal convolutions.
           </p>
           <div class="chips">
-            <span>PyTorch</span><span>NumPy</span><span>SciPy</span><span>matplotlib</span>
-            <span>pytest</span><span>ruff</span><span>GitHub Actions</span>
+            <span>PyTorch</span><span>dilated causal convolutions</span><span>spectral norm</span><span>NumPy</span>
+            <span>SciPy</span><span>matplotlib</span><span>pytest</span><span>ruff</span><span>GitHub Actions</span>
           </div>
           <div class="links">
             <a href="https://github.com/MartinMashalov/gan-lab">Repository</a>
@@ -168,7 +173,7 @@
           <span class="k">PENDING_GL_K</span>
           <figure>
             <img src="assets/gan-lab-modes.svg" alt="Mode coverage by training objective, with error bars across seeds" loading="lazy">
-            <figcaption>Mode coverage by objective, mean and spread across seeds.</figcaption>
+            <figcaption>Stylized-facts scorecard: each objective against real market data.</figcaption>
           </figure>
         </div>
       </article>

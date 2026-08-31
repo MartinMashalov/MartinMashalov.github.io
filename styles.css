@@ -739,3 +739,5 @@ html.js .rv.in { opacity: 1; transform: none; transition: opacity .5s ease, tran
   text-transform: uppercase;
   color: var(--ink-soft);
 }
+
+.readout .n small { font-size: 0.46em; font-weight: 600; letter-spacing: 0; }
