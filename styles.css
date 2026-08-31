@@ -715,3 +715,6 @@ html.js .rv.in { opacity: 1; transform: none; transition: opacity .5s ease, tran
 @media (max-width: 760px) {
   .contact .ways > div { border-left: 0; padding-left: 0; border-top: 1px solid var(--rule); }
 }
+
+.row .nm a { text-decoration: none; border-bottom: 1px solid var(--accent); padding-bottom: 1px; }
+.row .nm a:hover { background: var(--accent); color: var(--accent-ink); }
