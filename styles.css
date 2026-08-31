@@ -165,7 +165,7 @@ a { color: inherit; }
 /* ============================================================
    Hero — the masked-diffusion decode
    ============================================================ */
-.hero { padding: clamp(56px, 12vh, 132px) 0 clamp(40px, 7vh, 82px); }
+.hero { padding: clamp(40px, 8vh, 84px) 0 clamp(36px, 6vh, 70px); }
 
 .eyebrow {
   font-family: var(--mono);
@@ -173,7 +173,7 @@ a { color: inherit; }
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink-soft);
-  margin: 0 0 26px;
+  margin: 0 0 18px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -189,9 +189,9 @@ h1.decode {
   font-family: var(--display);
   font-weight: 800;
   font-stretch: 112%;
-  font-size: clamp(46px, 10.5vw, 148px);
-  line-height: 0.88;
-  letter-spacing: -0.035em;
+  font-size: clamp(30px, 4.4vw, 58px);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
   margin: 0;
   text-transform: uppercase;
   overflow-wrap: anywhere;
@@ -239,7 +239,7 @@ h1.decode .ln { display: block; }
 
 /* hero readout strip */
 .readout {
-  margin-top: clamp(38px, 6vh, 64px);
+  margin-top: clamp(30px, 4vh, 46px);
   border-top: 1px solid var(--rule);
   border-bottom: 1px solid var(--rule);
   display: grid;
@@ -748,10 +748,10 @@ html.js .rv.in { opacity: 1; transform: none; transition: opacity .5s ease, tran
    Hero portrait — sized to the grid, not floated decoration.
    ============================================================ */
 .hero-lower {
-  margin: 34px 0 0;
+  margin: 26px 0 0;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 224px;
-  gap: 44px;
+  grid-template-columns: minmax(0, 1fr) 176px;
+  gap: 40px;
   align-items: start;
 }
 .hero-lower .lede { margin: 0; }
