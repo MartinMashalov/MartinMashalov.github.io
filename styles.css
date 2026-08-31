@@ -698,3 +698,20 @@ html.js .rv.in { opacity: 1; transform: none; transition: opacity .5s ease, tran
   z-index: -1;
 }
 .gl.sp::after { display: none; }
+
+.stack h4 span {
+  display: block;
+  color: var(--accent-text);
+  letter-spacing: 0.05em;
+  text-transform: none;
+  margin-top: 5px;
+  font-size: 10px;
+}
+
+.contact .ways > div {
+  padding: 22px 20px 22px 20px;
+  border-left: 1px solid var(--rule);
+}
+@media (max-width: 760px) {
+  .contact .ways > div { border-left: 0; padding-left: 0; border-top: 1px solid var(--rule); }
+}

@@ -71,7 +71,7 @@
 
   <!-- ===================== HERO ===================== -->
   <section class="hero">
-    <p class="eyebrow">Machine learning engineer &nbsp;·&nbsp; Amsterdam &amp; New York</p>
+    <p class="eyebrow">Machine learning engineer</p>
 
     <h1 class="decode">
       <span class="ln">Martin</span>
@@ -171,33 +171,87 @@
         </div>
       </article>
 
-      <article class="entry rv" id="papyra">
-        <div class="meta">PENDING_SEN_YR<span class="status">production</span></div>
+      <article class="entry rv" id="sen">
+        <div class="meta">2026<span class="status">production</span></div>
         <div>
-          <h3>PENDING_SEN_NAME</h3>
-          <p class="hook">PENDING_SEN_HOOK</p>
-          <p class="desc">PENDING_SEN_DESC</p>
-          <div class="chips">PENDING_SEN_CHIPS</div>
-          <div class="links">PENDING_SEN_LINKS</div>
+          <h3>Sen</h3>
+          <p class="hook">A quiet operator for the browser: watch a person do the work once, then do it for them — and repair itself when the page changes.</p>
+          <p class="desc">
+            Sen records how a human moves through a web application, compiles the recording into a
+            section graph, and replays that graph as an automation. The interesting problem is not the
+            recording, it's the decay: selectors rot the moment someone ships a redesign. So a broken
+            xpath is handed to a language model for repair, and when the page has genuinely changed
+            rather than merely moved, a vision-language model looks at it and re-grounds the step.
+            Underneath: a FastAPI service, credential encryption at rest, OAuth and JWT, an async
+            SQLAlchemy store, and a React dashboard where a run is a graph you can watch execute.
+            I also wrote its canvas edge-routing engine, which routes connections around nodes rather
+            than through them.
+          </p>
+          <div class="chips">
+            <span>Python</span><span>FastAPI</span><span>SQLAlchemy</span><span>Playwright</span>
+            <span>Vision-language models</span><span>React</span><span>TypeScript</span>
+            <span>Vite</span><span>Tailwind</span><span>OAuth</span><span>Fernet</span>
+          </div>
+          <div class="links"><span class="soon">Private — happy to walk through it</span></div>
         </div>
         <div class="result">
-          <span class="n">PENDING_SEN_N</span>
-          <span class="k">PENDING_SEN_K</span>
+          <span class="n">3,664</span>
+          <span class="k">commits, February to August 2026 — backend, browser runtime and dashboard, built solo</span>
         </div>
       </article>
 
       <article class="entry rv" id="gridpull">
-        <div class="meta">PENDING_GP_YR<span class="status">production</span></div>
+        <div class="meta">2026<span class="status">production</span></div>
         <div>
           <h3>GridPull</h3>
-          <p class="hook">PENDING_GP_HOOK</p>
-          <p class="desc">PENDING_GP_DESC</p>
-          <div class="chips">PENDING_GP_CHIPS</div>
-          <div class="links">PENDING_GP_LINKS</div>
+          <p class="hook">A commercial-lines insurance SaaS, from raw filings to the call list a producer works on Monday morning.</p>
+          <p class="desc">
+            Full stack, end to end: a FastAPI and Postgres backend behind PgBouncer, a React and
+            TypeScript front end, and a 150-worker asyncio pool that streams job progress to the browser
+            over server-sent events. Its first product was a document extraction engine, and that is the
+            part I'd point at — a two-pass PDF reader that scores its own output on field-fill,
+            numeric-parse and date-parse rates, so accuracy is a measured number rather than a
+            reassurance. Running against six families of real documents — invoices, SEC annual reports,
+            10-K filings, insurance EOBs, purchase orders — it fills 92% of expected fields with a 0%
+            error rate.
+          </p>
+          <div class="chips">
+            <span>Python</span><span>FastAPI</span><span>asyncio</span><span>SQLAlchemy</span>
+            <span>asyncpg</span><span>PostgreSQL</span><span>PgBouncer</span><span>SSE</span>
+            <span>React 18</span><span>TypeScript</span><span>Tailwind</span>
+          </div>
+          <div class="links"><span class="soon">Private — happy to walk through it</span></div>
         </div>
         <div class="result">
-          <span class="n">PENDING_GP_N</span>
-          <span class="k">PENDING_GP_K</span>
+          <span class="n">92<small>%</small></span>
+          <span class="k">field-fill rate across six document families, at a 0% error rate — measured, not estimated</span>
+        </div>
+      </article>
+
+      <article class="entry rv" id="agentalpha">
+        <div class="meta">2025 &ndash; 2026<span class="status">production</span></div>
+        <div>
+          <h3>AgentAlpha</h3>
+          <p class="hook">Agents driving legacy enterprise software that has no API, through the browser, in production.</p>
+          <p class="desc">
+            Some of the systems a business depends on were built before anyone thought to expose an
+            endpoint. AgentAlpha drives them the way a person does — Playwright sessions against
+            management platforms, form filling, document generation — wrapped in the machinery that
+            makes that survivable: a continuous-drain worker loop with a dedicated pool per workload,
+            Redis-backed task state that degrades honestly when a key expires, progress reporting that
+            refuses to say "complete" while a step is still failing, and multi-provider LLM fallback
+            across three vendors so one outage doesn't stop the queue. Deployed with Docker Compose
+            behind nginx.
+          </p>
+          <div class="chips">
+            <span>Python</span><span>Playwright</span><span>Redis</span><span>Docker</span>
+            <span>nginx</span><span>Multi-provider LLM fallback</span><span>Worker pools</span>
+          </div>
+          <div class="links"><span class="soon">Private — happy to walk through it</span></div>
+        </div>
+        <div class="result">
+          <span class="n">731</span>
+          <span class="k">commits over eleven months, running against live enterprise systems</span>
         </div>
       </article>
 
@@ -214,7 +268,7 @@
       <div class="meta"></div>
       <div class="body">
         <h3>Reinforcement learning on diffusion language models</h3>
-        <p class="sub">MSc thesis &nbsp;·&nbsp; VERIFY_INSTITUTION &nbsp;·&nbsp; trained on SURF Snellius (H100) and rented H200s</p>
+        <p class="sub">MSc thesis, 2026 &nbsp;·&nbsp; trained on SURF Snellius (H100) and rented H200s</p>
 
         <p class="plain">
           Almost every language model you use writes left to right, one token at a time. Diffusion
@@ -236,7 +290,7 @@
         <div class="findings">
           <div><b>The result</b><span>Every technique I tried made an already RL-tuned DiffuCoder <em>worse</em>, not better — consistently, across seeds and benchmarks.</span></div>
           <div><b>The cause</b><span>Signal collapse. After coupled-GRPO post-training the model is saturated, so nearly every sampled group scores identically, the advantage term goes to zero, and the policy gradient has nothing left to push against.</span></div>
-          <div><b>The proof</b><span>Re-running on an Instruct checkpoint that had never been RL-saturated produced a training signal VERIFY_2_4× healthier, and the same techniques then behaved as intended — which rules out the methods themselves as the explanation.</span></div>
+          <div><b>The proof</b><span>Re-running on an Instruct checkpoint that had never been RL-saturated produced a training signal roughly 2.4× healthier, and the same techniques then behaved as intended — which rules out the methods themselves as the explanation.</span></div>
           <div><b>Reported honestly</b><span>Every figure carries Wilson confidence intervals. A difference that does not clear them is not claimed as a difference.</span></div>
         </div>
       </div>
@@ -249,16 +303,46 @@
       <h2>Earlier</h2>
       <span class="count">selected</span>
     </div>
-    <div class="list"></div>
+    <div class="list">
+      <div class="row rv"><span class="yr">2024</span><span class="nm">Jarvis</span><span class="ds">An LLM application for question-answering and analysis over business documents — LangChain workflows over <code>Vertex AI</code> and <code>OpenAI</code> backends, a deployed inference layer, and its own front end.</span></div>
+      <div class="row rv"><span class="yr">2022</span><span class="nm">BisonQ</span><span class="ds">A quantitative research framework: market-data ingestion on daily and intraday intervals, signal processors, strategy definitions and parameter optimisers, packaged as a library.</span></div>
+      <div class="row rv"><span class="yr">2022</span><span class="nm">BisonBacktester</span><span class="ds">S&amp;P 500 direction forecasting with <code>SARIMAX</code> and technical indicators, scored on out-of-sample directional accuracy rather than in-sample fit.</span></div>
+      <div class="row rv"><span class="yr">2021</span><span class="nm">CharacterBERT</span><span class="ds">Experiments with tokeniser-free, character-level language modelling — the first time I went below the token boundary, and useful context for the diffusion work later.</span></div>
+    </div>
   </section>
 
   <!-- ===================== STACK ===================== -->
   <section class="band" id="stack">
     <div class="band-head">
       <h2>Stack</h2>
-      <span class="count">each line has a project behind it</span>
+      <span class="count">every line names the project behind it</span>
     </div>
-    <div class="stack"></div>
+    <div class="stack">
+      <div class="grp rv">
+        <h4>Machine learning<span>gan-lab, thesis</span></h4>
+        <ul><li>PyTorch</li><li>NumPy</li><li>SciPy</li><li>pandas</li><li>matplotlib</li><li>LoRA / PEFT</li><li>GRPO</li><li>Hugging Face</li></ul>
+      </div>
+      <div class="grp rv">
+        <h4>Agents &amp; LLMs<span>agent-fleet, Sen, AgentAlpha</span></h4>
+        <ul><li>Anthropic API</li><li>tool use</li><li>multi-provider fallback</li><li>Playwright</li><li>vision-language grounding</li><li>LangChain</li></ul>
+      </div>
+      <div class="grp rv">
+        <h4>Backend<span>GridPull, Sen, agent-fleet</span></h4>
+        <ul><li>Python</li><li>FastAPI</li><li>asyncio</li><li>SQLAlchemy</li><li>asyncpg</li><li>PostgreSQL</li><li>PgBouncer</li><li>Redis</li><li>SQLite</li><li>server-sent events</li></ul>
+      </div>
+      <div class="grp rv">
+        <h4>Front end<span>GridPull, Sen</span></h4>
+        <ul><li>TypeScript</li><li>React</li><li>Vite</li><li>Tailwind</li></ul>
+      </div>
+      <div class="grp rv">
+        <h4>Infrastructure<span>agent-fleet, AgentAlpha</span></h4>
+        <ul><li>Docker</li><li>Terraform</li><li>Kubernetes</li><li>AWS</li><li>GCP</li><li>nginx</li><li>systemd</li><li>Prometheus</li><li>GitHub Actions</li></ul>
+      </div>
+      <div class="grp rv">
+        <h4>Research computing<span>thesis</span></h4>
+        <ul><li>SLURM</li><li>SURF Snellius (H100)</li><li>rented H200s</li><li>multi-seed experiment harnesses</li><li>Wilson intervals</li></ul>
+      </div>
+    </div>
   </section>
 
   <!-- ===================== CONTACT ===================== -->
@@ -267,7 +351,7 @@
     <div class="ways">
       <a href="mailto:statsplay.us@gmail.com"><span class="k">Email</span><span class="v">statsplay.us@gmail.com</span></a>
       <a href="https://github.com/MartinMashalov"><span class="k">GitHub</span><span class="v">github.com/MartinMashalov</span></a>
-      <a href="#"><span class="k">LinkedIn</span><span class="v">placeholder</span></a>
+      <div><span class="k">Open to</span><span class="v">ML&nbsp;engineering, AI&nbsp;infrastructure &amp; agent&nbsp;systems roles</span></div>
     </div>
     <div class="colophon">
       <span>© 2026 Martin Mashalov</span>
