@@ -97,8 +97,8 @@
     </div>
 
     <div class="readout">
-      <div><span class="n">PENDING</span><span class="k">concurrent agent runs held on one 1-vCPU box</span></div>
-      <div><span class="n">PENDING</span><span class="k">GAN objectives benchmarked against ground-truth mode coverage</span></div>
+      <div><span class="n">500<small>/500</small></span><span class="k">agent runs that still finished after the process was SIGKILLed mid-flight &mdash; zero lost, zero duplicated, on a 1-vCPU 1&nbsp;GB container</span></div>
+      <div><span class="n">4</span><span class="k">independent tests every generator has to pass &mdash; known modes, stylized facts, discriminability, downstream usefulness</span></div>
       <div><span class="n">+23.4<small>pp</small></span><span class="k">HumanEval pass@1 gained by co-adapting a diffusion model’s weights and its decoding order &mdash; 38.4 to 61.8, MSc thesis</span></div>
     </div>
   </section>
@@ -139,11 +139,11 @@
           </div>
         </div>
         <div class="result">
-          <span class="n">PENDING_AF_N</span>
-          <span class="k">PENDING_AF_K</span>
+          <span class="n">0</span>
+          <span class="k">runs lost and zero duplicated when the process is killed mid-flight. The thread-per-agent baseline cannot resume at all: re-run and you pay 208 runs twice, don’t and you lose 292.</span>
           <figure>
-            <img src="assets/agent-fleet-bench.svg" alt="Throughput and peak memory against concurrency" loading="lazy">
-            <figcaption>Throughput and peak RSS against concurrency, measured under container limits.</figcaption>
+            <img src="assets/agent-fleet-bench.png" alt="Throughput and peak memory against concurrency" loading="lazy">
+            <figcaption>500 runs, SIGKILL at 40% complete, then restart. Measured under <code>--cpus=1 --memory=1g</code>.</figcaption>
           </figure>
         </div>
       </article>
@@ -177,11 +177,11 @@
           </div>
         </div>
         <div class="result">
-          <span class="n">PENDING_GL_N</span>
-          <span class="k">PENDING_GL_K</span>
+          <span class="n">R1</span>
+          <span class="k">the only objective that recovered every mode of the 8-mode mixture on every seed. Spectral-norm hinge recovered almost none.</span>
           <figure>
-            <img src="assets/gan-lab-modes.svg" alt="Mode coverage by training objective, with error bars across seeds" loading="lazy">
-            <figcaption>Stylized-facts scorecard: each objective against real market data.</figcaption>
+            <img src="assets/gan-lab-modes.png" alt="Mode coverage by training objective, with error bars across seeds" loading="lazy">
+            <figcaption>The instrument check: modes recovered on mixtures whose modes are known exactly. Bars are means over three seeds, whiskers ±1 s.d.</figcaption>
           </figure>
         </div>
       </article>
