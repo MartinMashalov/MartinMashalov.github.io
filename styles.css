@@ -729,3 +729,13 @@ html.js .rv.in { opacity: 1; transform: none; transition: opacity .5s ease, tran
   text-transform: lowercase;
   vertical-align: middle;
 }
+
+.row.divider { padding: 26px 0 10px; border-bottom: 1px solid var(--ink); }
+.row.divider .nm {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
