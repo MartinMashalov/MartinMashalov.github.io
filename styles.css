@@ -13,7 +13,7 @@
   --wash-2:     #E8EAED;
   --ink:        #101114;
   --ink-soft:   #6A6F78;
-  --grid:       #E6E8EC;   /* the drawn construction grid           */
+  --grid:       #F2F3F5;   /* the construction grid, barely there   */
   --rule:       #D8DBE1;
   --accent:     #FF3B00;   /* signal colour: fills, rules, blocks   */
   --accent-text:#CF3000;   /* same signal, darkened for small text  */
@@ -37,7 +37,7 @@
     --wash-2:   #202329;
     --ink:      #F2F3F5;
     --ink-soft: #949AA4;
-    --grid:     #23262C;
+    --grid:     #16181C;
     --rule:     #2A2E35;
     --accent:   #FF4D19;
     --accent-text:#FF6A3D;
@@ -317,7 +317,7 @@ h1.decode .ln { display: block; }
   display: grid;
   grid-template-columns: var(--rail) minmax(0, 1fr) minmax(0, 340px);
   gap: 0 32px;
-  padding: 38px 0;
+  padding: 56px 0;
   border-top: 1px solid var(--rule);
   position: relative;
 }
@@ -443,18 +443,18 @@ h1.decode .ln { display: block; }
 
 @media (max-width: 1020px) {
   .entry { grid-template-columns: 84px minmax(0, 1fr); }
+  /* Below this the three-across result row cannot hold a figure without
+     starving it, so the figure stacks under the text instead. */
   .result {
     grid-column: 1 / -1;
     border-left: 0;
     border-top: 1px solid var(--rule);
     padding: 20px 0 0;
     margin-top: 24px;
-    display: flex;
-    gap: 24px;
-    align-items: flex-start;
+    display: block;
   }
-  .result .k { margin-top: 6px; }
-  .result figure { margin: 0; flex: 1; min-width: 0; }
+  .result .k { margin-top: 10px; max-width: 62ch; }
+  .result figure { margin: 20px 0 0; max-width: 460px; }
 }
 @media (max-width: 620px) {
   .entry { grid-template-columns: 1fr; gap: 12px; }
@@ -783,4 +783,10 @@ html.js .rv.in { opacity: 1; transform: none; transition: opacity .5s ease, tran
 @media (max-width: 860px) {
   .hero-lower { grid-template-columns: 1fr; gap: 28px; }
   .portrait { max-width: 168px; }
+}
+
+/* Inline code must never be the thing that widens the page. */
+code {
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }

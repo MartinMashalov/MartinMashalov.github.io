@@ -92,7 +92,7 @@
       <figure class="portrait">
         <img src="assets/portrait.jpg" srcset="assets/portrait.jpg 1x, assets/portrait@2x.jpg 2x"
              width="280" height="280" alt="Martin Mashalov" loading="eager" decoding="async">
-        <figcaption>Amsterdam</figcaption>
+        <figcaption>New York &amp; Amsterdam</figcaption>
       </figure>
     </div>
 
@@ -107,10 +107,108 @@
   <section class="band" id="work">
     <div class="band-head">
       <h2>Selected work</h2>
-      <span class="count">five projects</span>
+      <span class="count">seven, most recent first</span>
     </div>
 
     <div class="work">
+
+      <article class="entry rv" id="sen">
+        <div class="meta">2026<span class="status">production</span></div>
+        <div>
+          <h3>Sen &nbsp;<span class="alias">papyra.org</span></h3>
+          <p class="hook">Agentic infrastructure for real businesses. Describe a process in plain English; get a workflow you can see, edit and run — with a person approving anything that leaves the building.</p>
+          <p class="desc">
+            The description compiles into a visual node graph — triggers, tool steps, branches,
+            approval gates — and a durable engine runs it per account across email, cloud storage and
+            the agency management system, through a registry of 64 tools. The hard part isn’t the
+            model. A workflow that sends real client mail must never send twice and never silently
+            skip a step, so every state transition passes one chokepoint enforcing four invariants,
+            each citing the production run that motivated it.
+          </p>
+          <div class="chips">
+            <span>FastAPI</span><span>PostgreSQL</span><span>advisory locks</span>
+            <span>React</span><span>litellm</span><span>Playwright</span>
+          </div>
+          <div class="links"><span class="soon">Private — happy to walk through it</span></div>
+        </div>
+        <div class="result">
+          <span class="n">64</span>
+          <span class="k">tools in the agent registry, behind 338 endpoints and roughly one line of test per line of application code</span>
+        </div>
+      </article>
+
+      <article class="entry rv" id="research">
+        <div class="meta">2026<span class="status">MSc thesis</span></div>
+        <div>
+          <h3>Reinforcement learning on diffusion language models</h3>
+          <p class="hook">Should post-training change a model’s weights, or the order it writes in? The answer turned out to be neither on its own.</p>
+          <p class="desc">
+            Diffusion language models un-mask a sequence instead of writing left to right, so they face
+            a choice autoregressive models never do: which position to reveal next. I ran a factorial
+            over four models, two methods and two reward designs on HumanEval, MATH-500, MBPP and
+            GSM8K. Re-fitting the ordering policy <em>on the merged weights</em> beat either method
+            alone — and a checkpoint that had already been RL-tuned resisted everything, because its
+            advantage signal had collapsed to nearly zero.
+          </p>
+          <div class="chips">
+            <span>PyTorch</span><span>GRPO</span><span>LoRA</span>
+            <span>SLURM</span><span>H100</span><span>Wilson intervals</span>
+          </div>
+          <div class="links"><a href="#research-detail">Full findings</a></div>
+        </div>
+        <div class="result">
+          <span class="n">61.8</span>
+          <span class="k">HumanEval pass@1, up from 38.4 — winning 6 of 6 paired seeds at p&nbsp;&lt;&nbsp;0.01. University of Amsterdam, July 2026.</span>
+        </div>
+      </article>
+
+      <article class="entry rv" id="gridpull">
+        <div class="meta">2026<span class="status">production</span></div>
+        <div>
+          <h3>GridPull</h3>
+          <p class="hook">Commercial insurance prospects built from public filings — each carrying a renewal date copied verbatim from a named source document.</p>
+          <p class="desc">
+            A producer needs to call a business ninety days before its policy renews, and that date is
+            buried in public filings. GridPull extracts it and cites where it came from. A 150-worker
+            asyncio pool streams progress over server-sent events; the cross-sell engine is
+            deliberately deterministic, with no model in the loop, because a coverage-gap
+            recommendation has to be explainable.
+          </p>
+          <div class="chips">
+            <span>FastAPI</span><span>asyncpg</span><span>PgBouncer</span>
+            <span>React 18</span><span>TypeScript</span><span>SSE</span>
+          </div>
+          <div class="links"><span class="soon">Private — happy to walk through it</span></div>
+        </div>
+        <div class="result">
+          <span class="n">92<small>%</small></span>
+          <span class="k">field-fill rate across six document families at a 0% error rate — measured by its own test suite, not estimated</span>
+        </div>
+      </article>
+
+      <article class="entry rv">
+        <div class="meta">2026<span class="status">open source</span></div>
+        <div>
+          <h3><a href="https://github.com/MartinMashalov/gtm-agent">gtm-agent</a></h3>
+          <p class="hook">A go-to-market agent that finds people describing your problem on Reddit, qualifies them against your ICP, and drafts the outreach — with every send behind a human approval gate.</p>
+          <p class="desc">
+            Cheap deterministic rules run first; the model only ever sees what survives them, and a
+            test enforces that. Every model call is metered and attributed, so the dashboard reports
+            cost per qualified lead live. Official APIs only, no scraping and no browser automation of
+            LinkedIn — which is the difference between a tool a company can deploy and one that gets
+            its accounts banned.
+          </p>
+          <div class="chips">
+            <span>Python</span><span>FastAPI</span><span>Reddit API</span>
+            <span>Prometheus</span><span>Docker</span><span>pytest</span>
+          </div>
+          <div class="links"><a href="https://github.com/MartinMashalov/gtm-agent">Repository</a></div>
+        </div>
+        <div class="result">
+          <span class="n">2</span>
+          <span class="k">stage qualifier — rules, then model — scored on a hand-labelled set with Wilson intervals, and ablated against rules-only and model-only</span>
+        </div>
+      </article>
 
       <article class="entry rv">
         <div class="meta">2026<span class="status">open source</span></div>
@@ -118,31 +216,24 @@
           <h3><a href="https://github.com/MartinMashalov/agent-fleet">agent-fleet</a></h3>
           <p class="hook">Run thousands of concurrent LLM agent runs on a box that costs six dollars a month.</p>
           <p class="desc">
-            Most agent frameworks give every agent its own thread or process and fall over somewhere
-            around fifty. But agent work is almost entirely spent waiting on a model API, so the right
-            shape is one asyncio supervisor with a bounded pool. The hard parts are the ones that show
-            up after that: a durable at-least-once queue with leases and idempotency keys so a
-            redelivered step is not executed twice, per-step checkpointing so a killed process resumes
-            mid-run instead of starting over, backpressure that never lets concurrency exceed its cap,
-            and a shared token bucket with circuit breakers so a thousand agents don't stampede one
-            provider. It ships with a deterministic mock model backend, so the benchmark reproduces
-            without an API key or a dollar of spend.
+            Agent work is almost entirely spent waiting on a model API, so the right shape is one
+            asyncio supervisor with a bounded pool. The hard parts come after: an at-least-once queue
+            with leases and idempotency keys, per-step checkpointing so a killed process resumes
+            mid-run, and backpressure that never lets concurrency exceed its cap.
           </p>
           <div class="chips">
-            <span>Python</span><span>asyncio</span><span>Redis</span><span>SQLite</span>
-            <span>FastAPI</span><span>Prometheus</span><span>Docker</span>
-            <span>Terraform</span><span>Kubernetes</span><span>AWS</span><span>GCP</span>
+            <span>asyncio</span><span>Redis</span><span>Prometheus</span>
+            <span>Docker</span><span>Terraform</span><span>Kubernetes</span>
           </div>
           <div class="links">
             <a href="https://github.com/MartinMashalov/agent-fleet">Repository</a>
-            <a href="https://github.com/MartinMashalov/agent-fleet#benchmark">Benchmark method</a>
           </div>
         </div>
         <div class="result">
           <span class="n">0</span>
-          <span class="k">runs lost and zero duplicated when the process is killed mid-flight. The thread-per-agent baseline cannot resume at all: re-run and you pay 208 runs twice, don’t and you lose 292.</span>
+          <span class="k">runs lost and zero duplicated when the process is killed mid-flight. The thread-per-agent baseline can’t resume at all.</span>
           <figure>
-            <img src="assets/agent-fleet-bench.png" alt="Throughput and peak memory against concurrency" loading="lazy">
+            <img src="assets/agent-fleet-bench.png" alt="Runs completed after SIGKILL and restart" loading="lazy">
             <figcaption>500 runs, SIGKILL at 40% complete, then restart. Measured under <code>--cpus=1 --memory=1g</code>.</figcaption>
           </figure>
         </div>
@@ -152,125 +243,46 @@
         <div class="meta">2026<span class="status">open source</span></div>
         <div>
           <h3><a href="https://github.com/MartinMashalov/gan-lab">gan-lab</a></h3>
-          <p class="hook">GAN objectives are usually compared with cherry-picked samples. This one scores them against ground truth — twice, on two kinds of data.</p>
+          <p class="hook">GAN objectives are usually compared with cherry-picked samples. This one scores them against ground truth, on two kinds of data.</p>
           <p class="desc">
-            Two testbeds, chosen because both have ground truth and neither needs a human to decide
-            whether a sample "looks right." First a mixture of Gaussians, where the true modes are known
-            exactly — that arm exists to validate the instrument, since a metric should be checked on
-            data whose answer you already know. Then seventeen years of real intraday equity bars, where
-            the <em>stylized facts</em> of financial returns are known and universal: fat tails, slowly
-            decaying autocorrelation in absolute returns, near-zero autocorrelation in raw returns, the
-            leverage effect, and kurtosis that falls under aggregation. Each becomes a number, estimated
-            with a Hill tail index, ACF decay exponents and earth-mover distance. Crucially, every fact
-            is first measured block-to-block on held-out <em>real</em> data, so a generator's deviation is
-            judged against how much that statistic naturally moves — not against a point estimate.
-            Five objectives — non-saturating, LSGAN, WGAN-GP, hinge with spectral normalisation and R1 —
-            share one trainer, one budget and one set of seeds, over dilated causal convolutions.
+            First a mixture of Gaussians, where the true modes are known exactly — that arm exists to
+            validate the instrument. Then seventeen years of real intraday equity bars, where the
+            stylized facts of financial returns are a published answer key: fat tails, volatility
+            clustering, the leverage effect. Four escalating tests, no human deciding whether a sample
+            looks right.
           </p>
           <div class="chips">
-            <span>PyTorch</span><span>dilated causal convolutions</span><span>spectral norm</span><span>NumPy</span>
-            <span>SciPy</span><span>matplotlib</span><span>pytest</span><span>ruff</span><span>GitHub Actions</span>
+            <span>PyTorch</span><span>dilated causal convs</span><span>spectral norm</span>
+            <span>WGAN-GP</span><span>pytest</span><span>GitHub Actions</span>
           </div>
           <div class="links">
             <a href="https://github.com/MartinMashalov/gan-lab">Repository</a>
-            <a href="https://github.com/MartinMashalov/gan-lab#results">Results</a>
           </div>
         </div>
         <div class="result">
           <span class="n">R1</span>
-          <span class="k">the only objective that recovered every mode of the 8-mode mixture on every seed. Spectral-norm hinge recovered almost none.</span>
+          <span class="k">the only objective that recovered every mode of the 8-mode mixture on every seed</span>
           <figure>
-            <img src="assets/gan-lab-modes.png" alt="Mode coverage by training objective, with error bars across seeds" loading="lazy">
-            <figcaption>The instrument check: modes recovered on mixtures whose modes are known exactly. Bars are means over three seeds, whiskers ±1 s.d.</figcaption>
+            <img src="assets/gan-lab-modes.png" alt="Modes recovered by training objective" loading="lazy">
+            <figcaption>The instrument check: modes recovered on mixtures whose modes are known exactly.</figcaption>
           </figure>
         </div>
       </article>
 
-      <article class="entry rv" id="sen">
-        <div class="meta">2026<span class="status">production</span></div>
-        <div>
-          <h3>Sen &nbsp;<span class="alias">papyra.org</span></h3>
-          <p class="hook">An insurance agency describes a process in plain English. The system compiles it into a graph and then actually runs it — pausing for a human before anything leaves the building.</p>
-          <p class="desc">
-            A plain-English description becomes a visual node graph — triggers, tool steps, loops,
-            parallel branches, decisions, approval gates — and a durable engine executes that graph per
-            account, reaching into Gmail and Outlook, Drive, Box, SharePoint and Dropbox, and the
-            agency management system. The hard part is not the LLM; it is that a workflow which sends
-            real client email must never send twice and must never silently skip a step. So every state
-            transition goes through one chokepoint that enforces four invariants, each of which cites
-            the production run that motivated it; cross-process safety uses transaction-scoped Postgres
-            advisory locks with a compare-and-set relock, because PgBouncer's transaction pooling makes
-            session-scoped locks a trap; and email fan-out claims its recipient group before sending,
-            so redelivery cannot duplicate. I also wrote the canvas edge router — a visibility graph
-            with Dijkstra over inflated card corners, drawn as Catmull-Rom splines — which took
-            connection overlaps from eight to zero.
-          </p>
-          <div class="chips">
-            <span>Python</span><span>FastAPI</span><span>SQLAlchemy 2.0 async</span><span>PostgreSQL</span>
-            <span>PgBouncer</span><span>advisory locks</span><span>litellm</span><span>DSPy</span>
-            <span>React 18</span><span>TypeScript</span><span>React Flow</span><span>Playwright</span>
-            <span>Tauri</span><span>Chrome MV3</span><span>Stripe</span><span>nginx</span><span>systemd</span>
-          </div>
-          <div class="links"><span class="soon">Private — happy to walk through it</span></div>
-        </div>
-        <div class="result">
-          <span class="n">9,900</span>
-          <span class="k">Python test functions and 248 browser specs, guarding 338 endpoints and a 64-tool agent registry. Roughly one line of test per line of application code.</span>
-        </div>
-      </article>
-
-      <article class="entry rv" id="gridpull">
-        <div class="meta">2026<span class="status">production</span></div>
-        <div>
-          <h3>GridPull</h3>
-          <p class="hook">Commercial insurance prospects built from public government filings — each one carrying a renewal date copied verbatim from a named source document.</p>
-          <p class="desc">
-            An insurance producer needs to call a business roughly ninety days before its policy
-            renews, and that date is buried in public filings. GridPull extracts it and cites where it
-            came from. Full stack and end to end: FastAPI and Postgres behind PgBouncer, a React and
-            TypeScript front end, a 150-worker asyncio pool streaming job progress over server-sent
-            events, and two separate database engines — a pooled one with prepared statements disabled,
-            and a NullPool engine that bypasses PgBouncer entirely because schema changes need session
-            semantics that transaction pooling cannot give you. The cross-sell engine is deliberately
-            deterministic with no model in the loop, because a coverage-gap recommendation has to be
-            explainable. The document extractor scores its own output on field-fill, numeric-parse and
-            date-parse rates, so accuracy is measured rather than asserted: across six families of real
-            documents — invoices, annual reports, 10-K filings, insurance EOBs, purchase orders — its
-            test suite reports 92% field fill at a 0% error rate.
-          </p>
-          <div class="chips">
-            <span>Python</span><span>FastAPI</span><span>asyncio</span><span>SQLAlchemy</span>
-            <span>asyncpg</span><span>PostgreSQL</span><span>PgBouncer</span><span>SSE</span>
-            <span>React 18</span><span>TypeScript</span><span>Tailwind</span>
-          </div>
-          <div class="links"><span class="soon">Private — happy to walk through it</span></div>
-        </div>
-        <div class="result">
-          <span class="n">92<small>%</small></span>
-          <span class="k">field-fill rate across six document families, at a 0% error rate — measured, not estimated</span>
-        </div>
-      </article>
-
-      <article class="entry rv" id="agentalpha">
+      <article class="entry rv">
         <div class="meta">2025 &ndash; 2026<span class="status">production</span></div>
         <div>
           <h3>AgentAlpha</h3>
           <p class="hook">Agents driving legacy enterprise software that has no API, through the browser, in production.</p>
           <p class="desc">
-            Some of the systems a business runs on were built before anyone thought to expose an
-            endpoint. AgentAlpha drives them the way a person does: an execution manager works from a
-            sitemap description of the target application and operates it through Playwright in the
-            browser and PyWinAuto on the Windows desktop, with subagents that read the screen to find
-            elements and a login manager that keeps sessions alive. Around that sits the machinery that
-            makes it survivable in production — a continuous-drain worker loop with a dedicated pool per
-            workload, Celery for background jobs, Redis task state that degrades honestly when a key
-            expires, progress reporting that refuses to say "complete" while a step is still failing,
-            per-run LLM cost accounting, and fallback across three model vendors so one outage doesn't
-            stop the queue.
+            An execution manager works from a sitemap of the target application and operates it through
+            Playwright in the browser and PyWinAuto on the Windows desktop, with subagents that read
+            the screen to find elements. Around it: a continuous-drain worker loop, per-run LLM cost
+            accounting, and fallback across three model vendors.
           </p>
           <div class="chips">
-            <span>Python</span><span>Playwright</span><span>PyWinAuto</span><span>Celery</span>
-            <span>Redis</span><span>Docker</span><span>nginx</span><span>Multi-provider LLM fallback</span><span>Cost accounting</span>
+            <span>Playwright</span><span>PyWinAuto</span><span>Celery</span>
+            <span>Redis</span><span>Docker</span><span>nginx</span>
           </div>
           <div class="links"><span class="soon">Private — happy to walk through it</span></div>
         </div>
@@ -284,10 +296,10 @@
   </section>
 
   <!-- ===================== RESEARCH ===================== -->
-  <section class="band" id="research">
+  <section class="band" id="research-detail">
     <div class="band-head">
-      <h2>Research</h2>
-      <span class="count">MSc thesis</span>
+      <h2>The thesis, in full</h2>
+      <span class="count">University of Amsterdam, 2026</span>
     </div>
     <div class="research rv">
       <div class="meta"></div>
@@ -296,18 +308,9 @@
         <p class="sub">MSc Econometrics, track Data Science &nbsp;·&nbsp; University of Amsterdam, July 2026 &nbsp;·&nbsp; trained on Snellius (SURF) H100s</p>
 
         <p class="plain">
-          Diffusion language models write text by repeatedly un-masking a sequence rather than left to
-          right. That gives them a choice an autoregressive model never faces: <em>which position to
-          reveal next</em>. So when you post-train one with reinforcement learning, there are two
-          things you could be changing — the model's weights, or its decoding order. My thesis asks
-          which, and finds that the answer is neither on its own.
-        </p>
-        <p>
-          A full factorial: four models (LLaDA-8B, Dream-7B, and two DiffuCoder-7B checkpoints) ×
-          two methods (LoRA diffu-GRPO on the weights, and a learned unmasking-order policy over frozen
-          weights) × two reward designs (binary pass/fail, and a partial-credit reward built from
-          test-pass fraction, AST similarity and syntax validity). Measured on HumanEval, MATH-500,
-          MBPP and GSM8K.
+          Four models × two methods × two reward designs, measured on HumanEval, MATH-500, MBPP and
+          GSM8K. The methods: LoRA diffu-GRPO on the weights, and a learned unmasking-order policy
+          over frozen weights.
         </p>
 
         <div class="findings">
@@ -347,10 +350,10 @@
       <span class="count">five, oldest last</span>
     </div>
     <div class="list">
-      <div class="row rv"><span class="yr">2025</span><span class="nm"><a href="https://github.com/MartinMashalov/InstructionManualRAG">InstructionManualRAG</a></span><span class="ds">A document-grounded assistant that answers from instruction manuals with citations back to the source page — <code>LangChain</code> over <code>ChromaDB</code>, PDF parsing, a React front end, shipped behind Docker and nginx. Built with a team of four; I wrote about half of it.</span></div>
-      <div class="row rv"><span class="yr">2024</span><span class="nm">Jarvis</span><span class="ds">An LLM application for question-answering and analysis over business documents — LangChain workflows across <code>Vertex AI</code> and <code>OpenAI</code> backends, a deployed inference layer, and its own front end.</span></div>
-      <div class="row rv"><span class="yr">2022</span><span class="nm">BisonQ</span><span class="ds">A quantitative research framework: market-data ingestion on daily and intraday intervals, signal processors, strategy definitions and parameter optimisers, packaged as a library.</span></div>
-      <div class="row rv"><span class="yr">2022</span><span class="nm">BisonBacktester</span><span class="ds">S&amp;P 500 direction forecasting with <code>SARIMAX</code> and technical indicators, scored on out-of-sample directional accuracy rather than in-sample fit.</span></div>
+      <div class="row rv"><span class="yr">2025</span><span class="nm"><a href="https://github.com/MartinMashalov/InstructionManualRAG">InstructionManualRAG</a></span><span class="ds">A document-grounded assistant answering from instruction manuals with citations back to the source page. <code>LangChain</code> over <code>ChromaDB</code>. Team of four; I wrote about half.</span></div>
+      <div class="row rv"><span class="yr">2024</span><span class="nm">Jarvis</span><span class="ds">Question-answering and analysis over business documents, across <code>Vertex AI</code> and <code>OpenAI</code> backends.</span></div>
+      <div class="row rv"><span class="yr">2022</span><span class="nm">BisonQ</span><span class="ds">A quantitative research framework: market-data ingestion, signal processors, strategies and parameter optimisers, packaged as a library.</span></div>
+      <div class="row rv"><span class="yr">2022</span><span class="nm">BisonBacktester</span><span class="ds">S&amp;P 500 direction forecasting with <code>SARIMAX</code>, scored out-of-sample rather than on in-sample fit.</span></div>
       <div class="row rv"><span class="yr">2021</span><span class="nm"><a href="https://github.com/MartinMashalov/PlacesGeocodingAPI">PlacesGeocodingAPI</a></span><span class="ds">A geocoding and points-of-interest REST service — <code>FastAPI</code> over MongoDB <code>2dSphere</code> indexes with <code>$geoWithin</code> radius queries, Elasticsearch, per-client rate limiting, and six hot paths (TF-IDF scoring, radius search, address packing) compiled to C with <code>Cython</code>. 341 commits, all mine, 11,840 lines. The oldest thing here and still the one I'd most like you to read, because it's public.</span></div>
     </div>
   </section>
@@ -364,15 +367,15 @@
     <div class="stack">
       <div class="grp rv">
         <h4>Machine learning<span>gan-lab, thesis</span></h4>
-        <ul><li>PyTorch</li><li>NumPy</li><li>SciPy</li><li>pandas</li><li>matplotlib</li><li>LoRA / PEFT</li><li>GRPO</li><li>Hugging Face</li></ul>
+        <ul><li>PyTorch</li><li>NumPy</li><li>LoRA / PEFT</li><li>GRPO</li><li>Hugging Face</li></ul>
       </div>
       <div class="grp rv">
         <h4>Agents &amp; LLMs<span>agent-fleet, Sen, AgentAlpha</span></h4>
-        <ul><li>Anthropic API</li><li>tool use</li><li>multi-provider fallback</li><li>Playwright</li><li>vision-language grounding</li><li>LangChain</li></ul>
+        <ul><li>Anthropic API</li><li>tool use</li><li>multi-provider fallback</li><li>Playwright</li><li>LangChain</li></ul>
       </div>
       <div class="grp rv">
         <h4>Backend<span>GridPull, Sen, agent-fleet</span></h4>
-        <ul><li>Python</li><li>FastAPI</li><li>asyncio</li><li>SQLAlchemy</li><li>asyncpg</li><li>PostgreSQL</li><li>PgBouncer</li><li>Redis</li><li>SQLite</li><li>server-sent events</li></ul>
+        <ul><li>Python</li><li>FastAPI</li><li>asyncio</li><li>PostgreSQL</li><li>PgBouncer</li><li>Redis</li></ul>
       </div>
       <div class="grp rv">
         <h4>Front end<span>GridPull, Sen</span></h4>
@@ -380,11 +383,11 @@
       </div>
       <div class="grp rv">
         <h4>Infrastructure<span>agent-fleet, AgentAlpha</span></h4>
-        <ul><li>Docker</li><li>Terraform</li><li>Kubernetes</li><li>AWS</li><li>GCP</li><li>nginx</li><li>systemd</li><li>Prometheus</li><li>GitHub Actions</li></ul>
+        <ul><li>Docker</li><li>Terraform</li><li>Kubernetes</li><li>AWS</li><li>GCP</li><li>Prometheus</li></ul>
       </div>
       <div class="grp rv">
         <h4>Research computing<span>thesis</span></h4>
-        <ul><li>SLURM</li><li>SURF Snellius (H100)</li><li>rented H200s</li><li>multi-seed experiment harnesses</li><li>Wilson intervals</li></ul>
+        <ul><li>SLURM</li><li>Snellius H100</li><li>H200</li><li>Wilson intervals</li></ul>
       </div>
     </div>
   </section>
@@ -395,7 +398,7 @@
     <div class="ways">
       <a href="mailto:martin.mashalov@gmail.com"><span class="k">Email</span><span class="v">martin.mashalov@gmail.com</span></a>
       <a href="https://github.com/MartinMashalov"><span class="k">GitHub</span><span class="v">github.com/MartinMashalov</span></a>
-      <div><span class="k">Open to</span><span class="v">ML&nbsp;engineering, AI&nbsp;infrastructure &amp; agent&nbsp;systems roles</span></div>
+      <a href="https://www.linkedin.com/in/martin-mashalov/"><span class="k">LinkedIn</span><span class="v">in/martin-mashalov</span></a>
     </div>
     <div class="colophon">
       <span>© 2026 Martin Mashalov</span>
