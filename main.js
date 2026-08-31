@@ -20,12 +20,26 @@
     el.querySelectorAll(".ln").forEach((line) => {
       const text = line.textContent;
       line.textContent = "";
+      // Glyphs are inline-blocks, so without a per-word box the browser is free
+      // to break BETWEEN any two letters -- which wrapped the name as
+      // "MASHALO / V" at narrow widths. Words are the only break points.
+      let word = null;
       for (const ch of text) {
         const s = document.createElement("span");
         s.className = ch === " " ? "gl sp" : "gl";
         s.textContent = ch === " " ? " " : ch;
         if (ch !== " ") cells.push(s);
-        line.appendChild(s);
+        if (ch === " ") {
+          word = null;
+          line.appendChild(s);
+        } else {
+          if (!word) {
+            word = document.createElement("span");
+            word.className = "wd";
+            line.appendChild(word);
+          }
+          word.appendChild(s);
+        }
       }
     });
     return cells;

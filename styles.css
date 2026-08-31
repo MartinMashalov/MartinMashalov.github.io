@@ -197,6 +197,9 @@ h1.decode {
   overflow-wrap: anywhere;
 }
 h1.decode .ln { display: block; }
+/* One box per word. The decode splits the name into per-glyph inline-blocks,
+   which the browser would otherwise break between ("MASHALO / V" at 390px). */
+h1.decode .wd { display: inline-block; white-space: nowrap; }
 
 /* each glyph is a cell that resolves out of the mask */
 .gl {
