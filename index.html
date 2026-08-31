@@ -52,10 +52,8 @@
 
 <nav class="rail" aria-label="Section">
   <a href="#work">work</a>
-  <a href="#research">research</a>
   <a href="#experience">experience</a>
-  <a href="#earlier">earlier</a>
-  <a href="#stack">stack</a>
+  <a href="#also">also</a>
   <a href="#contact">contact</a>
 </nav>
 
@@ -65,9 +63,7 @@
     <b>Martin Mashalov</b>
     <nav>
       <a href="#work">Work</a>
-      <a href="#research">Research</a>
       <a href="#experience">Experience</a>
-      <a href="#stack">Stack</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
@@ -154,7 +150,7 @@
             <span>PyTorch</span><span>GRPO</span><span>LoRA</span>
             <span>SLURM</span><span>H100</span><span>Wilson intervals</span>
           </div>
-          <div class="links"><a href="#research-detail">Full findings</a></div>
+          <div class="links"><span class="soon">Thesis PDF on request</span></div>
         </div>
         <div class="result">
           <span class="n">61.8</span>
@@ -295,35 +291,6 @@
     </div>
   </section>
 
-  <!-- ===================== RESEARCH ===================== -->
-  <section class="band" id="research-detail">
-    <div class="band-head">
-      <h2>The thesis, in full</h2>
-      <span class="count">University of Amsterdam, 2026</span>
-    </div>
-    <div class="research rv">
-      <div class="meta"></div>
-      <div class="body">
-        <h3>Dense rewards and unmasking policies in diffusion language models</h3>
-        <p class="sub">MSc Econometrics, track Data Science &nbsp;·&nbsp; University of Amsterdam, July 2026 &nbsp;·&nbsp; trained on Snellius (SURF) H100s</p>
-
-        <p class="plain">
-          Four models × two methods × two reward designs, measured on HumanEval, MATH-500, MBPP and
-          GSM8K. The methods: LoRA diffu-GRPO on the weights, and a learned unmasking-order policy
-          over frozen weights.
-        </p>
-
-        <div class="findings">
-          <div><b>The headline</b><span>Fitting the ordering policy and the weights <em>together</em> beats either alone. Dream's HumanEval pass@1 goes 38.4 → 46.7 with an order policy, → 43.3 if you carry a stale policy across, and → <strong>61.8 ±0.7</strong> when the policy is re-fitted on the merged model. On LLaDA it wins 6 of 6 paired seeds, +2.86pp pooled, p&nbsp;&lt;&nbsp;0.01, and halves seed variance.</span></div>
-          <div><b>An honest null</b><span>Partial-credit rewards make the training signal 2–7× denser and do <em>not</em>, by themselves, raise accuracy. Denser supervision turns out not to mean better supervision.</span></div>
-          <div><b>Where density pays</b><span>At the ordering stage instead: +8.5pp on HumanEval for Dream over a binary reward, and where the binary reward collapsed on one seed, partial credit stayed stable across all three.</span></div>
-          <div><b>Too trained to train</b><span>An already RL-tuned checkpoint resists every method. Its within-group reward spread is 0.07–0.16 against 0.20–0.41 for the others, leaving 11–15% effective GRPO groups and almost no advantage signal. The identical recipe on its supervised-only sibling gave 2.4× the reward spread and 2.6× the effective groups — which implicates the earlier RL stage, not the architecture.</span></div>
-          <div><b>Reported honestly</b><span>Wilson intervals on every figure, generated from one matrix file that is the single source of truth. Single-seed cells are labelled exploratory rather than quoted as results. I also found and fixed a scorer bug in the baseline that counted any parseable code as a pass.</span></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- ===================== EXPERIENCE ===================== -->
   <section class="band" id="experience">
     <div class="band-head">
@@ -343,53 +310,39 @@
     </div>
   </section>
 
-  <!-- ===================== EARLIER ===================== -->
-  <section class="band" id="earlier">
+  <!-- ===================== ALSO ===================== -->
+  <section class="band" id="also">
     <div class="band-head">
-      <h2>Earlier</h2>
-      <span class="count">five, oldest last</span>
+      <h2>Also</h2>
+      <span class="count">public repositories</span>
     </div>
     <div class="list">
-      <div class="row rv"><span class="yr">2025</span><span class="nm"><a href="https://github.com/MartinMashalov/InstructionManualRAG">InstructionManualRAG</a></span><span class="ds">A document-grounded assistant answering from instruction manuals with citations back to the source page. <code>LangChain</code> over <code>ChromaDB</code>. Team of four; I wrote about half.</span></div>
-      <div class="row rv"><span class="yr">2024</span><span class="nm">Jarvis</span><span class="ds">Question-answering and analysis over business documents, across <code>Vertex AI</code> and <code>OpenAI</code> backends.</span></div>
-      <div class="row rv"><span class="yr">2022</span><span class="nm">BisonQ</span><span class="ds">A quantitative research framework: market-data ingestion, signal processors, strategies and parameter optimisers, packaged as a library.</span></div>
-      <div class="row rv"><span class="yr">2022</span><span class="nm">BisonBacktester</span><span class="ds">S&amp;P 500 direction forecasting with <code>SARIMAX</code>, scored out-of-sample rather than on in-sample fit.</span></div>
-      <div class="row rv"><span class="yr">2021</span><span class="nm"><a href="https://github.com/MartinMashalov/PlacesGeocodingAPI">PlacesGeocodingAPI</a></span><span class="ds">A geocoding and points-of-interest REST service — <code>FastAPI</code> over MongoDB <code>2dSphere</code> indexes with <code>$geoWithin</code> radius queries, Elasticsearch, per-client rate limiting, and six hot paths (TF-IDF scoring, radius search, address packing) compiled to C with <code>Cython</code>. 341 commits, all mine, 11,840 lines. The oldest thing here and still the one I'd most like you to read, because it's public.</span></div>
-    </div>
-  </section>
-
-  <!-- ===================== STACK ===================== -->
-  <section class="band" id="stack">
-    <div class="band-head">
-      <h2>Stack</h2>
-      <span class="count">every line names the project behind it</span>
-    </div>
-    <div class="stack">
-      <div class="grp rv">
-        <h4>Machine learning<span>gan-lab, thesis</span></h4>
-        <ul><li>PyTorch</li><li>NumPy</li><li>LoRA / PEFT</li><li>GRPO</li><li>Hugging Face</li></ul>
+      <div class="row rv">
+        <span class="yr">2022 &ndash; 23</span>
+        <span class="nm"><a href="https://github.com/MartinMashalov/BisonHFT">Bison</a></span>
+        <span class="ds">A quantitative trading stack: <strong>BisonHFT</strong> predicts directional movement in SPY and feeds indicator data to an execution engine; <code>BisonQ</code> packages the research framework; <code>BisonForecastBacktester</code> scores SARIMAX forecasts out-of-sample. Eight stars and four forks — the most-forked thing I&rsquo;ve written.</span>
       </div>
-      <div class="grp rv">
-        <h4>Agents &amp; LLMs<span>agent-fleet, Sen, AgentAlpha</span></h4>
-        <ul><li>Anthropic API</li><li>tool use</li><li>multi-provider fallback</li><li>Playwright</li><li>LangChain</li></ul>
+      <div class="row rv">
+        <span class="yr">2021</span>
+        <span class="nm"><a href="https://github.com/MartinMashalov/PlacesGeocodingAPI">PlacesGeocodingAPI</a></span>
+        <span class="ds">A geocoding and points-of-interest service: <code>FastAPI</code> over MongoDB <code>2dSphere</code> indexes, with six hot paths compiled to C via <code>Cython</code>. 341 commits, all mine.</span>
       </div>
-      <div class="grp rv">
-        <h4>Backend<span>GridPull, Sen, agent-fleet</span></h4>
-        <ul><li>Python</li><li>FastAPI</li><li>asyncio</li><li>PostgreSQL</li><li>PgBouncer</li><li>Redis</li></ul>
+      <div class="row rv">
+        <span class="yr">2025</span>
+        <span class="nm"><a href="https://github.com/MartinMashalov/InstructionManualRAG">InstructionManualRAG</a></span>
+        <span class="ds">Document-grounded answers with citations back to the source page. <code>LangChain</code> over <code>ChromaDB</code>. Team of four; I wrote about half.</span>
       </div>
-      <div class="grp rv">
-        <h4>Front end<span>GridPull, Sen</span></h4>
-        <ul><li>TypeScript</li><li>React</li><li>Vite</li><li>Tailwind</li></ul>
-      </div>
-      <div class="grp rv">
-        <h4>Infrastructure<span>agent-fleet, AgentAlpha</span></h4>
-        <ul><li>Docker</li><li>Terraform</li><li>Kubernetes</li><li>AWS</li><li>GCP</li><li>Prometheus</li></ul>
-      </div>
-      <div class="grp rv">
-        <h4>Research computing<span>thesis</span></h4>
-        <ul><li>SLURM</li><li>Snellius H100</li><li>H200</li><li>Wilson intervals</li></ul>
+      <div class="row rv">
+        <span class="yr">2024</span>
+        <span class="nm">Jarvis</span>
+        <span class="ds">Question-answering and analysis over business documents, across <code>Vertex AI</code> and <code>OpenAI</code> backends.</span>
       </div>
     </div>
+    <p class="stackline rv">
+      <b>Day to day</b>
+      Python · PyTorch · FastAPI · asyncio · PostgreSQL · Redis · TypeScript · React ·
+      Docker · Terraform · Kubernetes · AWS · GCP · Prometheus · Playwright · SLURM
+    </p>
   </section>
 
   <!-- ===================== CONTACT ===================== -->
