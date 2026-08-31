@@ -150,11 +150,25 @@
   /* ---------- go -------------------------------------------------- */
 
   const start = () => {
-    const h1 = document.querySelector("h1.decode");
-    const meta = document.querySelector(".decode-meta");
-    if (h1) decode(h1, meta);
     railSpy();
     reveal();
+
+    const h1 = document.querySelector("h1.decode");
+    const meta = document.querySelector(".decode-meta");
+    if (!h1) return;
+
+    // Wait for Archivo before masking: the [MASK] cells are sized to the
+    // glyph underneath them, so starting on the fallback face and swapping
+    // mid-decode would make every block jump.
+    const go = () => decode(h1, meta);
+    if (document.fonts && document.fonts.ready) {
+      let fired = false;
+      const once = () => { if (!fired) { fired = true; go(); } };
+      document.fonts.ready.then(once);
+      setTimeout(once, 1200); // never hold the hero hostage to a slow CDN
+    } else {
+      go();
+    }
   };
 
   if (document.readyState === "loading") {

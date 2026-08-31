@@ -9,11 +9,41 @@
 <meta property="og:title" content="Martin Mashalov — machine learning engineer">
 <meta property="og:description" content="Reinforcement learning for diffusion language models, agent infrastructure, and production AI systems.">
 <meta property="og:type" content="website">
+<!-- Absolute URLs required by scrapers. If you register a different domain, change these two lines. -->
+<meta property="og:url" content="https://martinmashalov.com/">
+<meta property="og:image" content="https://martinmashalov.com/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Martin Mashalov — machine learning engineer">
+<meta name="twitter:description" content="Reinforcement learning for diffusion language models, agent infrastructure, and production AI systems.">
+<meta name="twitter:image" content="https://martinmashalov.com/assets/og.png">
+<link rel="canonical" href="https://martinmashalov.com/">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23101114'/><rect x='6' y='7' width='7' height='18' fill='%23FF3B00'/><rect x='19' y='7' width='7' height='18' fill='%23fff'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Martin Mashalov",
+  "url": "https://martinmashalov.com/",
+  "jobTitle": "Machine Learning Engineer",
+  "email": "mailto:statsplay.us@gmail.com",
+  "sameAs": ["https://github.com/MartinMashalov"],
+  "knowsAbout": [
+    "Machine learning",
+    "Reinforcement learning",
+    "Diffusion language models",
+    "Generative adversarial networks",
+    "PyTorch",
+    "Distributed systems",
+    "LLM agent infrastructure"
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -183,7 +213,32 @@
     <div class="research rv">
       <div class="meta"></div>
       <div class="body">
-        <h3>placeholder</h3>
+        <h3>Reinforcement learning on diffusion language models</h3>
+        <p class="sub">MSc thesis &nbsp;·&nbsp; VERIFY_INSTITUTION &nbsp;·&nbsp; trained on SURF Snellius (H100) and rented H200s</p>
+
+        <p class="plain">
+          Almost every language model you use writes left to right, one token at a time. Diffusion
+          language models don't. They start from a fully masked sequence and denoise all of it in
+          parallel over a fixed number of steps, which makes them far faster in principle — and which
+          breaks most of the reinforcement-learning machinery built for autoregressive models, because
+          there is no clean per-token likelihood to hang a policy gradient on.
+        </p>
+        <p>
+          My thesis asks whether GRPO — the reinforcement-learning algorithm behind the recent
+          reasoning models — can be made to work on this family, using LoRA adapters and a composite
+          reward, measured on GSM8K, HumanEval and MBPP.
+        </p>
+        <p>
+          The answer that survived the experiments was not the one I set out to find, and the
+          interesting part of the thesis is the diagnosis rather than the method.
+        </p>
+
+        <div class="findings">
+          <div><b>The result</b><span>Every technique I tried made an already RL-tuned DiffuCoder <em>worse</em>, not better — consistently, across seeds and benchmarks.</span></div>
+          <div><b>The cause</b><span>Signal collapse. After coupled-GRPO post-training the model is saturated, so nearly every sampled group scores identically, the advantage term goes to zero, and the policy gradient has nothing left to push against.</span></div>
+          <div><b>The proof</b><span>Re-running on an Instruct checkpoint that had never been RL-saturated produced a training signal VERIFY_2_4× healthier, and the same techniques then behaved as intended — which rules out the methods themselves as the explanation.</span></div>
+          <div><b>Reported honestly</b><span>Every figure carries Wilson confidence intervals. A difference that does not clear them is not claimed as a difference.</span></div>
+        </div>
       </div>
     </div>
   </section>
