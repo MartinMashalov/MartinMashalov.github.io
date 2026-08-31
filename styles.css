@@ -105,8 +105,8 @@ a { color: inherit; }
 .rail {
   position: fixed;
   top: 0; bottom: 0;
-  left: max(var(--gut), calc(50vw - var(--maxw)/2 - 72px));
-  width: 56px;
+  left: max(12px, calc(50vw - var(--maxw)/2 - 116px));
+  width: 104px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -137,7 +137,9 @@ a { color: inherit; }
 .rail a[aria-current="true"] { color: var(--accent-text); }
 .rail a[aria-current="true"]::before { width: 26px; background: var(--accent); }
 
-@media (max-width: 1180px) { .rail { display: none; } }
+/* The rail only appears when the margin can actually hold it without
+   crowding the content column. Below this it would collide. */
+@media (max-width: 1519px) { .rail { display: none; } }
 
 /* ============================================================
    Masthead
@@ -741,3 +743,44 @@ html.js .rv.in { opacity: 1; transform: none; transition: opacity .5s ease, tran
 }
 
 .readout .n small { font-size: 0.46em; font-weight: 600; letter-spacing: 0; }
+
+/* ============================================================
+   Hero portrait — sized to the grid, not floated decoration.
+   ============================================================ */
+.hero-lower {
+  margin: 34px 0 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 224px;
+  gap: 44px;
+  align-items: start;
+}
+.hero-lower .lede { margin: 0; }
+
+.portrait { margin: 0; }
+.portrait img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--rule);
+  filter: saturate(0.92);
+}
+.portrait figcaption {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.portrait figcaption::before {
+  content: "";
+  width: 14px; height: 1px;
+  background: var(--accent);
+}
+@media (max-width: 860px) {
+  .hero-lower { grid-template-columns: 1fr; gap: 28px; }
+  .portrait { max-width: 168px; }
+}

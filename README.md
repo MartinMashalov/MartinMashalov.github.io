@@ -24,8 +24,8 @@ JavaScript disabled.
 
 ## Deploying
 
-See [`../HOSTING.md`](../HOSTING.md). Short version: Cloudflare Pages, $0/month, connect the
-repo and set the build output directory to `/`.
+See [`../HOSTING.md`](../HOSTING.md). Short version: GitHub Pages from a repo named
+`MartinMashalov.github.io`. $0/month, no domain needed.
 
 ## Licence
 
