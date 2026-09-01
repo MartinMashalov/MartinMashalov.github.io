@@ -301,18 +301,99 @@
   <section class="band" id="experience">
     <div class="band-head">
       <h2>Experience</h2>
-      <span class="count">and where I studied</span>
+      <span class="count">systems other people depend on</span>
     </div>
+    <p class="band-note">
+      Every role below is the same job in a different setting. Somebody needs a system that keeps
+      working when they are not watching it, and I own the part that has to not break.
+    </p>
     <div class="list">
-      <div class="row rv"><span class="yr">2026 &ndash;</span><span class="nm">Founder &amp; Software Engineer</span><span class="ds">GridPull. I build it and I sell it. FastAPI and Postgres behind PgBouncer, a 150-worker asyncio pool streaming job progress over server-sent events, and a deterministic cross-sell engine with no model in the loop so a coverage-gap recommendation can be explained to a producer. About 1,500 commits since March.</span></div>
-      <div class="row rv"><span class="yr">2025 &ndash;</span><span class="nm">Technical Co-Founder</span><span class="ds">Papyra AI (Sen), partnered with Vertafore. Agentic workflow automation two insurance agencies run their back office on. I own the engine: 338 endpoints, a 64-tool registry, and the durability work that lets it send real client mail, transaction-scoped Postgres advisory locks with a compare-and-set relock because PgBouncer makes session locks a trap, and a pre-send group claim so a redelivery cannot double-send. I also wrote the canvas edge router, a visibility graph with Dijkstra over inflated card corners, which took connection overlaps from eight to zero.</span></div>
-      <div class="row rv"><span class="yr">2025</span><span class="nm">AI Research Assistant</span><span class="ds">Vrije Universiteit Amsterdam, Faculty of Computer Science. Language models driving behaviour-tree control of multi-agent systems.</span></div>
-      <div class="row rv"><span class="yr">2025</span><span class="nm">Software Engineer</span><span class="ds">Marubeni American Corporation, freelance. VisionPay: distributed document extraction with a fine-tuned vision-language model, wired into SAP, plus the disaster-recovery runbook for it.</span></div>
-      <div class="row rv"><span class="yr">2024 &ndash; 25</span><span class="nm">Quantitative Modeling Intern</span><span class="ds">ABN AMRO Bank. Quantitative model development on the data side of the bank, six months.</span></div>
-      <div class="row rv"><span class="yr">2021 &ndash; 23</span><span class="nm">Software Engineer</span><span class="ds">Peek Real Estate. Built and ran the geocoding and points-of-interest service listed below: FastAPI over MongoDB 2dSphere indexes, Elasticsearch, per-client rate limiting, and eighteen hot paths compiled to C with Cython. 341 commits, all mine.</span></div>
+
+      <div class="row rv">
+        <span class="yr">2026 &ndash;</span>
+        <span class="nm">Founder &amp; Software Engineer</span>
+        <span class="ds"><b>GridPull.</b> I build it and I sell it, which means I hear the complaint
+        and then fix it myself. Commercial insurance prospects assembled from public filings and sold
+        to independent agencies. FastAPI and Postgres behind PgBouncer, a 150-worker asyncio pool
+        streaming extraction progress to the browser over server-sent events, and two separate
+        database engines because schema changes need session semantics that transaction pooling
+        cannot give you. The cross-sell engine has no model in it by design: a producer has to be able
+        to explain a coverage-gap recommendation to a client. The extractor scores its own output at
+        <b>98.9% field accuracy</b> across six schedule types with zero error rows.</span>
+      </div>
+
+      <div class="row rv">
+        <span class="yr">2025 &ndash;</span>
+        <span class="nm">Technical Co-Founder</span>
+        <span class="ds"><b>Papyra AI (Sen), partnered with Vertafore.</b> Agent infrastructure that
+        two insurance agencies run their back office on. I own the engine: a <b>64-tool registry</b>
+        behind <b>338 endpoints</b>, and the durability work that makes it safe to let an agent send
+        real client mail. Transaction-scoped Postgres advisory locks with a compare-and-set relock,
+        because PgBouncer's transaction pooling makes session locks a trap that only shows up under
+        load. A pre-send group claim so a redelivered message cannot double-send. Four invariants
+        enforced at one chokepoint, each traced to the production run that motivated it. I also wrote
+        the canvas edge router, a visibility graph with Dijkstra over inflated card corners, which
+        took connection overlaps from eight to zero.</span>
+      </div>
+
+      <div class="row rv">
+        <span class="yr">2025</span>
+        <span class="nm">AI Research Assistant</span>
+        <span class="ds"><b>Vrije Universiteit Amsterdam, Faculty of Computer Science.</b> Language
+        models driving behaviour-tree control of multi-agent systems: the model writes the policy, the
+        tree keeps it inside behaviour you can inspect and verify. The same question my thesis asks
+        from the other side, which is how much of an agent's competence should live in learned weights
+        and how much in structure around them.</span>
+      </div>
+
+      <div class="row rv">
+        <span class="yr">2025</span>
+        <span class="nm">Software Engineer</span>
+        <span class="ds"><b>Marubeni American Corporation</b>, freelance. VisionPay: distributed
+        document extraction with a fine-tuned vision-language model, wired into SAP so the output
+        landed in the system the finance team already used rather than in a dashboard nobody opens.
+        I wrote the disaster-recovery runbook for it, which is the part that decides whether a
+        pipeline survives its first bad week.</span>
+      </div>
+
+      <div class="row rv">
+        <span class="yr">2024 &ndash; 25</span>
+        <span class="nm">Quantitative Modelling Intern</span>
+        <span class="ds"><b>ABN AMRO Bank.</b> Six months of quantitative model development inside a
+        European bank, where a model that cannot be explained does not ship. That constraint is why
+        the deterministic, explainable-by-construction components in my own products are deliberate
+        rather than accidental.</span>
+      </div>
+
+      <div class="row rv">
+        <span class="yr">2021 &ndash; 23</span>
+        <span class="nm">Software Engineer</span>
+        <span class="ds"><b>Peek Real Estate.</b> Built and ran their geocoding and points-of-interest
+        service in production: FastAPI over MongoDB <code>2dSphere</code> indexes with
+        <code>$geoWithin</code> radius queries, Elasticsearch, per-client rate limiting, and eighteen
+        hot paths compiled to C with Cython when the Python versions could not keep up.
+        <b>341 commits, all mine.</b> I was eighteen when I started it.</span>
+      </div>
+
       <div class="row divider rv"><span class="yr"></span><span class="nm">Education</span><span class="ds"></span></div>
-      <div class="row rv"><span class="yr">2026</span><span class="nm">MSc Econometrics</span><span class="ds">University of Amsterdam, Data Science track. Thesis above.</span></div>
-      <div class="row rv"><span class="yr">2025</span><span class="nm">BSc Econometrics &amp; Data Science</span><span class="ds">University of Amsterdam. Thesis on Taylor-rule central-bank rates inside an agent-based macro model, on Eurozone data: at the twelve-quarter horizon the inflation-gap rule cut out-of-sample RMSE by up to <strong>33.9%</strong> against an AR(1) baseline and <strong>38.8%</strong> against a VAR(1) baseline.</span></div>
+
+      <div class="row rv">
+        <span class="yr">2026</span>
+        <span class="nm">MSc Econometrics</span>
+        <span class="ds">University of Amsterdam, Data Science track. Thesis on reinforcement learning
+        for diffusion language models, trained on H100 nodes under a fixed compute grant.
+        <a href="thesis.html">The write-up is here</a>.</span>
+      </div>
+
+      <div class="row rv">
+        <span class="yr">2025</span>
+        <span class="nm">BSc Econometrics &amp; Data Science</span>
+        <span class="ds">University of Amsterdam. Thesis on Taylor-rule central-bank rates inside an
+        agent-based macro model, on Eurozone data: at the twelve-quarter horizon the inflation-gap
+        rule cut out-of-sample RMSE by up to <b>33.9%</b> against an AR(1) baseline and <b>38.8%</b>
+        against a VAR(1) baseline.</span>
+      </div>
+
     </div>
   </section>
 
@@ -326,7 +407,7 @@
       <div class="row rv">
         <span class="yr">2025</span>
         <span class="nm">InstructionManualRAG</span>
-        <span class="ds">Document-grounded answers with citations back to the source page. LangChain over ChromaDB. Team of four; I wrote 77 of the 100 commits.</span>
+        <span class="ds">Document-grounded answers with citations back to the source page. LangChain over ChromaDB. Five contributors; I wrote 129 of the 298 commits.</span>
       </div>
       <div class="row rv">
         <span class="yr">2022 &ndash; 23</span>

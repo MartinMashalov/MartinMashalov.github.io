@@ -768,3 +768,13 @@ code {
   line-height: 1.6;
   color: var(--ink-soft);
 }
+
+.band-note {
+  margin: 20px 0 4px;
+  max-width: 66ch;
+  font-size: 15.5px;
+  line-height: 1.62;
+  color: var(--ink-soft);
+}
+.row .ds b { color: var(--ink); font-weight: 600; }
+.row .ds a { color: var(--accent-text); }
