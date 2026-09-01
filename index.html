@@ -114,6 +114,41 @@
 
     <div class="work">
 
+      <article class="entry rv">
+        <div class="meta">2026<span class="status">open source</span></div>
+        <div>
+          <h3><a href="https://github.com/MartinMashalov/gpt2-harness">gpt2-harness</a></h3>
+          <p class="hook">A training harness built from the parts up: all five parallelism strategies, a roofline, and a tool that tells you why a run is slow.</p>
+          <p class="desc">
+            Data, sharded-data (ZeRO 1 through 3), tensor, pipeline and context parallelism, each
+            written against <code>torch.distributed</code> and each checked against a single-process
+            reference. The per-step wire volume is counted byte for byte and matched to its closed
+            form, so ZeRO-2 and DDP are shown to move identical bytes, which is what you expect once
+            you notice an all-reduce is a reduce-scatter followed by an all-gather. The pipeline
+            bubble is measured against the analytic (p&minus;1)/(m+p&minus;1) for one to sixteen
+            micro-batches. On top of that: a measured roofline, model-FLOPs utilisation, checkpoints
+            that reshard across parallel layouts, a killed rank restarted from its last checkpoint,
+            a resumable streaming loader, and Slurm, Ray and Kubernetes launchers.
+          </p>
+          <p class="desc">
+            The correctness proofs run on gloo because proving a sharded implementation matches a
+            single-process reference does not need a GPU. Throughput and interconnect numbers do, so
+            those are modelled from published bandwidths and labelled as modelled throughout. My
+            thesis training is the other half of this: bfloat16 and FlashAttention-2 on H100s, with a
+            subset of the evaluations on A100 and B200. Underneath it all, the GPT-2 implementation
+            is verified to a worst logit disagreement of 6.1e&minus;5 against HuggingFace across 75
+            layers, which is what makes the rest of the measurements mean something.
+          </p>
+          <div class="links">
+            <a href="https://github.com/MartinMashalov/gpt2-harness">Repository</a>
+          </div>
+        </div>
+        <div class="result">
+          <span class="n">4<small>/4</small></span>
+          <span class="k">injected throughput faults the diagnosis tool found and ranked, plus a baseline run where it correctly reported nothing wrong: a dataloader stall at 37.1% of step time, an all-reduce that never overlaps compute, and a batch too small to saturate. Measured MFU 47.7%.</span>
+        </div>
+      </article>
+
       <article class="entry rv" id="sen">
         <div class="meta">2026<span class="status">production</span></div>
         <div>
@@ -154,41 +189,6 @@
         <div class="result">
           <span class="n">61.8</span>
           <span class="k">HumanEval pass@1 on Dream, up from 46.6 for the same policy on the base model at a matched decoding budget. University of Amsterdam, July 2026</span>
-        </div>
-      </article>
-
-      <article class="entry rv">
-        <div class="meta">2026<span class="status">open source</span></div>
-        <div>
-          <h3><a href="https://github.com/MartinMashalov/gpt2-harness">gpt2-harness</a></h3>
-          <p class="hook">A training harness built from the parts up: all five parallelism strategies, a roofline, and a tool that tells you why a run is slow.</p>
-          <p class="desc">
-            Data, sharded-data (ZeRO 1 through 3), tensor, pipeline and context parallelism, each
-            written against <code>torch.distributed</code> and each checked against a single-process
-            reference. The per-step wire volume is counted byte for byte and matched to its closed
-            form, so ZeRO-2 and DDP are shown to move identical bytes, which is what you expect once
-            you notice an all-reduce is a reduce-scatter followed by an all-gather. The pipeline
-            bubble is measured against the analytic (p&minus;1)/(m+p&minus;1) for one to sixteen
-            micro-batches. On top of that: a measured roofline, model-FLOPs utilisation, checkpoints
-            that reshard across parallel layouts, a killed rank restarted from its last checkpoint,
-            a resumable streaming loader, and Slurm, Ray and Kubernetes launchers.
-          </p>
-          <p class="desc">
-            The correctness proofs run on gloo because proving a sharded implementation matches a
-            single-process reference does not need a GPU. Throughput and interconnect numbers do, so
-            those are modelled from published bandwidths and labelled as modelled throughout. My
-            thesis training is the other half of this: bfloat16 and FlashAttention-2 on H100s, with a
-            subset of the evaluations on A100 and B200. Underneath it all, the GPT-2 implementation
-            is verified to a worst logit disagreement of 6.1e&minus;5 against HuggingFace across 75
-            layers, which is what makes the rest of the measurements mean something.
-          </p>
-          <div class="links">
-            <a href="https://github.com/MartinMashalov/gpt2-harness">Repository</a>
-          </div>
-        </div>
-        <div class="result">
-          <span class="n">4<small>/4</small></span>
-          <span class="k">injected throughput faults the diagnosis tool found and ranked, plus a baseline run where it correctly reported nothing wrong: a dataloader stall at 37.1% of step time, an all-reduce that never overlaps compute, and a batch too small to saturate. Measured MFU 47.7%.</span>
         </div>
       </article>
 
