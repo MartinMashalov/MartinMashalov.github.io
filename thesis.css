@@ -1,0 +1,139 @@
+/* Styles specific to the thesis page. The shared system lives in styles.css. */
+
+.doc-hero { padding-bottom: clamp(28px, 4vh, 44px); }
+
+h1.doc-title {
+  font-family: var(--display);
+  font-weight: 800;
+  font-stretch: 108%;
+  font-size: clamp(28px, 4.2vw, 54px);
+  line-height: 1.04;
+  letter-spacing: -0.028em;
+  margin: 0 0 22px;
+  max-width: 20ch;
+}
+.doc-sub {
+  margin: 20px 0 0;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  line-height: 1.75;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  max-width: 72ch;
+}
+
+/* the body column: one measure, generous, easy to read top to bottom */
+.doc {
+  display: grid;
+  grid-template-columns: var(--rail) minmax(0, 1fr);
+  gap: 0 32px;
+  padding: 34px 0 8px;
+}
+.doc > * { grid-column: 2; }
+.doc p {
+  margin: 0 0 18px;
+  max-width: 68ch;
+  font-size: 16.5px;
+  line-height: 1.66;
+  color: var(--ink);
+}
+.doc p em { font-style: italic; }
+.doc h3 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-stretch: 104%;
+  font-size: 18px;
+  letter-spacing: -0.012em;
+  margin: 34px 0 12px;
+}
+.doc-list { margin: 0; padding: 0 0 0 18px; max-width: 68ch; }
+.doc-list li { margin: 0 0 12px; font-size: 16px; line-height: 1.62; }
+
+/* the single pulled-out number */
+.bignum {
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--rule);
+  padding: 22px 0 24px;
+  margin: 0 0 30px;
+  display: grid;
+  grid-template-columns: minmax(0, 190px) minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+.bignum .n {
+  font-family: var(--display);
+  font-weight: 700;
+  font-stretch: 104%;
+  font-size: clamp(40px, 6vw, 68px);
+  line-height: 0.94;
+  letter-spacing: -0.03em;
+}
+.bignum .k {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  line-height: 1.8;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  padding-top: 6px;
+}
+@media (max-width: 700px) {
+  .bignum { grid-template-columns: 1fr; gap: 12px; }
+}
+
+/* tables */
+.doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 6px 0 24px;
+  font-size: 15px;
+}
+.doc-table th {
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  font-weight: 500;
+  padding: 0 18px 10px 0;
+  border-bottom: 1px solid var(--ink);
+}
+.doc-table td {
+  padding: 14px 18px 14px 0;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+  line-height: 1.58;
+  color: var(--ink-soft);
+}
+.doc-table td:first-child { color: var(--ink); width: 22%; }
+.doc-table td b { color: var(--ink); font-weight: 600; }
+
+/* shell commands, shown as evidence rather than decoration */
+.code {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  line-height: 1.85;
+  background: var(--wash);
+  border-left: 2px solid var(--accent);
+  padding: 16px 18px;
+  margin: 0 0 24px;
+  overflow-x: auto;
+  white-space: pre;
+  color: var(--ink);
+}
+.code .c { color: var(--ink-soft); }
+
+.doc code {
+  font-family: var(--mono);
+  font-size: 0.88em;
+  background: var(--wash);
+  padding: 1px 5px;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 760px) {
+  .doc { grid-template-columns: 1fr; }
+  .doc > * { grid-column: 1; }
+  .code { font-size: 11.5px; }
+}

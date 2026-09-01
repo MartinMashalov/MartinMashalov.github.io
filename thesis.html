@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reinforcement learning on diffusion language models — Martin Mashalov</title>
+<meta name="description" content="MSc thesis: post-training diffusion language models with GRPO. What changed, what did not, and how it was trained on a shared H100 cluster with a fixed budget.">
+<meta name="author" content="Martin Mashalov">
+<meta property="og:title" content="Reinforcement learning on diffusion language models">
+<meta property="og:description" content="MSc thesis: post-training diffusion language models with GRPO, and the cluster engineering behind it.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://martinmashalov.github.io/thesis.html">
+<meta property="og:image" content="https://martinmashalov.github.io/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://martinmashalov.github.io/thesis.html">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23101114'/><rect x='6' y='7' width='7' height='18' fill='%23FF3B00'/><rect x='19' y='7' width='7' height='18' fill='%23fff'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="thesis.css">
+</head>
+<body>
+
+<div class="gridlines" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+
+<div class="shell">
+
+  <header class="masthead">
+    <b><a href="index.html" style="text-decoration:none">Martin Mashalov</a></b>
+    <nav>
+      <a href="index.html">Work</a>
+      <a href="index.html#experience">Experience</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero doc-hero">
+    <p class="eyebrow">MSc thesis &nbsp;&middot;&nbsp; University of Amsterdam &nbsp;&middot;&nbsp; July 2026</p>
+    <h1 class="doc-title">Dense rewards and unmasking policies in diffusion language models</h1>
+    <p class="lede">
+      A diffusion language model does not write left to right. It starts from a fully masked sequence
+      and reveals tokens over a fixed number of steps, choosing at each step which position to fill.
+      That choice is a second thing you can train. This thesis asks whether post-training should
+      change the model&rsquo;s weights, the order it writes in, or both.
+    </p>
+    <p class="doc-sub">
+      Supervisor dr. B. Wouters. Second reader Prof. dr. C. Diks. Econometrics, Data Science track.
+      Trained on the Dutch national supercomputer under a fixed compute grant.
+    </p>
+  </section>
+
+  <section class="band">
+    <div class="band-head"><h2>The result</h2><span class="count">one number, and its caveat</span></div>
+    <div class="doc">
+      <div class="bignum">
+        <span class="n">61.8</span>
+        <span class="k">HumanEval pass@1 on Dream-7B, up from 46.6 for the same ordering policy carried
+        across unchanged, at a matched decoding budget. The gain survives McNemar&rsquo;s exact test and
+        Holm correction over six primary contrasts at p = 0.003.</span>
+      </div>
+
+      <p>
+        The interesting part is the middle number. Take a model, train an ordering policy on it, then
+        merge a LoRA adapter into the weights. If you carry that policy across unchanged, HumanEval
+        pass@1 <em>falls</em> from 46.6 to 43.3. Re-fit the same policy on the merged weights and it
+        rises to 61.8. The policy is fitted to a particular set of weights, not to the task, and
+        moving the weights underneath it makes it worse than useless.
+      </p>
+      <p>
+        A continuation control shows part of that recovery comes from the extra training the re-fit
+        involves rather than from re-adaptation alone. The thesis says so rather than claiming the
+        whole gain.
+      </p>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="band-head"><h2>Two axes</h2><span class="count">what was varied, and what was held fixed</span></div>
+    <div class="doc">
+      <p>
+        Every post-training method sits somewhere on two independent axes: whose text you supervise,
+        and how detailed the signal is. This thesis moves along a version of both, inside a model
+        family where the second axis has an extra degree of freedom that autoregressive models do not
+        have.
+      </p>
+
+      <table class="doc-table">
+        <thead><tr><th>What varied</th><th>Levels</th><th>Why it is the interesting axis</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><b>Where the update lands</b></td>
+            <td>LoRA diffu-GRPO on the weights; a learned unmasking-order policy over frozen weights; both, re-fitted</td>
+            <td>An autoregressive model has no ordering to train. A diffusion model does, so post-training has a second surface to act on.</td>
+          </tr>
+          <tr>
+            <td><b>How dense the reward is</b></td>
+            <td>Binary pass or fail; partial credit from test-pass fraction, AST similarity and syntax validity</td>
+            <td>A single scalar for a whole program says the answer was wrong without saying which part. Partial credit says more per rollout.</td>
+          </tr>
+          <tr>
+            <td><b>Held fixed</b></td>
+            <td>Base models, datasets, seeds 42, 43 and 44, decoding budget, evaluation harness</td>
+            <td>So a difference in outcome is attributable to the two axes above and not to anything else.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        Four models were run: LLaDA-8B-Instruct, Dream-7B-Instruct, and two DiffuCoder-7B checkpoints,
+        one of which had already been through coupled-GRPO post-training. Evaluation on HumanEval,
+        MATH-500, MBPP and GSM8K, scored by executing the reference unit tests for code and by exact
+        answer equivalence for maths.
+      </p>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="band-head"><h2>Running it on a shared cluster</h2><span class="count">the part a thesis normally leaves out</span></div>
+    <div class="doc">
+      <p>
+        The experiments ran on the Dutch national supercomputer under a fixed compute grant, plus
+        rented H100 and H200 nodes when the grant ran low. A subset of evaluations ran on A100 and
+        B200. None of that is a large cluster by industry standards, and the constraints shaped the
+        experiment design more than the method did.
+      </p>
+
+      <h3>Four GPUs per node, so eight GPUs means two nodes</h3>
+      <p>
+        The H100 partition has four GPUs per node. Any run wanting eight has to cross a node boundary,
+        which turns a single-machine job into a distributed one and puts the gradient all-reduce on
+        the interconnect instead of NVLink. The submission script asks for
+        <code>--nodes=2 --gpus-per-node=4</code> and one task per node, then launches four processes
+        per task.
+      </p>
+
+      <div class="code">
+<span class="c"># Snellius H100 nodes have 4 GPUs, so eight means two nodes.</span>
+#SBATCH --partition=gpu_h100
+#SBATCH --nodes=2
+#SBATCH --gpus-per-node=4
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=64
+#SBATCH --time=12:00:00
+      </div>
+
+      <h3>The processes have to find each other</h3>
+      <p>
+        Eight processes across two machines need a meeting point before they can form a process group.
+        The first hostname in the Slurm allocation becomes the rendezvous address, and the port is
+        derived from the job ID rather than fixed, because two of my own jobs landing on the same node
+        with the same hard-coded port will collide and hang. Each process learns which machine it is
+        from Slurm rather than being told.
+      </p>
+
+      <div class="code">
+MASTER_ADDR=$(scontrol show hostnames "$SLURM_JOB_NODELIST" | head -n 1)
+MASTER_PORT=${MASTER_PORT:-$((20000 + SLURM_JOB_ID % 40000))}   <span class="c"># not a fixed port</span>
+
+accelerate launch \
+  --num_processes  "$NUM_PROCESSES" \
+  --num_machines   "$NUM_MACHINES" \
+  --machine_rank   "$SLURM_PROCID" \      <span class="c"># identity comes from the scheduler</span>
+  --main_process_ip   "$MASTER_ADDR" \
+  --main_process_port "$MASTER_PORT" \
+  -m train.train
+      </div>
+
+      <h3>The compute nodes have no internet</h3>
+      <p>
+        This is the constraint that catches people out. A login node can reach the network; the compute
+        nodes cannot. Any code that lazily downloads a checkpoint, a tokenizer or a dataset on first
+        use will sit and fail after the job has already spent queue time. So everything is staged onto
+        the shared scratch filesystem first and the libraries are told, explicitly, that they are
+        offline. Experiment tracking writes to disk and syncs later.
+      </p>
+
+      <div class="code">
+export HF_HOME=/scratch-shared/$USER/hf_cache
+export HF_HUB_OFFLINE=1
+export TRANSFORMERS_OFFLINE=1     <span class="c"># fail loudly at import, not silently at step 400</span>
+export WANDB_MODE=offline
+export TOKENIZERS_PARALLELISM=false
+      </div>
+
+      <h3>A twelve hour wall clock, and a queue</h3>
+      <p>
+        Jobs are gang scheduled: you get every node you asked for at once, or you wait. Asking for
+        two nodes rather than one means waiting longer for both to be free at the same time. The wall
+        clock is twelve hours, so anything longer has to checkpoint and resubmit, and a run that dies
+        at hour eleven with nothing written has cost eleven hours of a grant that does not refill.
+        The job prints <code>nvidia-smi</code> on every node before it launches anything, so a run
+        that is about to fail on a bad card fails in the first ten seconds instead of the last hour.
+      </p>
+
+      <h3>What the budget bought, and what it forced</h3>
+      <p>
+        A fixed grant makes experiment design an allocation problem. Three seeds per cell rather than
+        ten. Several conditions run at a single seed and labelled exploratory in every table rather
+        than quietly averaged in. The factorial was pruned to the cells that could answer the question,
+        and the thesis says which cells are thin instead of hiding them.
+      </p>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="band-head"><h2>The training setup</h2><span class="count">and one honest note about precision</span></div>
+    <div class="doc">
+      <table class="doc-table">
+        <tbody>
+          <tr><td><b>Precision</b></td><td>Weights loaded in <code>bfloat16</code>. The trainer&rsquo;s own mixed-precision flag is off, so this is bf16 throughout rather than bf16 compute with an fp32 master copy. With LoRA only the adapter parameters receive updates, which limits the exposure, but it is a real difference from the standard recipe and worth saying out loud.</td></tr>
+          <tr><td><b>Attention</b></td><td><code>flash_attention_2</code> where the model supported it, <code>sdpa</code> where it did not. The attention score matrix is never written to memory in full.</td></tr>
+          <tr><td><b>Adaptation</b></td><td>LoRA adapters through PEFT, so a fraction of a percent of the parameters are trained and an adapter can be merged into the base weights afterwards. Merging is what creates the stale-policy problem described above.</td></tr>
+          <tr><td><b>Optimiser</b></td><td>AdamW, betas 0.9 and 0.99, weight decay 0.1, gradient norm clipped at 0.2, learning rate 3e-5 on a cosine schedule with 100 warmup steps.</td></tr>
+          <tr><td><b>GRPO</b></td><td>Eight generations per prompt. The group mean is the baseline, so there is no critic network to keep stable. Completions capped at 256 tokens.</td></tr>
+          <tr><td><b>Data movement</b></td><td>Datasets and the model cache staged on shared scratch before the job starts. Checkpoints written to scratch, not to a home directory with a quota.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="band-head"><h2>What did not work</h2><span class="count">four of six contrasts</span></div>
+    <div class="doc">
+      <p>
+        Six primary contrasts were tested. After Holm correction, two survive: the HumanEval gains on
+        Dream and on the DiffuCoder sibling, at p = 0.003. The LLaDA HumanEval gain does not survive
+        correction, at p = 0.136, and is reported as suggestive. Every MATH-500 movement is null.
+        The thesis states this in one sentence and then explains each one.
+      </p>
+
+      <div class="findings">
+        <div><b>Denser is not better</b><span>Partial-credit rewards make the training signal several times denser and do not, on their own, raise accuracy. More information per rollout did not become more learning. This is a clean negative result and it is reported as one.</span></div>
+        <div><b>Where density did pay</b><span>At the ordering stage rather than the weight stage. Where the binary reward collapsed on one seed, partial credit stayed stable across all three.</span></div>
+        <div><b>Too trained to train</b><span>A checkpoint that had already been through coupled-GRPO resisted every method. Its within-group reward spread was 0.07 to 0.16 against 0.20 to 0.41 for the others, leaving 11 to 15 percent effective groups. GRPO takes the group mean as its baseline, so when every sample in a group scores the same the advantage is zero and there is no gradient to speak of. Running the identical recipe on its supervised-only sibling gave 2.4 times the reward spread and 2.6 times the effective groups, which points at the earlier RL stage rather than the architecture.</span></div>
+        <div><b>Reported with intervals</b><span>Wilson intervals on every figure, McNemar&rsquo;s exact test for paired comparisons, Holm correction across the family. Single-seed cells are labelled exploratory in the tables rather than averaged in silently.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="band-head"><h2>Why this matters beyond diffusion</h2><span class="count">the transferable part</span></div>
+    <div class="doc">
+      <p>
+        The specific finding is about a model family most people do not use. The shape of the finding
+        is not.
+      </p>
+      <p>
+        <b>An adapter and the policy fitted to it are one object.</b> Merging a LoRA adapter is
+        routine at serving time. If anything downstream was fitted against the pre-merge weights, a
+        decoding policy, a router, a calibrated threshold, merging silently degrades it. Here that cost
+        3.3 points of pass@1 and nothing warned about it.
+      </p>
+      <p>
+        <b>A saturated model has no gradient left to give.</b> Group-relative methods work by comparing
+        samples to their peers. Post-train a model until its samples agree with each other and the
+        comparison carries no information, however good your reward function is. Measuring the
+        within-group spread before spending a compute grant is cheap and would have saved most of one.
+      </p>
+      <p>
+        <b>Denser supervision is not automatically better supervision.</b> The training signal got
+        several times richer and the benchmark did not move. Signal density and useful signal are
+        different quantities, and only one of them is easy to measure.
+      </p>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="band-head"><h2>What I would do differently</h2><span class="count">with more compute, or more sense</span></div>
+    <div class="doc">
+      <ul class="doc-list">
+        <li><b>Measure the reward spread first.</b> One cheap diagnostic run per checkpoint would have identified the saturated model before it consumed a share of the grant.</li>
+        <li><b>Separate three variables, not two.</b> Rollout source, reward density and teacher quality were not fully crossed. Two of them move together in places, which limits what can be attributed to which.</li>
+        <li><b>More seeds on fewer cells.</b> Three seeds and a Holm correction over six contrasts is a design that can only detect large effects. Narrowing the factorial and spending the same compute on replication would have made more of the results conclusive.</li>
+        <li><b>Proper mixed precision.</b> bf16 weights with an fp32 master copy in the optimiser, and an explicit reduction dtype, rather than bf16 throughout.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <h2>Ask me about it</h2>
+    <div class="ways">
+      <a href="mailto:martin.mashalov@gmail.com"><span class="k">Email</span><span class="v">martin.mashalov@gmail.com</span></a>
+      <a href="https://github.com/MartinMashalov"><span class="k">GitHub</span><span class="v">github.com/MartinMashalov</span></a>
+      <a href="index.html"><span class="k">Back to</span><span class="v">the rest of the work</span></a>
+    </div>
+    <div class="colophon">
+      <span>&copy; 2026 Martin Mashalov</span>
+      <span>Thesis PDF on request</span>
+      <span>Set in Archivo, Instrument Sans &amp; IBM Plex Mono</span>
+    </div>
+  </section>
+
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
