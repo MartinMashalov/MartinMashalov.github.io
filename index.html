@@ -118,7 +118,7 @@
         <div class="meta">2026<span class="status">production</span></div>
         <div>
           <h3>Sen &nbsp;<span class="alias">papyra.org</span></h3>
-          <p class="hook">Agentic infrastructure for real businesses. Describe a process in plain English; get a workflow you can see, edit, and run. A person approves anything that leaves the building.</p>
+          <p class="hook">Describe a back-office process in plain English and get a workflow you can see, edit and run. Two insurance agencies use it. A person approves anything that leaves the building.</p>
           <p class="desc">
             The description compiles into a visual node graph of triggers, tool steps, branches and approval gates, and a durable engine runs it per account across email, cloud storage,
             and the agency management system, through a registry of 64 tools. The hard part isn’t the
@@ -126,10 +126,6 @@
             skip a step, so every state transition passes one chokepoint enforcing four invariants,
             each traced to the production failure that motivated it.
           </p>
-          <div class="chips">
-            <span>FastAPI</span><span>PostgreSQL</span><span>advisory locks</span>
-            <span>React</span><span>litellm</span><span>Playwright</span>
-          </div>
           <div class="links"><span class="soon">Private. Happy to walk through it.</span></div>
         </div>
         <div class="result">
@@ -142,7 +138,7 @@
         <div class="meta">2026<span class="status">MSc thesis</span></div>
         <div>
           <h3>Reinforcement learning on diffusion language models</h3>
-          <p class="hook">Should post-training change a model’s weights, or the order it writes in? The answer turned out to be neither on its own.</p>
+          <p class="hook">A diffusion language model chooses which position to reveal next. I tested whether post-training should change its weights, its decoding order, or both.</p>
           <p class="desc">
             Diffusion language models unmask a sequence instead of writing left to right, so they
             face a choice autoregressive models never face: which position to reveal next. I ran a
@@ -154,10 +150,6 @@
             checkpoint that had already been RL-tuned resisted every method: its within-group reward
             dispersion had collapsed, leaving GRPO almost nothing to learn from.
           </p>
-          <div class="chips">
-            <span>PyTorch</span><span>GRPO</span><span>LoRA</span>
-            <span>H100</span><span>McNemar’s test</span><span>Wilson intervals</span>
-          </div>
           <div class="links"><span class="soon">Thesis PDF on request</span></div>
         </div>
         <div class="result">
@@ -179,10 +171,6 @@
             where the KV cache turns quadratic into linear, what per-channel quantization saves over
             per-tensor, and which heads do induction.
           </p>
-          <div class="chips">
-            <span>PyTorch</span><span>KV cache</span><span>GQA / MQA</span>
-            <span>int8 / int4</span><span>pruning</span><span>distillation</span>
-          </div>
           <div class="links">
             <a href="https://github.com/MartinMashalov/transformer-internals">Repository</a>
           </div>
@@ -197,7 +185,7 @@
         <div class="meta">2026<span class="status">production</span></div>
         <div>
           <h3>GridPull</h3>
-          <p class="hook">Commercial insurance prospects, each carrying a renewal date that is either copied verbatim from a named source or labeled an estimate. Never quietly modeled.</p>
+          <p class="hook">Commercial insurance prospects built from public filings. Every renewal date is either quoted verbatim from a named document or labeled an estimate.</p>
           <p class="desc">
             A producer needs to call a business ninety days before its policy renews. A verified
             renewal date is copied straight from the source registry and marked verified; where none
@@ -207,10 +195,6 @@
             deterministic, with no model in the loop, because a coverage-gap recommendation has to be
             explainable.
           </p>
-          <div class="chips">
-            <span>FastAPI</span><span>asyncpg</span><span>PgBouncer</span>
-            <span>React 18</span><span>TypeScript</span><span>SSE</span>
-          </div>
           <div class="links"><span class="soon">Private. Happy to walk through it.</span></div>
         </div>
         <div class="result">
@@ -223,7 +207,7 @@
         <div class="meta">2026<span class="status">private</span></div>
         <div>
           <h3><a href="https://github.com/MartinMashalov/gtm-agent">gtm-agent</a></h3>
-          <p class="hook">A go-to-market agent that finds people describing your problem on Reddit, qualifies them against your ideal-customer profile, and drafts the outreach. Every send sits behind a human approval gate.</p>
+          <p class="hook">Finds people describing your problem on Reddit, scores them against an ideal-customer profile, and drafts the outreach. Nothing sends without a human approving it.</p>
           <p class="desc">
             Cheap deterministic rules run first; the model only ever sees what survives them, and a
             test enforces that. Every model call is metered and attributed, so cost per qualified lead
@@ -232,10 +216,6 @@
             automation of LinkedIn. That is the difference between a tool a company can deploy and
             one that gets its accounts banned.
           </p>
-          <div class="chips">
-            <span>FastAPI</span><span>Reddit API</span><span>LinkedIn API</span>
-            <span>Prometheus</span><span>Docker</span><span>pytest</span>
-          </div>
           <div class="links"><a href="https://github.com/MartinMashalov/gtm-agent">Repository</a></div>
         </div>
         <div class="result">
@@ -248,7 +228,7 @@
         <div class="meta">2026<span class="status">open source</span></div>
         <div>
           <h3><a href="https://github.com/MartinMashalov/agent-fleet">agent-fleet</a></h3>
-          <p class="hook">One asyncio supervisor, a bounded pool, and a durable queue, so the process can be killed mid-flight without losing a run.</p>
+          <p class="hook">An agent run spends almost all its time waiting on a model API, so one asyncio supervisor handles thousands. Killing the process mid-run loses none of them.</p>
           <p class="desc">
             An agent run is roughly 99% I/O wait on a model API, so the right shape is one asyncio
             supervisor with a bounded pool rather than a thread per agent. The hard parts come after:
@@ -256,10 +236,6 @@
             killed process resumes mid-run, and backpressure that never lets concurrency exceed its
             cap. Measured in a 1-vCPU, 1&nbsp;GB container against a deterministic mock provider: 546 agent steps a second.
           </p>
-          <div class="chips">
-            <span>asyncio</span><span>Redis</span><span>Prometheus</span>
-            <span>Docker</span><span>Terraform</span><span>Kubernetes</span>
-          </div>
           <div class="links">
             <a href="https://github.com/MartinMashalov/agent-fleet">Repository</a>
           </div>
@@ -278,17 +254,13 @@
         <div class="meta">2026<span class="status">open source</span></div>
         <div>
           <h3><a href="https://github.com/MartinMashalov/generative-eval">generative-eval</a></h3>
-          <p class="hook">Generative models are usually judged by eye. This scores five training objectives against ground truth on two testbeds, and the tests disagree about which one is best.</p>
+          <p class="hook">Five GAN objectives, scored four ways against real ground truth. The four scores rank them differently, so the metric you pick decides the winner.</p>
           <p class="desc">
             First a mixture of Gaussians, where the true modes are known exactly. That arm exists to validate the instrument. Then 48,000 real intraday equity bars from 2005 to 2022, where
             the stylized facts of financial returns are a published answer key: fat tails, volatility
             clustering, and the leverage effect. Four escalating tests, each harder to fake than the
             last, and no human deciding whether a sample looks right.
           </p>
-          <div class="chips">
-            <span>PyTorch</span><span>dilated causal convs</span><span>spectral norm</span>
-            <span>WGAN-GP</span><span>pytest</span><span>GitHub Actions</span>
-          </div>
           <div class="links">
             <a href="https://github.com/MartinMashalov/generative-eval">Repository</a>
           </div>
