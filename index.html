@@ -87,8 +87,7 @@
       <div class="hero-text">
         <p class="lede">
           I train, deploy and scale AI models, and build the agent systems that run on top of them.
-          My MSc thesis put reinforcement learning on <em>diffusion language models</em>. Day to day
-          that means a runtime keeping a few thousand agents alive on one small machine, a document
+          My MSc thesis put reinforcement learning on <em>diffusion language models</em>. Day to day it is less exotic. A runtime that keeps a few thousand agents alive on one small machine, a document
           extractor whose accuracy is a measured number rather than a promise, and the workflow
           platform two insurance agencies run their back office on.
         </p>
@@ -145,7 +144,7 @@
         </div>
         <div class="result">
           <span class="n">4<small>/4</small></span>
-          <span class="k">injected throughput faults the diagnosis tool found and ranked, plus a baseline run where it correctly reported nothing wrong: a dataloader stall at 37.1% of step time, an all-reduce that never overlaps compute, and a batch too small to saturate. Measured MFU 47.7%.</span>
+          <span class="k">injected throughput faults the tool found and ranked. A fifth run injects nothing, and it stays quiet. The faults: a dataloader stall at 37.1% of step time, an all-reduce that never overlaps compute, and a batch too small to saturate. Measured MFU 47.7%.</span>
         </div>
       </article>
 
@@ -156,9 +155,9 @@
           <p class="hook">Describe a back-office process in plain English and get a workflow you can see, edit and run. Two insurance agencies use it. A person approves anything that leaves the building.</p>
           <p class="desc">
             The description compiles into a visual node graph of triggers, tool steps, branches and approval gates, and a durable engine runs it per account across email, cloud storage,
-            and the agency management system, through a registry of 64 tools. A workflow that sends real client mail must never send twice and never silently
-            skip a step, so every state transition passes one chokepoint enforcing four invariants,
-            each traced to the production failure that motivated it.
+            and the agency management system, through a registry of 64 tools. A workflow that sends real client mail must never send twice and never silently skip a step.
+            Every state transition passes one chokepoint enforcing four invariants. Each one is traced
+            to the production failure that caused it.
           </p>
           <div class="links"><span class="soon">Private. Happy to walk through it.</span></div>
         </div>
@@ -231,7 +230,7 @@
         </div>
         <div class="result">
           <span class="n">59<small>%</small></span>
-          <span class="k">less metered spend than sending every candidate to the model. Rules drop 40 of 65 first, and F1 moves by +0.037 &plusmn; 0.064 on a paired bootstrap, an interval that includes zero</span>
+          <span class="k">less metered spend than sending every candidate to the model. Rules drop 40 of 65 before the model sees anything. F1 moves by +0.037 &plusmn; 0.064 on a paired bootstrap, an interval that includes zero</span>
         </div>
       </article>
 
