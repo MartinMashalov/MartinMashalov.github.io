@@ -265,23 +265,32 @@
         <div class="meta">2026<span class="status">open source</span></div>
         <div>
           <h3><a href="https://github.com/MartinMashalov/generative-eval">generative-eval</a></h3>
-          <p class="hook">Five GAN objectives, scored four ways against real ground truth. The four scores rank them differently, so the metric you pick decides the winner.</p>
+          <p class="hook">"My generative model produces good samples" is not one claim. It is four, and they come apart.</p>
           <p class="desc">
-            First a mixture of Gaussians, where the true modes are known exactly. That arm exists to validate the instrument. Then 48,000 real intraday equity bars from 2005 to 2022, where
-            the stylized facts of financial returns are a published answer key: fat tails, volatility
-            clustering, and the leverage effect. Four escalating tests, each harder to fake than the
-            last, and no human deciding whether a sample looks right.
+            Four questions, asked in order: does the metric work at all, does the model match the
+            published marginals, can a classifier tell its samples from real ones, and is the
+            synthetic data any use downstream. Seven families climb the same ladder under one budget:
+            five GAN objectives, denoising diffusion and flow matching, read against a classical GARCH
+            fit and two nulls nothing should lose to. Two testbeds where the answer is known
+            independently: mixtures whose modes are exact, and seventeen years of real intraday
+            equity bars whose stylized facts are a published answer key.
+          </p>
+          <p class="desc">
+            Flow matching is the first family here to beat the classical baseline on real data, and it
+            holds all eight stylized facts down to ten sampling steps. Which families you benchmark
+            decides what your benchmark concludes: over the five GANs alone, ranking by 2D mode
+            coverage anti-correlates with ranking by detectability at Spearman &minus;0.90.
           </p>
           <div class="links">
             <a href="https://github.com/MartinMashalov/generative-eval">Repository</a>
           </div>
         </div>
         <div class="result">
-          <span class="n">1986</span>
-          <span class="k">a four-parameter GARCH model from that year beats every GAN here on downstream usefulness, and the four tests disagree about which generator wins</span>
+          <span class="n">21<small>/39</small></span>
+          <span class="k">of this repository&rsquo;s own conclusions are adequately powered, and it names the other 18. The rank-agreement result cannot be significant at five model families, which is why there are now seven.</span>
           <figure>
-            <img src="assets/generative-eval-ladder.png" alt="Rank of each generator across four evaluation rungs, with the lines crossing: R1 ranks first on the 2D instrument check and fifth on downstream usefulness, while GARCH climbs from joint-last to first." loading="lazy">
-            <figcaption>Rank across the four rungs. The lines cross, so the metric you pick decides the winner.</figcaption>
+            <img src="assets/generative-eval-ladder.png" alt="Rank of seven model families across four evaluation rungs, with the lines crossing" loading="lazy">
+            <figcaption>Rank on each rung. The lines cross, so the metric you pick decides the winner.</figcaption>
           </figure>
         </div>
       </article>
