@@ -51,72 +51,141 @@
   </section>
 
   <section class="band">
-    <div class="band-head"><h2>The result</h2><span class="count">one number, and its caveat</span></div>
+    <div class="band-head"><h2>The result</h2><span class="count">and the control that constrains it</span></div>
     <div class="doc">
       <div class="bignum">
         <span class="n">61.8</span>
-        <span class="k">HumanEval pass@1 on Dream-7B, up from 46.6 for the same ordering policy carried
-        across unchanged, at a matched decoding budget. The gain survives McNemar&rsquo;s exact test and
-        Holm correction over six primary contrasts at p = 0.003.</span>
+        <span class="k">HumanEval pass@1 on Dream-7B. The same ordering policy carried across to the
+        adapter-merged model unchanged scores 46.6. Re-fitting it on those merged weights is what
+        produces 61.8. The gain survives McNemar&rsquo;s exact test and Holm correction over six
+        primary contrasts at p&nbsp;=&nbsp;0.003.</span>
       </div>
 
       <p>
-        The interesting part is the middle number. Take a model, train an ordering policy on it, then
-        merge a LoRA adapter into the weights. If you carry that policy across unchanged, HumanEval
-        pass@1 <em>falls</em> from 46.6 to 43.3. Re-fit the same policy on the merged weights and it
-        rises to 61.8. The policy is fitted to a particular set of weights, not to the task, and
-        moving the weights underneath it makes it worse than useless.
+        Train a LoRA adapter with reinforcement learning, then merge it. A decoding policy that was
+        fitted against the pre-merge weights does not survive the move: HumanEval pass@1 falls from
+        46.6 to 43.3 under direct transfer. Re-fit the same policy on the merged weights and it reaches
+        61.8. The thesis calls the combined procedure co-adaptation, and the drop under direct transfer
+        is the evidence that the policy is tied to a particular set of weights rather than to the task.
       </p>
       <p>
-        A continuation control shows part of that recovery comes from the extra training the re-fit
-        involves rather than from re-adaptation alone. The thesis says so rather than claiming the
-        whole gain.
+        Two controls limit how much of that can be claimed. A learned schedule decodes with more
+        network function evaluations than the vanilla configuration, so a like-for-like comparison has
+        to hold the decoding budget fixed; once it does, only Dream keeps a positive margin, and LLaDA
+        does not. A continuation control attributes part of the recovery to the additional training the
+        re-fit involves rather than to re-adaptation alone. Both appear in the results tables.
       </p>
     </div>
   </section>
 
   <section class="band">
-    <div class="band-head"><h2>Two axes</h2><span class="count">what was varied, and what was held fixed</span></div>
+    <div class="band-head"><h2>Why GRPO does not simply port</h2><span class="count">the likelihood is intractable</span></div>
     <div class="doc">
       <p>
-        Every post-training method sits somewhere on two independent axes: whose text you supervise,
-        and how detailed the signal is. This thesis moves along a version of both, inside a model
-        family where the second axis has an extra degree of freedom that autoregressive models do not
-        have.
+        GRPO needs a probability ratio between the current policy and the one that generated the
+        sample. For an autoregressive model that ratio is a product of per-token conditionals and is
+        read straight off the forward pass. A masked diffusion model has no such factorisation: the
+        exact sequence likelihood is intractable, because the model defines a distribution over
+        denoising trajectories rather than over left-to-right continuations.
+      </p>
+      <p>
+        diffu-GRPO works around this with a one-step estimator of the sequence log-probabilities under
+        random prompt masking. That estimator is the load-bearing approximation of the whole method,
+        and it is the reason results from the autoregressive RL literature cannot be assumed to carry
+        over. The advantage itself follows the variant that drops the standard-deviation denominator,
+        so it reduces to <code>r<sub>i</sub> &minus; r&#772;</code>, and the optimiser step is skipped
+        entirely for any group whose advantages are all zero.
+      </p>
+      <p>
+        That last detail is where the thesis&rsquo;s main diagnostic comes from.
+      </p>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="band-head"><h2>A diagnostic for whether learning is possible at all</h2><span class="count">&rho;<sub>eff</sub></span></div>
+    <div class="doc">
+      <p>
+        Call a group <em>effective</em> when the rewards inside it are not all equal, so
+        <code>&sigma;<sub>r</sub> &gt; 0</code> and the advantage is non-zero. Define
+      </p>
+
+      <div class="code">
+&rho;<span class="c">eff</span> = Pr[ &sigma;<span class="c">r</span> &gt; 0 ]        <span class="c">estimated over the N groups logged in a run</span>
+      </div>
+
+      <p>
+        This is the fraction of sampled groups that can produce a reward-driven gradient at all. It
+        costs nothing to log and it separates three failure modes that otherwise look identical from
+        the loss curve.
       </p>
 
       <table class="doc-table">
-        <thead><tr><th>What varied</th><th>Levels</th><th>Why it is the interesting axis</th></tr></thead>
+        <thead><tr><th>Condition</th><th>Effect on &rho;<sub>eff</sub></th><th>Why</th></tr></thead>
         <tbody>
           <tr>
-            <td><b>Where the update lands</b></td>
-            <td>LoRA diffu-GRPO on the weights; a learned unmasking-order policy over frozen weights; both, re-fitted</td>
-            <td>An autoregressive model has no ordering to train. A diffusion model does, so post-training has a second surface to act on.</td>
+            <td><b>Binary reward, early training</b></td>
+            <td>Small</td>
+            <td>Almost every group is uniformly wrong, so every completion scores zero and the spread is zero.</td>
           </tr>
           <tr>
-            <td><b>How dense the reward is</b></td>
-            <td>Binary pass or fail; partial credit from test-pass fraction, AST similarity and syntax validity</td>
-            <td>A single scalar for a whole program says the answer was wrong without saying which part. Partial credit says more per rollout.</td>
+            <td><b>Partial-credit reward</b></td>
+            <td>Should rise</td>
+            <td>Test-pass fraction and AST similarity break ties before any completion is exactly correct, so a group of near-misses still carries signal.</td>
           </tr>
           <tr>
-            <td><b>Held fixed</b></td>
-            <td>Base models, datasets, seeds 42, 43 and 44, decoding budget, evaluation harness</td>
-            <td>So a difference in outcome is attributable to the two axes above and not to anything else.</td>
+            <td><b>Already RL-tuned model</b></td>
+            <td>Small, even on problems it cannot solve</td>
+            <td>The advantage vanishes when rewards agree, which happens when every completion is wrong <em>and</em> when every completion is nearly the same. A sharpened policy samples with too little diversity to disagree with itself.</td>
           </tr>
         </tbody>
       </table>
 
       <p>
-        Four models were run: LLaDA-8B-Instruct, Dream-7B-Instruct, and two DiffuCoder-7B checkpoints,
-        one of which had already been through coupled-GRPO post-training. Evaluation on HumanEval,
-        MATH-500, MBPP and GSM8K, scored by executing the reference unit tests for code and by exact
-        answer equivalence for maths.
+        The third row is the finding. DiffuCoder-cpGRPO arrives having already been through
+        coupled-GRPO, and it resists every method tried here. Its within-group reward spread runs 0.07
+        to 0.16 against 0.20 to 0.41 for the reinforcement-learning-naive models, leaving 11 to 15
+        percent of groups effective. Running the identical recipe on its supervised-only sibling gives
+        2.4 times the spread and 2.6 times the effective groups, which points at the prior RL stage
+        rather than at the architecture, since the two checkpoints share one.
+      </p>
+      <p>
+        The autoregressive literature documents a related phenomenon under the name entropy collapse,
+        where group-relative optimisation sharpens a policy until its samples agree and its exploratory
+        range narrows. The thesis notes the resemblance and then declines to claim it: the relation to
+        the accuracy outcome is associative, was not established by intervention, and one model family
+        cannot settle whether it generalises.
       </p>
     </div>
   </section>
 
   <section class="band">
-    <div class="band-head"><h2>Running it on a shared cluster</h2><span class="count">the part a thesis normally leaves out</span></div>
+    <div class="band-head"><h2>The second thing you can train</h2><span class="count">decoding order, and what it costs</span></div>
+    <div class="doc">
+      <p>
+        Generation runs from a fully masked sequence back to clean text. Two quantities are free. The
+        schedule, meaning which positions to commit and in what order, and the number of reverse steps,
+        counted as network function evaluations.
+      </p>
+      <p>
+        They are coupled, and the coupling is the whole inference-time problem. Committing one position
+        per step makes the model&rsquo;s conditional-independence assumption exact and spends the most
+        NFEs. Committing many positions at once empties the mask set in far fewer NFEs but forces an
+        independence that need not hold, and the errors from prematurely co-committed tokens are what
+        degrade the output. The schedule is therefore a direct trade of compute against the accuracy
+        lost to committing too early, which is why every comparison in the thesis has to be
+        budget-matched before it means anything.
+      </p>
+      <p>
+        An autoregressive model has no equivalent choice, and this is the degree of freedom that makes
+        post-training a diffusion model a different problem rather than the same problem on unusual
+        hardware.
+      </p>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="band-head"><h2>Running it on a shared cluster</h2><span class="count">four GPUs a node, twelve hours, no internet</span></div>
     <div class="doc">
       <p>
         The experiments ran on the Dutch national supercomputer under a fixed compute grant, plus
@@ -168,8 +237,7 @@ accelerate launch \
 
       <h3>The compute nodes have no internet</h3>
       <p>
-        This is the constraint that catches people out. A login node can reach the network; the compute
-        nodes cannot. Any code that lazily downloads a checkpoint, a tokenizer or a dataset on first
+        A login node can reach the network. The compute nodes cannot. Any code that lazily downloads a checkpoint, a tokenizer or a dataset on first
         use will sit and fail after the job has already spent queue time. So everything is staged onto
         the shared scratch filesystem first and the libraries are told, explicitly, that they are
         offline. Experiment tracking writes to disk and syncs later.
@@ -208,7 +276,7 @@ export TOKENIZERS_PARALLELISM=false
     <div class="doc">
       <table class="doc-table">
         <tbody>
-          <tr><td><b>Precision</b></td><td>Weights loaded in <code>bfloat16</code>. The trainer&rsquo;s own mixed-precision flag is off, so this is bf16 throughout rather than bf16 compute with an fp32 master copy. With LoRA only the adapter parameters receive updates, which limits the exposure, but it is a real difference from the standard recipe and worth saying out loud.</td></tr>
+          <tr><td><b>Precision</b></td><td>Weights loaded in <code>bfloat16</code>. The trainer&rsquo;s own mixed-precision flag is off, so this is bf16 throughout rather than bf16 compute with an fp32 master copy. With LoRA only the adapter parameters receive updates, which limits the exposure, but it is a real difference from the standard recipe and a real difference from the standard recipe.</td></tr>
           <tr><td><b>Attention</b></td><td><code>flash_attention_2</code> where the model supported it, <code>sdpa</code> where it did not. The attention score matrix is never written to memory in full.</td></tr>
           <tr><td><b>Adaptation</b></td><td>LoRA adapters through PEFT, so a fraction of a percent of the parameters are trained and an adapter can be merged into the base weights afterwards. Merging is what creates the stale-policy problem described above.</td></tr>
           <tr><td><b>Optimiser</b></td><td>AdamW, betas 0.9 and 0.99, weight decay 0.1, gradient norm clipped at 0.2, learning rate 3e-5 on a cosine schedule with 100 warmup steps.</td></tr>
@@ -230,43 +298,45 @@ export TOKENIZERS_PARALLELISM=false
       </p>
 
       <div class="findings">
-        <div><b>Denser is not better</b><span>Partial-credit rewards make the training signal several times denser and do not, on their own, raise accuracy. More information per rollout did not become more learning. This is a clean negative result and it is reported as one.</span></div>
+        <div><b>Density alone</b><span>Partial-credit rewards raise the fraction of groups carrying a usable advantage, which is the mechanism they were introduced for, and on their own do not raise accuracy. The reward function got richer and the benchmark did not move.</span></div>
         <div><b>Where density did pay</b><span>At the ordering stage rather than the weight stage. Where the binary reward collapsed on one seed, partial credit stayed stable across all three.</span></div>
-        <div><b>Too trained to train</b><span>A checkpoint that had already been through coupled-GRPO resisted every method. Its within-group reward spread was 0.07 to 0.16 against 0.20 to 0.41 for the others, leaving 11 to 15 percent effective groups. GRPO takes the group mean as its baseline, so when every sample in a group scores the same the advantage is zero and there is no gradient to speak of. Running the identical recipe on its supervised-only sibling gave 2.4 times the reward spread and 2.6 times the effective groups, which points at the earlier RL stage rather than the architecture.</span></div>
-        <div><b>Reported with intervals</b><span>Wilson intervals on every figure, McNemar&rsquo;s exact test for paired comparisons, Holm correction across the family. Single-seed cells are labelled exploratory in the tables rather than averaged in silently.</span></div>
+        <div><b>Prior RL blocks later RL</b><span>A checkpoint that had already been through coupled-GRPO resisted every method. Its within-group reward spread was 0.07 to 0.16 against 0.20 to 0.41 for the others, leaving 11 to 15 percent effective groups. GRPO takes the group mean as its baseline, so when every sample in a group scores the same the advantage is zero and there is no gradient to speak of. Running the identical recipe on its supervised-only sibling gave 2.4 times the reward spread and 2.6 times the effective groups, which points at the earlier RL stage rather than the architecture.</span></div>
+        <div><b>Reported with intervals</b><span>Wilson intervals on every figure, McNemar&rsquo;s exact test for paired comparisons, Holm correction across the six-contrast family. Single-seed cells are labelled exploratory in the tables rather than averaged in.</span></div>
       </div>
     </div>
   </section>
 
   <section class="band">
-    <div class="band-head"><h2>Why this matters beyond diffusion</h2><span class="count">the transferable part</span></div>
+    <div class="band-head"><h2>What transfers</h2><span class="count">three mechanisms, none specific to diffusion</span></div>
     <div class="doc">
       <p>
-        The specific finding is about a model family most people do not use. The shape of the finding
-        is not.
+        The model family is niche. Three of the mechanisms are not.
       </p>
       <p>
-        <b>An adapter and the policy fitted to it are one object.</b> Merging a LoRA adapter is
-        routine at serving time. If anything downstream was fitted against the pre-merge weights, a
-        decoding policy, a router, a calibrated threshold, merging silently degrades it. Here that cost
-        3.3 points of pass@1 and nothing warned about it.
+        <b>An adapter and anything fitted against it are one object.</b> Merging a LoRA adapter into
+        base weights is routine at serving time. Anything calibrated against the pre-merge model, a
+        decoding policy here, but equally a router or a threshold, is silently invalidated by the
+        merge. It cost 3.3 points of pass@1 and produced no error.
       </p>
       <p>
-        <b>A saturated model has no gradient left to give.</b> Group-relative methods work by comparing
-        samples to their peers. Post-train a model until its samples agree with each other and the
-        comparison carries no information, however good your reward function is. Measuring the
-        within-group spread before spending a compute grant is cheap and would have saved most of one.
+        <b>Group-relative methods need disagreement, not just difficulty.</b> The advantage is computed
+        against the group mean, so it vanishes when the samples agree. That happens when every
+        completion is wrong and equally when every completion is nearly identical, which is what a
+        previous round of RL produces. &rho;<sub>eff</sub> costs one counter to log and would have
+        flagged the dead checkpoint before it consumed a share of the grant.
       </p>
       <p>
-        <b>Denser supervision is not automatically better supervision.</b> The training signal got
-        several times richer and the benchmark did not move. Signal density and useful signal are
-        different quantities, and only one of them is easy to measure.
+        <b>Denser supervision did not become better supervision.</b> Partial credit raised the
+        fraction of groups carrying a usable advantage, which was the mechanism it was introduced for,
+        and the benchmark still did not move. Density is a property of the reward function. Whether
+        the extra information is learnable is a property of the model and the data, and the two are
+        measured separately.
       </p>
     </div>
   </section>
 
   <section class="band">
-    <div class="band-head"><h2>What I would do differently</h2><span class="count">with more compute, or more sense</span></div>
+    <div class="band-head"><h2>What I would do differently</h2><span class="count">given the same grant again</span></div>
     <div class="doc">
       <ul class="doc-list">
         <li><b>Measure the reward spread first.</b> One cheap diagnostic run per checkpoint would have identified the saturated model before it consumed a share of the grant.</li>
