@@ -160,7 +160,7 @@
       <article class="entry rv">
         <div class="meta">2026<span class="status">open source</span></div>
         <div>
-          <h3><a href="https://github.com/MartinMashalov/transformer-internals">transformer-internals</a></h3>
+          <h3><a href="https://github.com/MartinMashalov/gpt2-harness">gpt2-harness</a></h3>
           <p class="hook">A training harness built from the parts up: all five parallelism strategies, a roofline, and a tool that tells you why a run is slow.</p>
           <p class="desc">
             Data, sharded-data (ZeRO 1 through 3), tensor, pipeline and context parallelism, each
@@ -174,14 +174,16 @@
             a resumable streaming loader, and Slurm, Ray and Kubernetes launchers.
           </p>
           <p class="desc">
-            There is no GPU cluster behind this, so the correctness proofs run on gloo and the
-            interconnect numbers are modelled from published bandwidths and labelled as modelled.
-            The verification of the GPT-2 implementation itself, worst logit disagreement 6.1e&minus;5
-            against HuggingFace across 75 layers, is what makes the rest of the measurements
-            trustworthy.
+            The correctness proofs run on gloo because proving a sharded implementation matches a
+            single-process reference does not need a GPU. Throughput and interconnect numbers do, so
+            those are modelled from published bandwidths and labelled as modelled throughout. My
+            thesis training is the other half of this: bfloat16 and FlashAttention-2 on H100s, with a
+            subset of the evaluations on A100 and B200. Underneath it all, the GPT-2 implementation
+            is verified to a worst logit disagreement of 6.1e&minus;5 against HuggingFace across 75
+            layers, which is what makes the rest of the measurements mean something.
           </p>
           <div class="links">
-            <a href="https://github.com/MartinMashalov/transformer-internals">Repository</a>
+            <a href="https://github.com/MartinMashalov/gpt2-harness">Repository</a>
           </div>
         </div>
         <div class="result">
@@ -208,7 +210,7 @@
         </div>
         <div class="result">
           <span class="n">98.9<small>%</small></span>
-          <span class="k">field accuracy extracting insurance schedules from 100 documents across six schedule types, zero error rows, measured by its own test suite rather than estimated</span>
+          <span class="k">field accuracy extracting insurance schedules from 100 documents across six schedule types, zero error rows</span>
         </div>
       </article>
 
@@ -220,7 +222,7 @@
           <p class="desc">
             Cheap deterministic rules run first; the model only ever sees what survives them, and a
             test enforces that. Every model call is metered and attributed, so cost per qualified lead
-            is a reported number rather than an estimate, measured end to end on a recorded corpus
+            is measured end to end on a recorded corpus
             against a deterministic offline model. Official APIs only, no scraping and no browser
             automation of LinkedIn. That is the difference between a tool a company can deploy and
             one that gets its accounts banned.
