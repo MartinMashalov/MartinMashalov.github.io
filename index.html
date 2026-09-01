@@ -187,8 +187,8 @@
           </div>
         </div>
         <div class="result">
-          <span class="n">5<small>/5</small></span>
-          <span class="k">injected throughput faults the diagnosis tool found and ranked: dataloader stall at 37.1% of step time, an all-reduce that never overlaps compute, a batch too small to saturate. Measured MFU 47.7%.</span>
+          <span class="n">4<small>/4</small></span>
+          <span class="k">injected throughput faults the diagnosis tool found and ranked, plus a baseline run where it correctly reported nothing wrong: a dataloader stall at 37.1% of step time, an all-reduce that never overlaps compute, and a batch too small to saturate. Measured MFU 47.7%.</span>
         </div>
       </article>
 
@@ -253,9 +253,9 @@
         </div>
         <div class="result">
           <span class="n">0</span>
-          <span class="k">runs lost and zero duplicated when the process is killed mid-flight. The thread-per-agent baseline has nothing to resume from and loses 292.</span>
+          <span class="k">runs lost and zero duplicated when the process is killed mid-flight. The thread-per-agent baseline has nothing to resume from and loses 297. Give it the same commit protocol and it recovers too, so the durability belongs to the protocol rather than to asyncio.</span>
           <figure>
-            <img src="assets/agent-fleet-bench.png" alt="Bar chart: agent-fleet completes 500 of 500 runs after SIGKILL and restart; the thread-per-agent baseline completes 208 and loses 292." loading="lazy">
+            <img src="assets/agent-fleet-bench.png" alt="Bar chart: agent-fleet completes 500 of 500 runs after SIGKILL and restart; the thread-per-agent baseline completes 203 and loses 297." loading="lazy">
             <figcaption>500 runs, SIGKILL at 40% complete, then restart. Measured under <code>--cpus=1 --memory=1g</code>.</figcaption>
           </figure>
         </div>
@@ -310,7 +310,7 @@
       <div class="row rv"><span class="yr">2025</span><span class="nm">AI Research Assistant</span><span class="ds">Vrije Universiteit Amsterdam, Faculty of Computer Science. Language models driving behaviour-tree control of multi-agent systems.</span></div>
       <div class="row rv"><span class="yr">2025</span><span class="nm">Software Engineer</span><span class="ds">Marubeni American Corporation, freelance. VisionPay: distributed document extraction with a fine-tuned vision-language model, wired into SAP, plus the disaster-recovery runbook for it.</span></div>
       <div class="row rv"><span class="yr">2024 &ndash; 25</span><span class="nm">Quantitative Modeling Intern</span><span class="ds">ABN AMRO Bank. Quantitative model development on the data side of the bank, six months.</span></div>
-      <div class="row rv"><span class="yr">2021 &ndash; 23</span><span class="nm">Software Engineer</span><span class="ds">Peek Real Estate. Built and ran the geocoding and points-of-interest service listed below: FastAPI over MongoDB 2dSphere indexes, Elasticsearch, per-client rate limiting, and six hot paths compiled to C with Cython. 341 commits, all mine.</span></div>
+      <div class="row rv"><span class="yr">2021 &ndash; 23</span><span class="nm">Software Engineer</span><span class="ds">Peek Real Estate. Built and ran the geocoding and points-of-interest service listed below: FastAPI over MongoDB 2dSphere indexes, Elasticsearch, per-client rate limiting, and eighteen hot paths compiled to C with Cython. 341 commits, all mine.</span></div>
       <div class="row divider rv"><span class="yr"></span><span class="nm">Education</span><span class="ds"></span></div>
       <div class="row rv"><span class="yr">2026</span><span class="nm">MSc Econometrics</span><span class="ds">University of Amsterdam, Data Science track. Thesis above.</span></div>
       <div class="row rv"><span class="yr">2025</span><span class="nm">BSc Econometrics &amp; Data Science</span><span class="ds">University of Amsterdam. Thesis on Taylor-rule central-bank rates inside an agent-based macro model, on Eurozone data: at the twelve-quarter horizon the inflation-gap rule cut out-of-sample RMSE by up to <strong>33.9%</strong> against an AR(1) baseline and <strong>38.8%</strong> against a VAR(1) baseline.</span></div>
