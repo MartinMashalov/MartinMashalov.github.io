@@ -312,66 +312,80 @@
       <div class="row rv">
         <span class="yr">2026 &ndash;</span>
         <span class="nm">Founder &amp; Software Engineer</span>
-        <span class="ds"><b>GridPull.</b> I build it and I sell it, which means I hear the complaint
-        and then fix it myself. Commercial insurance prospects assembled from public filings and sold
-        to independent agencies. FastAPI and Postgres behind PgBouncer, a 150-worker asyncio pool
-        streaming extraction progress to the browser over server-sent events, and two separate
-        database engines because schema changes need session semantics that transaction pooling
-        cannot give you. The cross-sell engine has no model in it by design: a producer has to be able
-        to explain a coverage-gap recommendation to a client. The extractor scores its own output at
-        <b>98.9% field accuracy</b> across six schedule types with zero error rows.</span>
+        <span class="ds"><b>GridPull.</b> I build it and I sell it, which means I hear the complaint and then fix it
+        myself. Commercial insurance prospects assembled from public filings and sold to independent
+        agencies. <b>FastAPI</b>, <b>SQLAlchemy</b> and <b>asyncpg</b> against <b>PostgreSQL</b>
+        behind <b>PgBouncer</b>, with <b>Redis</b> for queues and a 150-worker <b>asyncio</b> pool
+        streaming extraction progress to the browser over server-sent events. Two separate database
+        engines, because schema changes need session semantics that transaction pooling cannot give
+        you. Extraction runs <b>PyMuPDF</b> and <b>Mistral OCR</b> into <b>Anthropic</b> and
+        <b>OpenAI</b> models with a fallback chain; documents live in <b>S3</b> via <b>boto3</b>;
+        billing is <b>Stripe</b>. The front end is <b>React 18</b> and <b>TypeScript</b> with
+        <b>TanStack Query</b>, <b>Radix</b> and <b>MapLibre</b>, built by <b>Vite</b> and shipped with
+        <b>Docker Compose</b> behind <b>nginx</b> from <b>GitHub Actions</b>. The cross-sell engine has
+        no model in it by design: a producer has to be able to explain a coverage-gap recommendation
+        to a client. The extractor scores its own output at <b>98.9% field accuracy</b> across six
+        schedule types with zero error rows.</span>
       </div>
 
       <div class="row rv">
         <span class="yr">2025 &ndash;</span>
         <span class="nm">Technical Co-Founder</span>
-        <span class="ds"><b>Papyra AI (Sen), partnered with Vertafore.</b> Agent infrastructure that
-        two insurance agencies run their back office on. I own the engine: a <b>64-tool registry</b>
-        behind <b>338 endpoints</b>, and the durability work that makes it safe to let an agent send
-        real client mail. Transaction-scoped Postgres advisory locks with a compare-and-set relock,
-        because PgBouncer's transaction pooling makes session locks a trap that only shows up under
-        load. A pre-send group claim so a redelivered message cannot double-send. Four invariants
-        enforced at one chokepoint, each traced to the production run that motivated it. I also wrote
-        the canvas edge router, a visibility graph with Dijkstra over inflated card corners, which
-        took connection overlaps from eight to zero.</span>
+        <span class="ds"><b>Papyra AI (Sen), partnered with Vertafore.</b> Agent infrastructure that two insurance
+        agencies run their back office on. I own the engine: a <b>64-tool registry</b> behind
+        <b>338 endpoints</b>, <b>FastAPI</b> with <b>SQLAlchemy 2.0</b> async and <b>psycopg3</b> on
+        <b>PostgreSQL</b> behind <b>PgBouncer</b>. Model calls go through <b>litellm</b> across
+        <b>Anthropic</b>, <b>OpenAI</b>, <b>Groq</b> and <b>Gemini</b> so one provider outage does not
+        stop the queue, with <b>DSPy</b> for the eval harness and <b>LightRAG</b> and
+        <b>fastembed</b> behind retrieval. <b>Playwright</b> drives the browser work,
+        <b>sse-starlette</b> streams run progress, <b>Fernet</b> encrypts credentials at rest and
+        <b>Stripe</b> handles billing. The canvas is <b>React Flow</b> and <b>dagre</b> in
+        <b>React 18</b> and <b>TypeScript</b>, with a <b>Tauri</b> desktop build, deployed on
+        <b>Hetzner</b> under <b>systemd</b> and <b>nginx</b>. The durability work is what makes it safe
+        to let an agent send real client mail: transaction-scoped Postgres advisory locks with a
+        compare-and-set relock, because PgBouncer's transaction pooling makes session locks a trap
+        that only shows up under load, and a pre-send group claim so a redelivered message cannot
+        double-send.</span>
       </div>
 
       <div class="row rv">
         <span class="yr">2025</span>
         <span class="nm">AI Research Assistant</span>
-        <span class="ds"><b>Vrije Universiteit Amsterdam, Faculty of Computer Science.</b> Language
-        models driving behaviour-tree control of multi-agent systems: the model writes the policy, the
-        tree keeps it inside behaviour you can inspect and verify. The same question my thesis asks
-        from the other side, which is how much of an agent's competence should live in learned weights
-        and how much in structure around them.</span>
+        <span class="ds"><b>Vrije Universiteit Amsterdam, Faculty of Computer Science.</b> Language models driving
+        behaviour-tree control of multi-agent systems in <b>Python</b>: the model writes the policy,
+        the tree keeps it inside behaviour you can inspect and verify. The same question my thesis
+        asks from the other side, which is how much of an agent's competence should live in learned
+        weights and how much in structure around them.</span>
       </div>
 
       <div class="row rv">
         <span class="yr">2025</span>
         <span class="nm">Software Engineer</span>
-        <span class="ds"><b>Marubeni American Corporation</b>, freelance. VisionPay: distributed
-        document extraction with a fine-tuned vision-language model, wired into SAP so the output
-        landed in the system the finance team already used rather than in a dashboard nobody opens.
-        I wrote the disaster-recovery runbook for it, which is the part that decides whether a
-        pipeline survives its first bad week.</span>
+        <span class="ds"><b>Marubeni American Corporation</b>, freelance. VisionPay: distributed document
+        extraction with a <b>fine-tuned vision-language model</b>, wired into <b>SAP</b> so the output
+        landed in the system the finance team already used rather than in a dashboard nobody opens. I
+        wrote the disaster-recovery runbook for it, which is the part that decides whether a pipeline
+        survives its first bad week.</span>
       </div>
 
       <div class="row rv">
         <span class="yr">2024 &ndash; 25</span>
         <span class="nm">Quantitative Modelling Intern</span>
-        <span class="ds"><b>ABN AMRO Bank.</b> Six months of quantitative model development inside a
-        European bank, where a model that cannot be explained does not ship. That constraint is why
-        the deterministic, explainable-by-construction components in my own products are deliberate
-        rather than accidental.</span>
+        <span class="ds"><b>ABN AMRO Bank.</b> Six months of quantitative model development inside a European bank,
+        working in <b>Python</b> and <b>R</b> where a model that cannot be explained does not ship.
+        That constraint is why the deterministic, explainable-by-construction components in my own
+        products are deliberate rather than accidental.</span>
       </div>
 
       <div class="row rv">
         <span class="yr">2021 &ndash; 23</span>
         <span class="nm">Software Engineer</span>
-        <span class="ds"><b>Peek Real Estate.</b> Built and ran their geocoding and points-of-interest
-        service in production: FastAPI over MongoDB <code>2dSphere</code> indexes with
-        <code>$geoWithin</code> radius queries, Elasticsearch, per-client rate limiting, and eighteen
-        hot paths compiled to C with Cython when the Python versions could not keep up.
+        <span class="ds"><b>Peek Real Estate.</b> Built and ran their geocoding and points-of-interest service in
+        production: <b>FastAPI</b> and <b>PyMongo</b> over <b>MongoDB</b> <code>2dSphere</code>
+        indexes with <code>$geoWithin</code> radius queries, <b>Elasticsearch</b> for text search,
+        <b>slowapi</b> for per-client rate limiting, and address parsing with <b>usaddress</b> and
+        <b>NLTK</b>. Eighteen hot paths compiled to C with <b>Cython</b> when the <b>NumPy</b> and
+        <b>pandas</b> versions could not keep up. Containerised with <b>Docker</b>.
         <b>341 commits, all mine.</b> I was eighteen when I started it.</span>
       </div>
 
@@ -421,9 +435,22 @@
       </div>
     </div>
     <p class="stackline rv">
-      <b>Stack</b>
-      Python · PyTorch · FastAPI · asyncio · PostgreSQL · Redis · TypeScript · React ·
-      Docker · Terraform · Kubernetes · AWS · GCP · Prometheus · Playwright
+      <b>Languages</b>
+      Python · TypeScript · JavaScript · SQL · R · Cython · Metal shading language
+      <b>ML</b>
+      PyTorch · torch.distributed · DTensor · Hugging Face Transformers · PEFT / LoRA · TRL · GRPO ·
+      DSPy · scikit-learn · NumPy · pandas · SciPy · FlashAttention-2 · bfloat16
+      <b>Serving &amp; agents</b>
+      Anthropic · OpenAI · Gemini · Groq · Cerebras · litellm · LangChain · LightRAG · ChromaDB ·
+      tool-use loops · MCP-shaped adapters · Playwright · PyWinAuto
+      <b>Backend</b>
+      FastAPI · asyncio · SQLAlchemy 2.0 · asyncpg · psycopg3 · PostgreSQL · PgBouncer · Redis ·
+      SQLite · Celery · server-sent events · Pydantic · Stripe
+      <b>Front end</b>
+      React 18 · Vite · Tailwind · Radix · TanStack Query · React Flow · MapLibre · Tauri
+      <b>Infrastructure</b>
+      Docker · Kubernetes · Terraform · AWS · GCP · Hetzner · nginx · systemd · Slurm · Ray ·
+      Prometheus · Grafana · GitHub Actions · cgroups · gloo
     </p>
   </section>
 
