@@ -213,9 +213,11 @@
 #SBATCH --time=12:00:00
       </div>
 
-      <h3>The processes have to find each other</h3>
+      <h3>Eight processes, two nodes, one NCCL process group</h3>
       <p>
-        Eight processes across two machines need a meeting point before they can form a process group.
+        The eight ranks talk over <b>NCCL</b>, which is what PyTorch selects on CUDA, so the gradient
+        all-reduce crosses the InfiniBand fabric between the two nodes rather than staying on NVLink.
+        Before any of that, the eight processes need a meeting point in order to form the group at all.
         The first hostname in the Slurm allocation becomes the rendezvous address, and the port is
         derived from the job ID rather than fixed, because two of my own jobs landing on the same node
         with the same hard-coded port will collide and hang. Each process learns which machine it is
