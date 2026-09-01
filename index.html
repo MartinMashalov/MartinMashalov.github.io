@@ -169,6 +169,33 @@
         </div>
       </article>
 
+      <article class="entry rv">
+        <div class="meta">2026<span class="status">open source</span></div>
+        <div>
+          <h3><a href="https://github.com/MartinMashalov/transformer-internals">transformer-internals</a></h3>
+          <p class="hook">GPT-2 rebuilt from the paper, then proved correct against the reference — and only then used as an instrument to measure what each part of it is worth.</p>
+          <p class="desc">
+            Most from-scratch transformers can&rsquo;t be checked: a subtly wrong attention mask still
+            produces plausible text and a falling loss curve. So this one loads the real GPT-2 weights
+            and compares every sub-module of all twelve blocks against the reference. Once it is
+            verified it becomes a measuring device: what pre-LayerNorm and weight tying actually buy,
+            where the KV cache turns quadratic into linear, what per-channel quantization saves over
+            per-tensor, and which heads do induction.
+          </p>
+          <div class="chips">
+            <span>PyTorch</span><span>KV cache</span><span>GQA / MQA</span>
+            <span>int8 / int4</span><span>pruning</span><span>distillation</span>
+          </div>
+          <div class="links">
+            <a href="https://github.com/MartinMashalov/transformer-internals">Repository</a>
+          </div>
+        </div>
+        <div class="result">
+          <span class="n">6.1e&minus;5</span>
+          <span class="k">worst logit disagreement against HuggingFace across 75 compared layers &mdash; the proof that everything measured afterwards means something</span>
+        </div>
+      </article>
+
       <article class="entry rv" id="gridpull">
         <div class="meta">2026<span class="status">production</span></div>
         <div>
