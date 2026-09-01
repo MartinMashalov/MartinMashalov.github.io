@@ -1,10 +1,5 @@
-/* Martin Mashalov — personal site
-   Three behaviours, nothing more:
-   1. the hero decodes out of [MASK] tokens, the way a masked
-      diffusion language model actually decodes a sequence
-   2. the left rail reports real scroll position
-   3. sections fade in once
-*/
+/* Two behaviours: the left rail reports scroll position, and sections
+   fade in once. */
 
 (() => {
   "use strict";
@@ -12,93 +7,6 @@
   document.documentElement.classList.add("js");
 
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  /* ---------- 1. the decode -------------------------------------- */
-
-  function buildGlyphs(el) {
-    const cells = [];
-    el.querySelectorAll(".ln").forEach((line) => {
-      const text = line.textContent;
-      line.textContent = "";
-      // Glyphs are inline-blocks, so without a per-word box the browser is free
-      // to break BETWEEN any two letters -- which wrapped the name as
-      // "MASHALO / V" at narrow widths. Words are the only break points.
-      let word = null;
-      for (const ch of text) {
-        const s = document.createElement("span");
-        s.className = ch === " " ? "gl sp" : "gl";
-        s.textContent = ch === " " ? " " : ch;
-        if (ch !== " ") cells.push(s);
-        if (ch === " ") {
-          word = null;
-          line.appendChild(s);
-        } else {
-          if (!word) {
-            word = document.createElement("span");
-            word.className = "wd";
-            line.appendChild(word);
-          }
-          word.appendChild(s);
-        }
-      }
-    });
-    return cells;
-  }
-
-  function decode(el, meta) {
-    const cells = buildGlyphs(el);
-    if (reduced || cells.length === 0) {
-      if (meta) meta.textContent = meta.dataset.done || "";
-      return;
-    }
-
-    cells.forEach((c) => (c.dataset.state = "masked"));
-
-    // Reveal order: shuffled, so the line resolves as a field rather
-    // than left to right — that is what non-autoregressive decoding
-    // looks like.
-    const order = cells.map((_, i) => i);
-    for (let i = order.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [order[i], order[j]] = [order[j], order[i]];
-    }
-
-    const STEPS = 12;
-    const STEP_MS = 105;
-    let t = 0;
-
-    const tick = () => {
-      t += 1;
-      // cosine schedule: slow, then a rush, then a settle
-      const frac = (1 - Math.cos((Math.PI * t) / STEPS)) / 2;
-      const target = Math.round(frac * cells.length);
-      const done = cells.filter((c) => c.dataset.state === "revealed").length;
-
-      for (let k = done; k < target; k++) {
-        const cell = cells[order[k]];
-        cell.dataset.state = "firing";
-        setTimeout(() => (cell.dataset.state = "revealed"), 110);
-      }
-
-      if (meta) {
-        meta.innerHTML =
-          '<i class="dot"></i> masked-diffusion decode &nbsp;·&nbsp; step ' +
-          String(t).padStart(2, "0") + " / " + STEPS +
-          " &nbsp;·&nbsp; " + target + "/" + cells.length + " tokens";
-      }
-
-      if (t < STEPS) {
-        setTimeout(tick, STEP_MS);
-      } else {
-        cells.forEach((c) => (c.dataset.state = "revealed"));
-        setTimeout(() => {
-          if (meta) meta.innerHTML = '<i class="dot"></i> ' + (meta.dataset.done || "");
-        }, 420);
-      }
-    };
-
-    setTimeout(tick, 260);
-  }
 
   /* ---------- 2. the rail ---------------------------------------- */
 
@@ -167,22 +75,6 @@
     railSpy();
     reveal();
 
-    const h1 = document.querySelector("h1.decode");
-    const meta = document.querySelector(".decode-meta");
-    if (!h1) return;
-
-    // Wait for Archivo before masking: the [MASK] cells are sized to the
-    // glyph underneath them, so starting on the fallback face and swapping
-    // mid-decode would make every block jump.
-    const go = () => decode(h1, meta);
-    if (document.fonts && document.fonts.ready) {
-      let fired = false;
-      const once = () => { if (!fired) { fired = true; go(); } };
-      document.fonts.ready.then(once);
-      setTimeout(once, 1200); // never hold the hero hostage to a slow CDN
-    } else {
-      go();
-    }
   };
 
   if (document.readyState === "loading") {

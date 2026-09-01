@@ -81,37 +81,35 @@
   <section class="hero">
     <p class="eyebrow">Machine learning &amp; AI infrastructure engineer</p>
 
-    <h1 class="decode">
-      <span class="ln">Martin Mashalov</span>
-    </h1>
-
-    <p class="decode-meta" data-done="masked-diffusion decode &nbsp;·&nbsp; 12 steps &nbsp;·&nbsp; shuffled reveal order &nbsp;·&nbsp; the subject of my thesis"></p>
+    <h1>Martin Mashalov</h1>
 
     <div class="hero-lower">
-      <p class="lede">
-        I train, deploy, and scale AI models — and the agent systems built on top of them. My
-        MSc thesis put reinforcement learning on <em>diffusion language models</em>; day to day I
-        ship production AI infrastructure: agent runtimes that stay up under load, and document
-        extraction that has to be right.
-      </p>
+      <div class="hero-text">
+        <p class="lede">
+          I train, deploy and scale AI models, and build the agent systems that run on top of them.
+          My MSc thesis put reinforcement learning on <em>diffusion language models</em>. Day to day
+          that means a runtime keeping a few thousand agents alive on one small machine, a document
+          extractor whose accuracy is a measured number rather than a promise, and the workflow
+          platform two insurance agencies run their back office on.
+        </p>
+        <p class="hero-note">
+          Everything below links to code you can read, and every number on this page comes from a
+          file in the repository it describes.
+        </p>
+      </div>
       <figure class="portrait">
         <img src="assets/portrait.jpg" srcset="assets/portrait.jpg 1x, assets/portrait@2x.jpg 2x"
              width="280" height="280" alt="Martin Mashalov" loading="eager" decoding="async">
       </figure>
     </div>
 
-    <div class="readout">
-      <div><span class="n">500<small>/500</small></span><span class="k">agent runs that finished after the process was killed mid-flight &mdash; zero lost, zero duplicated, on a 1-vCPU 1&nbsp;GB container</span></div>
-      <div><span class="n">4</span><span class="k">escalating tests, each harder to fake than the last &mdash; known modes, stylized facts, discriminability, downstream usefulness</span></div>
-      <div><span class="n">+15.2<small>pp</small></span><span class="k">HumanEval pass@1 from re-fitting a diffusion model’s unmasking policy to its reward-tuned weights &mdash; 46.6 to 61.8 at a matched decoding budget, MSc thesis</span></div>
-    </div>
   </section>
 
   <!-- ===================== WORK ===================== -->
   <section class="band" id="work">
     <div class="band-head">
       <h2>Selected work</h2>
-      <span class="count">six, most recent first</span>
+      <span class="count">seven, most recent first</span>
     </div>
 
     <div class="work">
@@ -120,10 +118,9 @@
         <div class="meta">2026<span class="status">production</span></div>
         <div>
           <h3>Sen &nbsp;<span class="alias">papyra.org</span></h3>
-          <p class="hook">Agentic infrastructure for real businesses. Describe a process in plain English; get a workflow you can see, edit, and run — with a person approving anything that leaves the building.</p>
+          <p class="hook">Agentic infrastructure for real businesses. Describe a process in plain English; get a workflow you can see, edit, and run. A person approves anything that leaves the building.</p>
           <p class="desc">
-            The description compiles into a visual node graph — triggers, tool steps, branches,
-            approval gates — and a durable engine runs it per account across email, cloud storage,
+            The description compiles into a visual node graph of triggers, tool steps, branches and approval gates, and a durable engine runs it per account across email, cloud storage,
             and the agency management system, through a registry of 64 tools. The hard part isn’t the
             model. A workflow that sends real client mail must never send twice and never silently
             skip a step, so every state transition passes one chokepoint enforcing four invariants,
@@ -133,7 +130,7 @@
             <span>FastAPI</span><span>PostgreSQL</span><span>advisory locks</span>
             <span>React</span><span>litellm</span><span>Playwright</span>
           </div>
-          <div class="links"><span class="soon">Private — happy to walk through it</span></div>
+          <div class="links"><span class="soon">Private. Happy to walk through it.</span></div>
         </div>
         <div class="result">
           <span class="n">64</span>
@@ -165,7 +162,7 @@
         </div>
         <div class="result">
           <span class="n">61.8</span>
-          <span class="k">HumanEval pass@1 on Dream, up from 46.6 for the same policy on the base model at a matched decoding budget — University of Amsterdam, July 2026</span>
+          <span class="k">HumanEval pass@1 on Dream, up from 46.6 for the same policy on the base model at a matched decoding budget. University of Amsterdam, July 2026</span>
         </div>
       </article>
 
@@ -173,7 +170,7 @@
         <div class="meta">2026<span class="status">open source</span></div>
         <div>
           <h3><a href="https://github.com/MartinMashalov/transformer-internals">transformer-internals</a></h3>
-          <p class="hook">GPT-2 rebuilt from the paper, then proved correct against the reference — and only then used as an instrument to measure what each part of it is worth.</p>
+          <p class="hook">GPT-2 rebuilt from the paper, then proved correct against the reference, and only then used as an instrument to measure what each part of it is worth.</p>
           <p class="desc">
             Most from-scratch transformers can&rsquo;t be checked: a subtly wrong attention mask still
             produces plausible text and a falling loss curve. So this one loads the real GPT-2 weights
@@ -192,7 +189,7 @@
         </div>
         <div class="result">
           <span class="n">6.1e&minus;5</span>
-          <span class="k">worst logit disagreement against HuggingFace across 75 compared layers &mdash; the proof that everything measured afterwards means something</span>
+          <span class="k">worst logit disagreement against HuggingFace across 75 compared layers. That is what makes everything measured afterwards mean anything</span>
         </div>
       </article>
 
@@ -200,7 +197,7 @@
         <div class="meta">2026<span class="status">production</span></div>
         <div>
           <h3>GridPull</h3>
-          <p class="hook">Commercial insurance prospects, each carrying a renewal date that is either copied verbatim from a named source or labeled an estimate — never quietly modeled.</p>
+          <p class="hook">Commercial insurance prospects, each carrying a renewal date that is either copied verbatim from a named source or labeled an estimate. Never quietly modeled.</p>
           <p class="desc">
             A producer needs to call a business ninety days before its policy renews. A verified
             renewal date is copied straight from the source registry and marked verified; where none
@@ -214,11 +211,11 @@
             <span>FastAPI</span><span>asyncpg</span><span>PgBouncer</span>
             <span>React 18</span><span>TypeScript</span><span>SSE</span>
           </div>
-          <div class="links"><span class="soon">Private — happy to walk through it</span></div>
+          <div class="links"><span class="soon">Private. Happy to walk through it.</span></div>
         </div>
         <div class="result">
           <span class="n">98.9<small>%</small></span>
-          <span class="k">field accuracy extracting insurance schedules from 100 documents across six schedule types, zero error rows — measured by its own test suite, not estimated</span>
+          <span class="k">field accuracy extracting insurance schedules from 100 documents across six schedule types, zero error rows, measured by its own test suite rather than estimated</span>
         </div>
       </article>
 
@@ -226,13 +223,13 @@
         <div class="meta">2026<span class="status">private</span></div>
         <div>
           <h3><a href="https://github.com/MartinMashalov/gtm-agent">gtm-agent</a></h3>
-          <p class="hook">A go-to-market agent that finds people describing your problem on Reddit, qualifies them against your ideal-customer profile, and drafts the outreach — with every send behind a human approval gate.</p>
+          <p class="hook">A go-to-market agent that finds people describing your problem on Reddit, qualifies them against your ideal-customer profile, and drafts the outreach. Every send sits behind a human approval gate.</p>
           <p class="desc">
             Cheap deterministic rules run first; the model only ever sees what survives them, and a
             test enforces that. Every model call is metered and attributed, so cost per qualified lead
-            is a reported number rather than an estimate — measured end to end on a recorded corpus
+            is a reported number rather than an estimate, measured end to end on a recorded corpus
             against a deterministic offline model. Official APIs only, no scraping and no browser
-            automation of LinkedIn — which is the difference between a tool a company can deploy and
+            automation of LinkedIn. That is the difference between a tool a company can deploy and
             one that gets its accounts banned.
           </p>
           <div class="chips">
@@ -251,14 +248,13 @@
         <div class="meta">2026<span class="status">open source</span></div>
         <div>
           <h3><a href="https://github.com/MartinMashalov/agent-fleet">agent-fleet</a></h3>
-          <p class="hook">One asyncio supervisor, a bounded pool, and a durable queue — so the process can be killed mid-flight without losing a run.</p>
+          <p class="hook">One asyncio supervisor, a bounded pool, and a durable queue, so the process can be killed mid-flight without losing a run.</p>
           <p class="desc">
             An agent run is roughly 99% I/O wait on a model API, so the right shape is one asyncio
             supervisor with a bounded pool rather than a thread per agent. The hard parts come after:
             an at-least-once queue with leases and idempotency keys, per-step checkpointing so a
             killed process resumes mid-run, and backpressure that never lets concurrency exceed its
-            cap. Measured in a 1-vCPU, 1&nbsp;GB container against a deterministic mock provider —
-            546 agent steps a second.
+            cap. Measured in a 1-vCPU, 1&nbsp;GB container against a deterministic mock provider: 546 agent steps a second.
           </p>
           <div class="chips">
             <span>asyncio</span><span>Redis</span><span>Prometheus</span>
@@ -282,10 +278,9 @@
         <div class="meta">2026<span class="status">open source</span></div>
         <div>
           <h3><a href="https://github.com/MartinMashalov/generative-eval">generative-eval</a></h3>
-          <p class="hook">Generative models are usually judged by eye. This scores five training objectives against ground truth on two testbeds — and the tests disagree about which one is best.</p>
+          <p class="hook">Generative models are usually judged by eye. This scores five training objectives against ground truth on two testbeds, and the tests disagree about which one is best.</p>
           <p class="desc">
-            First a mixture of Gaussians, where the true modes are known exactly — that arm exists to
-            validate the instrument. Then 48,000 real intraday equity bars from 2005 to 2022, where
+            First a mixture of Gaussians, where the true modes are known exactly. That arm exists to validate the instrument. Then 48,000 real intraday equity bars from 2005 to 2022, where
             the stylized facts of financial returns are a published answer key: fat tails, volatility
             clustering, and the leverage effect. Four escalating tests, each harder to fake than the
             last, and no human deciding whether a sample looks right.
@@ -321,11 +316,11 @@
       <div class="row rv"><span class="yr">2026 &ndash;</span><span class="nm">Founder &amp; Software Engineer</span><span class="ds">GridPull. Building and selling the product end to end.</span></div>
       <div class="row rv"><span class="yr">2025 &ndash;</span><span class="nm">Technical Co-Founder</span><span class="ds">Papyra AI (Sen), partnered with Vertafore. Workflow automation for insurance agencies; I own the engine and the platform.</span></div>
       <div class="row rv"><span class="yr">2025</span><span class="nm">AI Research Assistant</span><span class="ds">Vrije Universiteit Amsterdam. Language models for multi-agent control.</span></div>
-      <div class="row rv"><span class="yr">2025</span><span class="nm">Software Engineer</span><span class="ds">Marubeni American Corporation &mdash; freelance. VisionPay: distributed document extraction with a fine-tuned vision-language model and SAP integration.</span></div>
+      <div class="row rv"><span class="yr">2025</span><span class="nm">Software Engineer</span><span class="ds">Marubeni American Corporation, freelance. VisionPay: distributed document extraction with a fine-tuned vision-language model and SAP integration.</span></div>
       <div class="row rv"><span class="yr">2024 &ndash; 25</span><span class="nm">Quantitative Modeling Intern</span><span class="ds">ABN AMRO Bank. Data and quantitative model development.</span></div>
       <div class="row rv"><span class="yr">2021 &ndash; 23</span><span class="nm">Software Engineer</span><span class="ds">Peek Real Estate. Built and ran the geocoding and points-of-interest service listed below.</span></div>
       <div class="row divider rv"><span class="yr"></span><span class="nm">Education</span><span class="ds"></span></div>
-      <div class="row rv"><span class="yr">2026</span><span class="nm">MSc Econometrics</span><span class="ds">University of Amsterdam &mdash; track: Data Science. Thesis above.</span></div>
+      <div class="row rv"><span class="yr">2026</span><span class="nm">MSc Econometrics</span><span class="ds">University of Amsterdam, Data Science track. Thesis above.</span></div>
       <div class="row rv"><span class="yr">2025</span><span class="nm">BSc Econometrics &amp; Data Science</span><span class="ds">University of Amsterdam. Thesis on Taylor-rule central-bank rates inside an agent-based macro model, on Eurozone data: at the twelve-quarter horizon the inflation-gap rule cut out-of-sample RMSE by up to <strong>33.9%</strong> against an AR(1) baseline and <strong>38.8%</strong> against a VAR(1) baseline.</span></div>
     </div>
   </section>

@@ -185,7 +185,7 @@ a { color: inherit; }
   background: var(--rule);
 }
 
-h1.decode {
+h1 {
   font-family: var(--display);
   font-weight: 800;
   font-stretch: 112%;
@@ -196,40 +196,10 @@ h1.decode {
   text-transform: uppercase;
   overflow-wrap: anywhere;
 }
-h1.decode .ln { display: block; }
 /* One box per word. The decode splits the name into per-glyph inline-blocks,
    which the browser would otherwise break between ("MASHALO / V" at 390px). */
-h1.decode .wd { display: inline-block; white-space: nowrap; }
 
-/* each glyph is a cell that resolves out of the mask */
-.gl {
-  display: inline-block;
-  position: relative;
-  transition: color .16s linear;
-}
-.gl[data-state="masked"] {
-  color: var(--wash-2);
-}
-.gl[data-state="revealed"] { color: var(--ink); }
-.gl.sp { width: 0.26em; }
 
-.decode-meta {
-  margin: 26px 0 0;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-height: 16px;
-}
-.decode-meta .dot {
-  width: 6px; height: 6px;
-  background: var(--accent);
-  display: inline-block;
-}
 
 .lede {
   margin: 34px 0 0;
@@ -671,7 +641,6 @@ html.js .rv.in { opacity: 1; transform: none; transition: opacity .5s ease, tran
 
 @media (prefers-reduced-motion: reduce) {
   html.js .rv, html.js .rv.in { opacity: 1; transform: none; transition: none; }
-  .gl { transition: none; }
 }
 
 @media print {
@@ -679,30 +648,7 @@ html.js .rv.in { opacity: 1; transform: none; transition: opacity .5s ease, tran
   body { font-size: 11pt; }
 }
 
-/* ============================================================
-   Masked-diffusion decode, refined.
-   A [MASK] token is drawn as a filled cell exactly the width of
-   the glyph beneath it, so nothing reflows as the line resolves.
-   ============================================================ */
-.gl { color: var(--ink); }
 .gl[data-state="masked"] { color: transparent; }
-.gl[data-state="masked"]::after {
-  content: "";
-  position: absolute;
-  left: 0.035em; right: 0.035em;
-  top: 0.13em; bottom: 0.14em;
-  background: var(--wash-2);
-}
-.gl[data-state="firing"] { color: var(--accent-ink); }
-.gl[data-state="firing"]::after {
-  content: "";
-  position: absolute;
-  left: 0.035em; right: 0.035em;
-  top: 0.13em; bottom: 0.14em;
-  background: var(--accent);
-  z-index: -1;
-}
-.gl.sp::after { display: none; }
 
 .stack h4 span {
   display: block;
@@ -751,13 +697,14 @@ html.js .rv.in { opacity: 1; transform: none; transition: opacity .5s ease, tran
    Hero portrait — sized to the grid, not floated decoration.
    ============================================================ */
 .hero-lower {
-  margin: 26px 0 0;
+  margin: 22px 0 0;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 176px;
   gap: 40px;
   align-items: start;
 }
 .hero-lower .lede { margin: 0; }
+.hero-text { min-width: 0; }
 
 .portrait { margin: 0; }
 .portrait img {
@@ -812,4 +759,12 @@ code {
   text-transform: uppercase;
   color: var(--ink);
   margin-bottom: 8px;
+}
+
+.hero-note {
+  margin: 18px 0 0;
+  max-width: 62ch;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink-soft);
 }
