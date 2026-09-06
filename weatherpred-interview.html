@@ -1,0 +1,168 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Project brief and interview guide — Martin Mashalov</title><meta name="description" content="WeatherPred: auditable weather-market research, trading strategies, mathematics and realistic paper execution."><meta name="author" content="Martin Mashalov"><meta property="og:title" content="Project brief and interview guide"><meta property="og:type" content="article"><meta property="og:url" content="https://martinmashalov.github.io/weatherpred-interview.html"><meta property="og:image" content="https://martinmashalov.github.io/assets/og.png"><link rel="canonical" href="https://martinmashalov.github.io/weatherpred-interview.html"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="thesis.css"><link rel="stylesheet" href="weatherpred.css"></head><body><div class="gridlines" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><main class="shell"><header class="masthead"><b><a href="index.html" style="text-decoration:none">Martin Mashalov</a></b><nav aria-label="Project navigation"><a href="weatherpred.html">Project</a><a href="weatherpred-math.html">Math</a><a href="index.html#contact">Contact</a></nav></header><section class="hero doc-hero"><p class="eyebrow">WeatherPred / Technical guide</p><h1 class="doc-title">Project brief and interview guide</h1><p class="lede">Implemented methods, worked examples and the limits of the evidence.</p><div class="project-links"><a href="weatherpred.html">Project overview</a><a href="weatherpred-strategies.html">Strategies</a><a href="weatherpred-math.html">Mathematics</a><a href="weatherpred-interview.html">Project brief</a><a href="https://github.com/MartinMashalov/WeatherPred/blob/main/docs/INTERVIEW_GUIDE.md">Source document ↗</a></div><nav class="contents" aria-label="Guide contents"><a href="#section-1">The project in one minute</a><a href="#section-2">Suggested résumé bullets</a><a href="#section-3">How the strategies fit together</a><a href="#section-4">What to emphasize for a role</a><a href="#section-5">Questions worth being ready to answer</a><a href="#section-6">A short glossary</a></nav></section><article class="article-body"><h2 id="section-1">The project in one minute</h2>
+<p>“WeatherPred is my quantitative research and paper-execution project for weather
+prediction markets. It connects archived weather forecasts, exact settlement
+rules and market prices to interpretable probability models and trading policies.
+I built a reproducible experiment runner and a simulator that accounts for fees,
+delays, queue position, partial fills and capital availability. The first 1,836 policy/cost
+comparisons did not establish a profitable strategy, and the repository explains
+why. The engineering contribution is making those conclusions auditable.”</p>
+<p>The research connects two questions: <strong>how likely is the weather outcome, and
+could an order actually earn money at the available price?</strong> Better forecasts
+help only when their advantage survives the spread, fees, uncertainty and the
+risk of receiving an unfavorable fill.</p>
+<p>Read the <a href="weatherpred-strategies.html">strategy guide</a> for every implemented approach and the
+<a href="weatherpred-math.html">mathematics guide</a> for derivations and numerical examples.</p>
+<h2 id="section-2">Suggested résumé bullets</h2>
+<ul>
+<li>Developed a Python weather-market research pipeline covering 11,610 historical
+contracts and 1,935 events, with versioned raw sources and chronological
+information-availability checks.</li>
+<li>Implemented Gaussian/empirical forecast calibration, constrained logarithmic
+pooling and a resumable trading-policy search spanning 1,836 cost comparisons;
+used whole-day resampling and earlier-period selection to evaluate selection bias.</li>
+<li>Built a forward paper-execution ledger for latency, depth, partial maker/taker
+fills, fees, cash reservations and same-contract netting; independently replayed
+253,227 historical hypothetical trade calculations from raw market records.</li>
+</ul>
+<p>These counts describe the dated evidence snapshot. They do not imply production
+trading, that many unique trades, a profitable fund, or independent observations.
+The project was developed with AI coding assistance; implementation claims should
+be defended by the equations, tests and raw-data audits, not by claims about how
+many lines were written manually.</p>
+<h2 id="section-3">How the strategies fit together</h2>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Practical question</th>
+<th>What was learned</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Forecast calibration and pooling</td>
+<td>Can earlier weather errors or a weather/market combination improve probabilities?</td>
+<td>Some small development improvements; none establishes a costed trading edge.</td>
+</tr>
+<tr>
+<td>Momentum, reversal, favorites and longshots</td>
+<td>Can earlier prices predict useful later price changes or settlement returns?</td>
+<td>Positive-looking candidates disappear under search correction or chronological selection.</td>
+</tr>
+<tr>
+<td>Bracket baskets and observed-high constraints</td>
+<td>Can settlement logic rule out expensive or impossible combinations?</td>
+<td>No positive costed basket; preliminary observations can disagree with final settlement.</td>
+</tr>
+<tr>
+<td>Paired passive quotes</td>
+<td>Can spread capture pay for inventory risk and waiting behind other orders?</td>
+<td>Separate forward experiments model independent fills, unmatched inventory and same-contract offsets; validation is ongoing.</td>
+</tr>
+<tr>
+<td>Observation receipt recording</td>
+<td>Does a newly received station report arrive before a useful market reaction?</td>
+<td>Exact station versions and adjacent books are being recorded; an information-speed advantage is not established.</td>
+</tr>
+</tbody></table>
+<h2 id="section-4">What to emphasize for a role</h2>
+<p><strong>Quantitative research:</strong> explain the hypothesis, chronological split, cost
+model and why a failed experiment changes the next question. The strongest
+example is the small forecast-score gain that becomes a trading loss after costs.</p>
+<p><strong>Machine learning:</strong> explain probability distributions, station bias correction,
+regularization and the weather/market combination. Show how an earlier model fit
+produces the training inputs for the next stage without using its own future labels.</p>
+<p><strong>Software or data engineering:</strong> follow one decision through original source
+versions, receipt-time checks, reserved cash, a later partial fill and an audit.
+Explain how a frozen registration makes a resumed run use the same rules, and
+how an atomic fill-and-offset update prevents double cash credits.</p>
+<h2 id="section-5">Questions worth being ready to answer</h2>
+<p><strong>Why can a better Brier score still lose money?</strong> Brier score is the average
+squared error of a probability forecast; lower is better. A trade must beat the
+particular executable ask plus fees and worse execution prices where it is
+selected. E007/E008 demonstrate the distinction.</p>
+<p><strong>Why not just pick the best backtest?</strong> Trying hundreds of policies creates
+lucky winners. The best costed E013 development result is +$3.33, while its
+training result is negative and the separately timed monthly selector loses
+$4.45. Selection and evaluation must be separated. A holdout is data set aside
+for evaluation; once inspected to guide changes, it becomes development data.</p>
+<p><strong>What is difficult about a maker fill?</strong> Touching a limit price is insufficient.
+Other orders can be ahead, a public print can be late or duplicated, and fills
+can be adversely selected. The simulator requires fresh qualifying trade-through
+volume after the displayed queue ahead and limits participation.</p>
+<p><strong>Why not treat an observed daily high as a hard bound?</strong> Preliminary reports can
+be corrected or disagree with final settlement. E014 finds a 79°F preliminary
+report against a 77°F final exchange value. The apparently cheap NO loses.</p>
+<p><strong>Does a matched YES/NO pair prove the market maker earns money?</strong> It proves only
+the result of that matched quantity. Other positions may be unmatched and lose
+more. Same-contract netting returns matched cash early, but it does not improve
+the eventual profit of those same fills. New trades using returned cash require
+new execution evidence.</p>
+<p><strong>What does “autoresearch” mean here?</strong> A reproducible runner evaluates a
+registered grid, records failures and abstentions, checks chronological results
+and resumes safely. It does not invent a profitable strategy, repeatedly tune
+against the final holdout, or place real-money orders.</p>
+<p><strong>What can someone reproduce from GitHub alone?</strong> Unit tests and the compact
+evidence reports. Full empirical replay requires the separately stored raw
+archive. The reproduction guide makes that distinction explicit.</p>
+<p><strong>What would justify progressing to real trading?</strong> An untouched chronological
+test, enough independent forward days, realistic fills/costs, stable parameters,
+source reconciliation and credible drawdown/capital estimates. Those gates
+remain unmet. See the exact <a href="https://github.com/MartinMashalov/WeatherPred/blob/main/config/validation.json">validation protocol</a>.</p>
+<h2 id="section-6">A short glossary</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning in this project</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NBM</td>
+<td>NOAA&#39;s National Blend of Models, a source of combined weather guidance.</td>
+</tr>
+<tr>
+<td>Residual</td>
+<td>The observed temperature minus its earlier forecast.</td>
+</tr>
+<tr>
+<td>Calibration</td>
+<td>Agreement between forecast probabilities and observed frequencies.</td>
+</tr>
+<tr>
+<td>Regularization</td>
+<td>A penalty that discourages a model from fitting unstable patterns.</td>
+</tr>
+<tr>
+<td>Maker / taker</td>
+<td>A maker posts an order for others to trade against; a taker trades against an existing order.</td>
+</tr>
+<tr>
+<td>Spread / depth</td>
+<td>The gap between bid and ask / the displayed quantity available at each price.</td>
+</tr>
+<tr>
+<td>Slippage</td>
+<td>A worse execution price than the decision assumed.</td>
+</tr>
+<tr>
+<td>Adverse selection</td>
+<td>The possibility that an order fills because the market has moved against it.</td>
+</tr>
+<tr>
+<td>Bootstrap</td>
+<td>Repeatedly resampling observations to measure uncertainty; here related days/contracts stay grouped.</td>
+</tr>
+<tr>
+<td>Kelly sizing</td>
+<td>Choosing an allocation by expected logarithmic bankroll growth; its usefulness depends on the probability estimate.</td>
+</tr>
+<tr>
+<td>Netting</td>
+<td>Offsetting opposite positions in the same contract and returning matched cash.</td>
+</tr>
+</tbody></table>
+<p>For a job application, link the <a href="https://martinmashalov.github.io/weatherpred.html">case study</a>
+and <a href="https://github.com/MartinMashalov/WeatherPred">repository</a>. Describe the
+implemented research and its measured results; profitable trading and the
+$100 to $10,000 target remain unproven.</p>
+</article></main></body></html>
