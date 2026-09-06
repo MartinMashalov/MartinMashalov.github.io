@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Every strategy, explained — Martin Mashalov</title><meta name="description" content="WeatherPred: auditable weather-market research, trading strategies, mathematics and realistic paper execution."><meta name="author" content="Martin Mashalov"><meta property="og:title" content="Every strategy, explained"><meta property="og:type" content="article"><meta property="og:url" content="https://martinmashalov.github.io/weatherpred-strategies.html"><meta property="og:image" content="https://martinmashalov.github.io/assets/og.png"><link rel="canonical" href="https://martinmashalov.github.io/weatherpred-strategies.html"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="thesis.css"><link rel="stylesheet" href="weatherpred.css"></head><body><div class="gridlines" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><main class="shell"><header class="masthead"><b><a href="index.html" style="text-decoration:none">Martin Mashalov</a></b><nav aria-label="Project navigation"><a href="weatherpred.html">Project</a><a href="weatherpred-math.html">Math</a><a href="index.html#contact">Contact</a></nav></header><section class="hero doc-hero"><p class="eyebrow">WeatherPred / Technical guide</p><h1 class="doc-title">Every strategy, explained</h1><p class="lede">Implemented methods, worked examples and the limits of the evidence.</p><div class="project-links"><a href="weatherpred.html">Project overview</a><a href="weatherpred-strategies.html">Strategies</a><a href="weatherpred-math.html">Mathematics</a><a href="https://github.com/MartinMashalov/WeatherPred/blob/main/docs/STRATEGIES.md">Source document ↗</a></div><nav class="contents" aria-label="Guide contents"><a href="#section-1">The trading problem</a><a href="#section-2">1. Complete-bracket consistency — E001</a><a href="#section-3">2. Market-only probability calibration — E002</a><a href="#section-4">3. Daily weather distributions — E003 and E010</a><a href="#section-5">4. Hourly persistence, trend and freshness — E004–E006</a><a href="#section-6">5. Combine weather and market probabilities — E007–E008</a><a href="#section-7">6. Forward paper execution — E009</a><a href="#section-8">7. Trading-policy autoresearch — E013</a><a href="#section-9">8. Observed-high constraints — E011, E012 and E014</a><a href="#section-10">9. Paired passive quotes with inventory control — E015</a><a href="#section-11">What is still a research idea</a><a href="#section-12">What this project demonstrates</a></nav></section><article class="article-body"><p>WeatherPred is a research and paper-trading system for weather prediction markets.
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Every strategy, explained — Martin Mashalov</title><meta name="description" content="WeatherPred: auditable weather-market research, trading strategies, mathematics and realistic paper execution."><meta name="author" content="Martin Mashalov"><meta property="og:title" content="Every strategy, explained"><meta property="og:type" content="article"><meta property="og:url" content="https://martinmashalov.github.io/weatherpred-strategies.html"><meta property="og:image" content="https://martinmashalov.github.io/assets/og.png"><link rel="canonical" href="https://martinmashalov.github.io/weatherpred-strategies.html"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wght@400..700&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="thesis.css"><link rel="stylesheet" href="weatherpred.css"></head><body><div class="gridlines" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><main class="shell"><header class="masthead"><b><a href="index.html" style="text-decoration:none">Martin Mashalov</a></b><nav aria-label="Project navigation"><a href="weatherpred.html">Project</a><a href="weatherpred-math.html">Math</a><a href="index.html#contact">Contact</a></nav></header><section class="hero doc-hero"><p class="eyebrow">WeatherPred / Technical guide</p><h1 class="doc-title">Every strategy, explained</h1><p class="lede">Implemented methods, worked examples and the limits of the evidence.</p><div class="project-links"><a href="weatherpred.html">Project overview</a><a href="weatherpred-strategies.html">Strategies</a><a href="weatherpred-math.html">Mathematics</a><a href="https://github.com/MartinMashalov/WeatherPred/blob/main/docs/STRATEGIES.md">Source document ↗</a></div><nav class="contents" aria-label="Guide contents"><a href="#section-1">The trading problem</a><a href="#section-2">1. Complete-bracket consistency — E001</a><a href="#section-3">2. Market-only probability calibration — E002</a><a href="#section-4">3. Daily weather distributions — E003 and E010</a><a href="#section-5">4. Hourly persistence, trend and freshness — E004–E006</a><a href="#section-6">5. Combine weather and market probabilities — E007–E008</a><a href="#section-7">6. Forward paper execution — E009</a><a href="#section-8">7. Trading-policy autoresearch — E013</a><a href="#section-9">8. Observed-high constraints — E011, E012 and E014</a><a href="#section-10">9. Paired passive quotes with inventory control — E015</a><a href="#section-11">10. Same-contract offsetting and capital reuse — E016</a><a href="#section-12">What is still a research idea</a><a href="#section-13">What this project demonstrates</a></nav></section><article class="article-body"><p>WeatherPred is a research and paper-trading system for weather prediction markets.
 The strategies below are implemented experiments, not a list of profitable live
 investments. No real-money orders were submitted. Results are a dated research
 checkpoint, not a continuously updated performance advertisement.</p>
@@ -244,8 +244,9 @@ cent, and adjusting prices by one cent per net contract of inventory. Each polic
 has three queue/delay assumptions, giving nine alternative $100 accounts. Quotes
 are one contract per side. Both legs require subsequent opposite-direction trades
 strictly through the quote after the displayed queue ahead has been consumed.
-Their cash stays committed until settlement; a matched pair is not free spending
-power. Total committed cost is capped at 10%, with 5% per event.</p>
+E015 deliberately keeps matched cash committed until settlement as a capital
+stress case. That differs from Kalshi&#39;s automatic same-contract offsetting,
+corrected in E016 below. Total committed cost is capped at 10%, with 5% per event.</p>
 <p><strong>Status.</strong> Registered on September 6 at 15:08 UTC, before its 15:20 first decisions.
 The fixed panel contains Miami hourly temperature and Miami, Chicago and LA daily
 highs. NYC high and NYC/Boston low contracts failed the preset eligibility filter.
@@ -255,14 +256,34 @@ inventory policy is claimed. Its outcome does not change the earlier dated
 <p>Code: <a href="https://github.com/MartinMashalov/WeatherPred/blob/main/weatherpred/market_making.py">quote and inventory logic</a>,
 <a href="https://github.com/MartinMashalov/WeatherPred/blob/main/research/experiments/e015_market_making.py">registered runner</a>,
 <a href="https://github.com/MartinMashalov/WeatherPred/blob/main/research/experiments/e015_audit.py">independent execution audit</a>.</p>
-<h2 id="section-11">What is still a research idea</h2>
+<h2 id="section-11">10. Same-contract offsetting and capital reuse — E016</h2>
+<p><strong>Correction.</strong> Buying NO while already holding YES in the same contract offsets
+the position. Kalshi returns the matched dollar payout early. This is different
+from optional collateral return across several contracts in an event.</p>
+<p>E016 keeps the same four-market panel and nine quoting/scenario alternatives,
+but removes matched quantities immediately, returns cash and realizes their
+profit or loss. Only the remaining net position reaches final settlement. The
+fill and its offset form one journal event, preventing duplicate cash credits.
+Conservative opening-order cash and risk caps remain; they can still restrict
+some hedges and are strategy choices rather than venue requirements.</p>
+<p><strong>Status.</strong> Registered at 15:28 UTC before new 15:40 forward decisions. A separate
+replay of the same first 43 E015 fills finds two alternative LA accounts completing
+a one-contract offset, earning 2¢ each. Each also has unmatched inventory that
+can lose more. Returning their $1 of cash changes funding timing, not the range
+of final profits on those same fills. No additional trades are assumed in this
+replay, and no positive long-run return is established.</p>
+<p>Sources: <a href="https://news.kalshi.com/p/collateral-return">Kalshi netting</a>,
+<a href="https://docs.kalshi.com/getting_started/market_settlement">current settlement behavior</a>.
+Code: <a href="https://github.com/MartinMashalov/WeatherPred/blob/main/weatherpred/netted_paper.py">atomic netting ledger</a>,
+<a href="https://github.com/MartinMashalov/WeatherPred/blob/main/research/experiments/e016_netted_maker.py">forward cohort and identical-fill replay</a>.</p>
+<h2 id="section-12">What is still a research idea</h2>
 <p>Faster observation-reaction strategies, broader cross-market relative value,
 precipitation and snowfall strategies have not been validated by these experiments.
 E015 now tests two-sided maker spread capture; its nine simulated accounts do not
 establish a profitable market maker.
 No neural model, HRRR ensemble strategy, live brokerage integration or production
 fund management is claimed.</p>
-<h2 id="section-12">What this project demonstrates</h2>
+<h2 id="section-13">What this project demonstrates</h2>
 <p>The contribution is an auditable quantitative research process: acquire original
 sources, preserve when data became available, implement interpretable models,
 test trading rules with costs, account for alternative experiments, simulate
