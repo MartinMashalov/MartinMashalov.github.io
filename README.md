@@ -30,3 +30,20 @@ See [`../HOSTING.md`](../HOSTING.md). Short version: GitHub Pages from a repo na
 ## Licence
 
 Code MIT. Written content and design are © Martin Mashalov.
+
+## WeatherPred research case study
+
+The homepage links to `weatherpred.html`, with detailed strategy and mathematics
+pages and a static result explorer. All equations are pre-rendered to native
+MathML; no client-side math library or application framework is required.
+
+The source explanations and optional page generator live in
+[WeatherPred](https://github.com/MartinMashalov/WeatherPred), under `docs/` and
+`portfolio/`. To regenerate these pages after updating those documents:
+
+```sh
+npm ci --prefix /path/to/WeatherPred/portfolio
+node /path/to/WeatherPred/portfolio/build.mjs /path/to/this-site
+```
+
+The research figures are an explicit dated checkpoint, not a live trading feed.
