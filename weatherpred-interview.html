@@ -63,6 +63,21 @@ many lines were written manually.</p>
 <td>Does a newly received station report arrive before a useful market reaction?</td>
 <td>Exact station versions and adjacent books are being recorded; an information-speed advantage is not established.</td>
 </tr>
+<tr>
+<td>Conditional rain pairs and capacity</td>
+<td>Can compatible daily/weekend contracts produce a discounted combined payout?</td>
+<td>Initial later-book simulated fills leave conditional gains, but capacity is small and early sale is expensive; settlement and further validation remain pending.</td>
+</tr>
+<tr>
+<td>Small transformer adaptation</td>
+<td>Does pretrained sequence modeling improve the local weather target?</td>
+<td>One 100-step fit completes locally; a five-minute development subgroup improves, but aggregate error is worse and no model promotion is justified.</td>
+</tr>
+<tr>
+<td>Wider weather state</td>
+<td>Can completed days constrain weekly streaks or monthly rain?</td>
+<td>Rules narrow outcomes, but no new tested opportunity survives usable asks, fees and the slippage screen.</td>
+</tr>
 </tbody></table>
 <h2 id="section-4">What to emphasize for a role</h2>
 <p><strong>Quantitative research:</strong> explain the hypothesis, chronological split, cost
@@ -70,7 +85,12 @@ model and why a failed experiment changes the next question. The strongest
 example is the small forecast-score gain that becomes a trading loss after costs.</p>
 <p><strong>Machine learning:</strong> explain probability distributions, station bias correction,
 regularization and the weather/market combination. Show how an earlier model fit
-produces the training inputs for the next stage without using its own future labels.</p>
+produces the training inputs for the next stage without using its own future labels.
+The transformer pilot adds a concrete deployment lesson: saved-checkpoint replay
+caught stochastic training-mode evaluation. The same weights were rescored in
+evaluation mode, both score versions were retained, and no training retry was
+used to improve the result. Its approximately 16% five-minute error reduction
+is explicitly a selected development subgroup, not a general forecasting claim.</p>
 <p><strong>Software or data engineering:</strong> follow one decision through original source
 versions, receipt-time checks, reserved cash, a later partial fill and an audit.
 Explain how a frozen registration makes a resumed run use the same rules, and
@@ -99,8 +119,15 @@ the eventual profit of those same fills. New trades using returned cash require
 new execution evidence.</p>
 <p><strong>What does “autoresearch” mean here?</strong> A reproducible runner evaluates a
 registered grid, records failures and abstentions, checks chronological results
-and resumes safely. It does not invent a profitable strategy, repeatedly tune
+and resumes safely. The new process supervisor also pins the evaluator and input
+manifest, enforces a shared candidate/evaluation deadline, and retains logs on
+crash or timeout. It does not invent a profitable strategy, repeatedly tune
 against the final holdout, or place real-money orders.</p>
+<p><strong>Would RL make the forecast better?</strong> It could be researched, but it adds no
+weather information by itself. Supervised quantile learning already rewards
+useful forecast distributions. Sequential order placement, cancellation and
+inventory reduction are a more natural next RL question, after sufficient
+realistic fill data and simple execution baselines exist.</p>
 <p><strong>What can someone reproduce from GitHub alone?</strong> Unit tests and the compact
 evidence reports. Full empirical replay requires the separately stored raw
 archive. The reproduction guide makes that distinction explicit.</p>
